@@ -1,4 +1,7 @@
-<button
+@props(['href' => '#'])
+
+<a
+    href={{$href}}
     {{ $attributes->merge([
         'type' => 'button',
         'class' => '
@@ -17,4 +20,4 @@
     ]) }}
 >
     {{ $slot }}
-</button>
+</a>

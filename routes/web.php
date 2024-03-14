@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Products\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'));
@@ -13,3 +14,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth'])->controller(ProductController::class)->group(function(){
+    Route::get('/productos', 'index')->name('products.index');
+});
