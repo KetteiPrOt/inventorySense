@@ -63,4 +63,14 @@ class ProductController extends Controller
             ]
         ]);
     }
+
+    public function show(Product $product)
+    {
+        $product->load(['presentation', 'type', 'salePrices']);
+        $product->salePrices = $product->salePrices->sortBy('units_number');
+        $product->loadTag();
+        return view('entities.products.show', [
+            'product' => $product
+        ]);
+    }
 }

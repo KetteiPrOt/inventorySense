@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Products\Presentation as ProductPresentation;
 use App\Models\Products\Product;
+use App\Models\Products\SalePrice;
 use App\Models\Products\Type as ProductType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -52,10 +53,25 @@ class DatabaseSeeder extends Seeder
             ['JHONNIE DOUBLE BLACK', 1, 4],
         ];
         foreach($products as $product){
-            Product::create([
+            $id = Product::create([
                 'name' => $product[0],
                 'presentation_id' => $product[1],
                 'type_id' => $product[2]
+            ])->id;
+            SalePrice::create([
+                'price' => 10.75,
+                'units_number' => 1,
+                'product_id' => $id
+            ]);
+            SalePrice::create([
+                'price' => 10.50,
+                'units_number' => 6,
+                'product_id' => $id
+            ]);
+            SalePrice::create([
+                'price' => 10,
+                'units_number' => 12,
+                'product_id' => $id
             ]);
         }
     }

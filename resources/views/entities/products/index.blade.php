@@ -1,5 +1,5 @@
 <x-layouts.primary
-    header="Ver productos"
+    header="Productos"
 >
 
     <div class="flex flex-col items-center sm:items-start">
@@ -53,7 +53,9 @@
                         {{$product->n}}
                     </x-table.td>
                     <x-table.td>
-                        {{$product->tag}}
+                        <a href="{{route('products.show', $product->id)}}">
+                            {{$product->tag}}
+                        </a>
                     </x-table.td>
                     <x-table.td
                         class="hidden sm:table-cell text-center"
