@@ -21,8 +21,8 @@ class ProductController extends Controller
         }
         $validated = $validator->validated();
         $query = 
-            Product::join('product_types', 'product_types.id', '=', 'products.type_id')
-                ->join('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
+            Product::leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
+                ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
                 ->selectRaw("
                     products.id,
                     CONCAT_WS(' ',
