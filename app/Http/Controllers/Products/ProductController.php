@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Products\StoreRequest;
 use App\Models\Products\Product;
+use App\Models\Products\SalePrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -62,6 +64,29 @@ class ProductController extends Controller
                 'order' => $order
             ]
         ]);
+    }
+
+    public function create()
+    {
+        return view('entities.products.create');
+    }
+
+    public function store(StoreRequest $request)
+    {
+        $validated = $request->validated();
+        $product = Product::create([
+            'name' => $validated['product_name'],
+            'presentation_id' => $validated['product_presentation'],
+            'type_id' => $validated['product_type']
+        ]);
+        foreach($validated['sale_prices'] as $key => $salePrice){
+            SalePrice::create([
+                'price' => $salePrice,
+                'units_number' => $validated['units_numbers'][$key],
+                'product_id' => $product->id
+            ]);
+        }
+        return redirect()->route('products.show', $product->id);
     }
 
     public function show(Product $product)

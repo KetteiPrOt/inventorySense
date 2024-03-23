@@ -12,6 +12,8 @@ class SalePrice extends Model
 
     protected $table = 'product_sale_prices';
 
+    protected $fillable = ['price', 'units_number', 'product_id'];
+
     public $timestamps = false;
 
     public function product(): BelongsTo

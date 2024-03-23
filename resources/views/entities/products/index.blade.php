@@ -3,7 +3,10 @@
 >
 
     <div class="flex flex-col items-center sm:items-start">
-        <x-secondary-link-button class="mb-4">
+        <x-secondary-link-button
+            :href="route('products.create')"
+            class="mb-4"
+        >
             Crear nuevo
         </x-secondary-link-button>
 

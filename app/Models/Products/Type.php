@@ -26,8 +26,7 @@ class Type extends Model
         'ESPUMANTE',
         'SANGRIA',
         'VODKA',
-        'LICOR',
-        '(OTRO TIPO)'
+        'LICOR'
     ];
 
     public function products(): HasMany
