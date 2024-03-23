@@ -140,7 +140,7 @@
                 errorElement.textContent = (!uniqueUnitsNumbers)
                     ? 'Las unidades deben ser diferentes en cada precio.'
                     : 'Los precios de venta deben ser diferentes.';
-                // event.preventDefault();
+                event.preventDefault();
             }
         });
     </script>

@@ -19,6 +19,12 @@
                     </span>
                 @endif
             </p>
+            <p>
+                <strong>Stock mínimo</strong> <br>
+                {{$product->min_stock}}
+                {{$product->min_stock == 1
+                    ? 'unidad.' : 'unidades.'}}
+            </p>
         </div>
         <div>
             <p>

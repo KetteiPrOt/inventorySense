@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->tinyInteger('started_inventory')->default(false);
+            $table->unsignedSmallInteger('min_stock')->default(1);
             $table->timestamps();
             // Foreign Keys
             $table->unsignedMediumInteger('presentation_id')->nullable();

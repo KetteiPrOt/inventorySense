@@ -11,7 +11,7 @@
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Seleccione el tipo, la presentación, y especifique el nombre del producto para crearlo.
+                    Seleccione el tipo, la presentación, y especifique el nombre del producto junto a su stock mínimo para crearlo.
                 </p>
             </header>
 
@@ -43,6 +43,20 @@
                 <a href="#" class="text-blue-400 underline inline-block mt-2">
                     Administrar presentaciones
                 </a>
+            </div>
+
+            <div>
+                <x-input-label for="min_stock" :required="true">
+                    Stock Mínimo
+                </x-input-label>
+                <x-number-input
+                    required
+                    id="min_stock" name="min_stock" 
+                    class="mt-1 block w-full max-w-sm"
+                    min="1" max="65000"
+                    value="1"
+                />
+                <x-input-error class="mt-2" :messages="$errors->get('min_stock')" />
             </div>
         </section>
 

@@ -76,6 +76,7 @@ class ProductController extends Controller
         $validated = $request->validated();
         $product = Product::create([
             'name' => $validated['product_name'],
+            'min_stock' => $validated['min_stock'],
             'presentation_id' => $validated['product_presentation'],
             'type_id' => $validated['product_type']
         ]);
