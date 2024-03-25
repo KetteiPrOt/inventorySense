@@ -22,4 +22,5 @@ Route::middleware(['auth'])->controller(ProductController::class)->group(functio
     Route::get('/productos/{product}', 'show')->name('products.show');
     Route::get('/productos/{product}/editar', 'edit')->name('products.edit');
     Route::put('/productos/{product}', 'update')->name('products.update');
+    Route::delete('/productos/{product}', 'delete')->name('products.delete');
 });

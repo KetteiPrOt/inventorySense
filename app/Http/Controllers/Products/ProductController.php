@@ -131,4 +131,10 @@ class ProductController extends Controller
         $product->save();
         return redirect()->route('products.show', $product->id);
     }
+
+    public function delete(Product $product)
+    {
+        $product->delete();
+        return redirect()->route('products.index');
+    }
 }

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('product_id');
             $table->foreign('product_id', 'product_sale_price')
                 ->references('id')
-                ->on('products');
+                ->on('products')
+                ->cascadeOnDelete()->cascadeOnUpdate();
             // Indexs
             $table->unique(['price', 'units_number', 'product_id']);
         });
