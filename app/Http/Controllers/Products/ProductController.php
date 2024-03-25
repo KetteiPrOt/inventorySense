@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreRequest;
+use App\Http\Requests\Products\UpdateRequest;
 use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
 use Illuminate\Http\Request;
@@ -98,5 +99,36 @@ class ProductController extends Controller
         return view('entities.products.show', [
             'product' => $product
         ]);
+    }
+
+    public function edit(Product $product)
+    {
+        $product->load(['presentation', 'type', 'salePrices']);
+        $product->salePrices = $product->salePrices->sortBy('units_number');
+        return view('entities.products.edit', [
+            'product' => $product
+        ]);
+    }
+
+    public function update(UpdateRequest $request, Product $product)
+    {
+        $validated = $request->validated();
+        $product->update([
+            'name' => $validated['product_name'],
+            'min_stock' => $validated['min_stock'],
+            'presentation_id' => $validated['product_presentation'],
+            'type_id' => $validated['product_type']
+        ]);
+        $product->salePrices->each(fn($salePrice) => $salePrice->delete());
+        foreach($validated['sale_prices'] as $key => $newSalePrice){
+            SalePrice::create([
+                'price' => $newSalePrice,
+                'units_number' => $validated['units_numbers'][$key],
+                'product_id' => $product->id
+            ]);
+        }
+        $product->setUpdatedAt(date('Y-m-d H:i:s'));
+        $product->save();
+        return redirect()->route('products.show', $product->id);
     }
 }

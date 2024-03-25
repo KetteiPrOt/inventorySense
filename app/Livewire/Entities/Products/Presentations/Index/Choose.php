@@ -11,24 +11,32 @@ class Choose extends Component
 {
     use WithPagination;
 
+    private ?int $selectedByDefault = null;
+
     public $search = null;
 
     #[Locked]
     public bool $showAllByDefault = true;
 
-    public function mount(bool $showAllByDefault = true)
+    public function mount(bool $showAllByDefault = true, int $selectedByDefault = null)
     {
         $this->showAllByDefault = $showAllByDefault;
+        $this->selectedByDefault = $selectedByDefault;
     }
 
     public function render()
     {
-        $presentations = $this->queryPresentations();
-        if($presentations?->count() == 0){
-            $this->resetPage('product-presentation');
+        if($this->selectedByDefault){
+            $presentationSelectedByDefault = Presentation::find($this->selectedByDefault);
+        } else {
+            $presentations = $this->queryPresentations();
+            if($presentations?->count() == 0){
+                $this->resetPage('product-presentation');
+            }
         }
         return view('livewire..entities.products.presentations.index.choose', [
-            'presentations' => $presentations
+            'presentations' => $presentations ?? null,
+            'presentationSelectedByDefault' => $presentationSelectedByDefault ?? null
         ]);
     }
 

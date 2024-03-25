@@ -75,7 +75,9 @@
     </x-table>
 
     <div>
-        <x-secondary-link-button>
+        <x-secondary-link-button
+            :href="route('products.edit', $product->id)"
+        >
             Editar
         </x-secondary-link-button>
         <x-danger-button>

@@ -11,24 +11,32 @@ class Choose extends Component
 {
     use WithPagination;
 
+    private ?int $selectedByDefault = null;
+
     public $search = null;
 
     #[Locked]
     public bool $showAllByDefault = true;
 
-    public function mount(bool $showAllByDefault = true)
+    public function mount(bool $showAllByDefault = true, int $selectedByDefault = null)
     {
         $this->showAllByDefault = $showAllByDefault;
+        $this->selectedByDefault = $selectedByDefault;
     }
 
     public function render()
     {
-        $types = $this->queryTypes();
-        if($types?->count() == 0){
-            $this->resetPage('product-type');
+        if($this->selectedByDefault){
+            $typeSelectedByDefault = Type::find($this->selectedByDefault);
+        } else {
+            $types = $this->queryTypes();
+            if($types?->count() == 0){
+                $this->resetPage('product-type');
+            }
         }
         return view('livewire..entities.products.types.index.choose', [
-            'types' => $types
+            'types' => $types ?? null,
+            'typeSelectedByDefault' => $typeSelectedByDefault ?? null
         ]);
     }
 

@@ -30,11 +30,29 @@
                 </x-table.tr>
             @endforeach
             @endif
+            @if(!is_null($typeSelectedByDefault))
+                <x-table.tr>
+                    <x-table.td>
+                        <input
+                            checked
+                            type="radio"
+                            value="{{$typeSelectedByDefault->id}}"
+                            required
+                            id="typeInput{{$typeSelectedByDefault->id}}"
+                            class="rounded-full mr-2"
+                            name="product_type"
+                        />
+                        <label for="typeInput{{$typeSelectedByDefault->id}}">
+                            {{$typeSelectedByDefault->name}}
+                        </label>
+                    </x-table.td>
+                </x-table.tr>
+            @endif
         </x-slot:body>
     </x-table>
     <div class="max-w-sm mt-2">
         {{$types?->links(data: ['scrollTo' => false])}}
-        @if($types?->isEmpty())
+        @if($types?->isEmpty() && is_null($typeSelectedByDefault))
             <span class="text-red-500">
                 No se encontraron tipos...
             </span>

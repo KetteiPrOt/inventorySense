@@ -9,6 +9,11 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class UniqueTag implements ValidationRule, DataAwareRule
 {
+    private int $ignore;
+
+    public function __construct(int $ignore = -1) {
+        $this->ignore = $ignore;
+    }
     /**
      * Run the validation rule.
      *
@@ -18,6 +23,9 @@ class UniqueTag implements ValidationRule, DataAwareRule
     {
         $products = Product::with(['type', 'presentation'])->get();
         foreach($products as $product){
+            if($product->id == $this->ignore){
+                continue;
+            }
             if(
                 $product->type->id == $this->data['product_type']
                 && $product->presentation->id == $this->data['product_presentation']

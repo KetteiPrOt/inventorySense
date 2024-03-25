@@ -31,28 +31,57 @@
                     />
                 </x-table.td>
             </x-table.tr>
-            <x-table.tr
-                id="defaultSalePriceInput"
-            >
-                <x-table.td>
-                    <x-number-input
-                        class="units-number-input w-4/5 sm:w-2/3"
-                        value="1"
-                        readonly required
-                        name="units_numbers[]"
-                    />
-                </x-table.td>
-                <x-table.td>
-                    $
-                    <x-number-input
-                        class="sale-price-input w-4/5"
-                        required
-                        min="0.01" max="9999.99"
-                        step="0.01"
-                        name="sale_prices[]"
-                    />
-                </x-table.td>
-            </x-table.tr>
+            @foreach($salePrices as $salePrice)
+                @if($loop->first)
+                    <x-table.tr
+                        id="defaultSalePriceInput"
+                    >
+                        <x-table.td>
+                            <x-number-input
+                                class="units-number-input w-4/5 sm:w-2/3"
+                                value="{{$salePrice->units_number}}"
+                                readonly required
+                                name="units_numbers[]"
+                            />
+                        </x-table.td>
+                        <x-table.td>
+                            $
+                            <x-number-input
+                                class="sale-price-input w-4/5"
+                                value="{{$salePrice->price}}"
+                                required
+                                min="0.01" max="9999.99"
+                                step="0.01"
+                                name="sale_prices[]"
+                            />
+                        </x-table.td>
+                    </x-table.tr>
+                @else
+                    <x-table.tr>
+                        <x-table.td>
+                            <x-number-input
+                                class="units-number-input w-4/5 sm:w-2/3"
+                                value="{{$salePrice->units_number}}"
+                                min="2" max="65000"
+                                step="1"
+                                required
+                                name="units_numbers[]"
+                            />
+                        </x-table.td>
+                        <x-table.td>
+                            $
+                            <x-number-input
+                                class="sale-price-input w-4/5"
+                                value="{{$salePrice->price}}"
+                                min="0.01" max="9999.99"
+                                step="0.01"
+                                required
+                                name="sale_prices[]"
+                            />
+                        </x-table.td>
+                    </x-table.tr>
+                @endif
+            @endforeach
             <x-table.tr
                 id="salePriceInputCommand"
             >
@@ -125,7 +154,7 @@
                 for(element of array){
                     if(
                         array.indexOf(element)
-                        !== array.lastIndexOf(element)
+                        != array.lastIndexOf(element)
                     ){
                         uniqueElements = false;
                         break;
