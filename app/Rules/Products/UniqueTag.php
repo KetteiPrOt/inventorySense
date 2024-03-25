@@ -27,8 +27,8 @@ class UniqueTag implements ValidationRule, DataAwareRule
                 continue;
             }
             if(
-                $product->type->id == $this->data['product_type']
-                && $product->presentation->id == $this->data['product_presentation']
+                $product->type?->id == $this->data['product_type']
+                && $product->presentation?->id == $this->data['product_presentation']
                 && $product->name == $value
             ){
                 $fail('El producto ya ha sido registrado.');
