@@ -18,10 +18,6 @@
         
             <div>
                 <livewire:entities.products.types.index.choose />
-
-                <a href="#" class="text-blue-400 underline inline-block mt-2">
-                    Administrar tipos
-                </a>
             </div>
 
             <div>
@@ -39,10 +35,6 @@
 
             <div>
                 <livewire:entities.products.presentations.index.choose />
-
-                <a href="#" class="text-blue-400 underline inline-block mt-2">
-                    Administrar presentaciones
-                </a>
             </div>
 
             <div>

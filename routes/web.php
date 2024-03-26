@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Products\ProductController;
+use App\Livewire\Entities\Products\Types\Controller as TypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'));
@@ -24,3 +25,5 @@ Route::middleware(['auth'])->controller(ProductController::class)->group(functio
     Route::put('/productos/{product}', 'update')->name('products.update');
     Route::delete('/productos/{product}', 'delete')->name('products.delete');
 });
+
+Route::middleware(['auth'])->get('/tipos', TypeController::class)->name('product-types.controller');

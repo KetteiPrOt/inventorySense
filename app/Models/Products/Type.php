@@ -14,7 +14,7 @@ class Type extends Model
 
     public $timestamps = false;
 
-    protected $fillabe = ['name', 'active'];
+    protected $fillable = ['name'];
 
     public static $initialTypes = [
         'WHISKY',

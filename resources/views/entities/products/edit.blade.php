@@ -21,10 +21,6 @@
                 <livewire:entities.products.types.index.choose
                     :selected-by-default="$product->type?->id"
                 />
-
-                <a href="#" class="text-blue-400 underline inline-block mt-2">
-                    Administrar tipos
-                </a>
             </div>
 
             <div>
@@ -45,10 +41,6 @@
                 <livewire:entities.products.presentations.index.choose
                     :selected-by-default="$product->presentation?->id"
                 />
-
-                <a href="#" class="text-blue-400 underline inline-block mt-2">
-                    Administrar presentaciones
-                </a>
             </div>
 
             <div>

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('product_presentations', function (Blueprint $table) {
             $table->mediumIncrements('id');
             $table->smallInteger('content')->unsigned()->unique();
-            $table->tinyInteger('active')->default(true);
         });
     }
 
