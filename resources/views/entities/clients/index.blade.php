@@ -1,10 +1,10 @@
 <x-layouts.primary
-    header="Proveedores"
+    header="Clientes"
 >
 
     <div class="flex flex-col items-center sm:items-start">
         <x-secondary-link-button
-            :href="route('providers.create')"
+            :href="route('clients.create')"
             class="mb-4"
         >
             Crear nuevo
@@ -34,7 +34,7 @@
                             'column' => 'name',
                             'currentColumn' => $filters['column'],
                             'order' => $filters['order'],
-                            'route' => 'providers.index'
+                            'route' => 'clients.index'
                         ]"
                     >Nombre</x-icons.order>
                 </x-table.th>
@@ -46,17 +46,17 @@
             </x-table.tr>
         </x-slot:head>
         <x-slot:body>
-            @foreach($providers as $provider)
+            @foreach($clients as $client)
                 <x-table.tr>
                     <x-table.td>
-                        {{$provider->n}}
+                        {{$client->n}}
                     </x-table.td>
                     <x-table.td>
-                        {{$provider->name}}
+                        {{$client->name}}
                     </x-table.td>
                     <x-table.td>
                         <div class="text-center">
-                            <a href="{{route('providers.show', $provider->id)}}" class="inline-block w-5 h-5">
+                            <a href="{{route('clients.show', $client->id)}}" class="inline-block w-5 h-5">
                                 <x-icons.magnifying-glass
                                     class="w-full h-full"
                                 />
@@ -67,10 +67,10 @@
             @endforeach
         </x-slot:body>
     </x-table>
-    {{$providers->links()}}
-    @if($providers->isEmpty())
+    {{$clients->links()}}
+    @if($clients->isEmpty())
         <p class="text-red-500">
-            No se encontraron proveedores...
+            No se encontraron clientes...
         </p>
     @endif
 

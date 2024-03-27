@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\Products\Presentation as ProductPresentation;
 use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
@@ -19,6 +20,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Provider::factory(30)->create();
+
+        Client::factory(30)->create();
     
         User::factory()->create([
             'name' => 'Fernando Joel',

@@ -34,7 +34,7 @@ class ProviderController extends Controller
         $providers = isset($validated['search'])
             ? $query->orderBy($column, $order)
             : Provider::orderBy($column, $order);
-        $providers = $providers->paginate(5)->withQueryString();
+        $providers = $providers->paginate(15)->withQueryString();
         foreach($providers as $key => $provider){
             $provider->n =
                 ($key + 1) + ($providers->currentPage() - 1) * $providers->perPage();

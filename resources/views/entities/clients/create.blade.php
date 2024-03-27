@@ -1,18 +1,17 @@
 <x-layouts.primary
-    header="Editar proveedor"
+    header="Crear cliente"
 >
-    <form action="{{route('providers.update', $provider->id)}}" method="post">
-        @method('put')
+    <form action="{{route('clients.store')}}" method="post">
         @csrf
 
         <section class="space-y-6">
             <header>
                 <h2 class="text-lg font-medium text-gray-900">
-                    Información del proveedor
+                    Información del cliente
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Especifique el nuevo nombre, número telefónico, correo electrónico, RUC, dirección, y razón social del proveedor para actualizarlo.
+                    Especifique el nombre, número telefónico, correo electrónico, RUC, dirección, y cédula del cliente para crearlo.
                 </p>
             </header>
 
@@ -25,7 +24,7 @@
                     id="name" name="name" 
                     class="mt-1 block w-full max-w-sm"
                     minlength="2" maxlength="255"
-                    value="{{old('name', $provider->name)}}"
+                    value="{{old('name')}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
@@ -38,7 +37,7 @@
                     id="phone" name="phone" 
                     class="mt-1 block w-full max-w-sm"
                     minlength="10" maxlength="20"
-                    value="{{old('phone', $provider->phone)}}"
+                    value="{{old('phone')}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('phone')" />
             </div>
@@ -51,7 +50,7 @@
                     id="email" name="email" type="email"
                     class="mt-1 block w-full max-w-sm"
                     minlength="3" maxlength="400"
-                    value="{{old('email', $provider->email)}}"
+                    value="{{old('email')}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
             </div>
@@ -64,7 +63,7 @@
                     id="ruc" name="ruc"
                     class="mt-1 block w-full max-w-sm"
                     minlength="10" maxlength="20"
-                    value="{{old('ruc', $provider->ruc)}}"
+                    value="{{old('ruc')}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('ruc')" />
             </div>
@@ -77,22 +76,22 @@
                     id="address" name="address"
                     class="mt-1 block w-full max-w-sm"
                     minlength="2" maxlength="255"
-                    value="{{old('address', $provider->address)}}"
+                    value="{{old('address')}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('address')" />
             </div>
 
             <div>
-                <x-input-label for="social_reason">
-                    Razón social
+                <x-input-label for="identity_card">
+                    Número de cédula
                 </x-input-label>
                 <x-text-input
-                    id="social_reason" name="social_reason"
+                    id="identity_card" name="identity_card"
                     class="mt-1 block w-full max-w-sm"
-                    minlength="2" maxlength="255"
-                    value="{{old('social_reason', $provider->social_reason)}}"
+                    minlength="10" maxlength="20"
+                    value="{{old('identity_card')}}"
                 />
-                <x-input-error class="mt-2" :messages="$errors->get('social_reason')" />
+                <x-input-error class="mt-2" :messages="$errors->get('identity_card')" />
             </div>
         </section>
 
@@ -101,7 +100,7 @@
                 Guardar
             </x-primary-button>
 
-            <x-secondary-link-button :href="route('providers.show', $provider->id)" class="ml-1">
+            <x-secondary-link-button :href="route('clients.index')" class="ml-1">
                 Cancelar
             </x-secondary-link-button>
         </div>

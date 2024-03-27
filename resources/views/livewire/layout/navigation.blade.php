@@ -64,6 +64,7 @@ new class extends Component
                         tag="Personas" width="30"
                         :active="request()->routeIs([
                             'providers.*',
+                            'clients.*',
                         ])"
                     >
                         <x-dropdown-link
@@ -71,6 +72,12 @@ new class extends Component
                             :active="request()->routeIs('providers.*')"
                         >
                             Proveedores
+                        </x-dropdown-link>
+                        <x-dropdown-link
+                            :href="route('clients.index')" wire:navigate
+                            :active="request()->routeIs('clients.*')"
+                        >
+                            Clientes
                         </x-dropdown-link>
                     </x-nav-dropdown>
                 </div>

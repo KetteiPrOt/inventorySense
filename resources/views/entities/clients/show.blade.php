@@ -1,24 +1,24 @@
 <x-layouts.primary
-    header="Ver proveedor"
+    header="Ver cliente"
 >
     <div class="sm:flex mb-6">
         <div class="mb-4 sm:mb-0 sm:mr-12">
             <p>
-                <strong>Proveedor</strong> <br>
-                {{$provider->name}}
+                <strong>Cliente</strong> <br>
+                {{$client->name}}
             </p>
 
-            @if($provider->phone)
+            @if($client->phone)
             <p>
                 <strong>Número teléfonico</strong> <br>
-                {{$provider->phone}}
+                {{$client->phone}}
             </p>
             @endif
 
-            @if($provider->email)
+            @if($client->email)
             <p>
                 <strong>Correo electrónico</strong> <br>
-                {{$provider->email}}
+                {{$client->email}}
             </p>
             @endif
         </div>
@@ -26,43 +26,43 @@
             <p>
                 <strong>Creado el</strong> <br>
                 {{
-                    date('d/m/Y H:i:s', strtotime($provider->created_at));
+                    date('d/m/Y H:i:s', strtotime($client->created_at));
                 }}
             </p>
             <p>
                 <strong>Ultima actualización</strong> <br>
                 {{
-                    date('d/m/Y H:i:s', strtotime($provider->updated_at));
+                    date('d/m/Y H:i:s', strtotime($client->updated_at));
                 }}
             </p>
         </div>
     </div>
 
     @if(
-        $provider->ruc
-        || $provider->address
-        || $provider->social_reason
+        $client->ruc
+        || $client->address
+        || $client->identity_card
     )
     <div class="sm:flex mb-6">
         <div class="mb-4 sm:mb-0 sm:mr-12">
-            @if($provider->ruc)
+            @if($client->ruc)
             <p>
                 <strong>RUC</strong> <br>
-                {{$provider->ruc}}
+                {{$client->ruc}}
             </p>
             @endif
 
-            @if($provider->address)
+            @if($client->address)
             <p>
                 <strong>Dirección</strong> <br>
-                {{$provider->address}}
+                {{$client->address}}
             </p>
             @endif
 
-            @if($provider->social_reason)
+            @if($client->identity_card)
             <p>
-                <strong>Razón social</strong> <br>
-                {{$provider->social_reason}}
+                <strong>Número de cédula</strong> <br>
+                {{$client->identity_card}}
             </p>
             @endif
         </div>
@@ -71,7 +71,7 @@
 
     <div>
         <x-secondary-link-button
-            :href="route('providers.edit', $provider->id)"
+            :href="route('clients.edit', $client->id)"
         >
             Editar
         </x-secondary-link-button>
@@ -81,7 +81,7 @@
 
         <x-modal name="confirm-product-deletion" :show="$errors->isNotEmpty()" focusable>
             <form
-                action="{{route('providers.destroy', $provider->id)}}"
+                action="{{route('clients.destroy', $client->id)}}"
                 method="post"
                 class="p-6"
             >
@@ -89,11 +89,11 @@
                 @method('delete')
 
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    ¿Seguro que deseas eliminar el proveedor?
+                    ¿Seguro que deseas eliminar el cliente?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Una vez que el proveedor sea eliminado se perderá <strong>por siempre y de forma irreversible</strong> toda su información. Además en los registros ascociados de compras, ventas, reportes, e inventario se establecerá el proveedor como "Desconocido".
+                    Una vez que el cliente sea eliminado se perderá <strong>por siempre y de forma irreversible</strong> toda su información. Además en los registros ascociados de compras, ventas, reportes, e inventario se establecerá el cliente como "Consumidor Final".
                 </p>
 
                 <div class="mt-6 flex justify-end">
