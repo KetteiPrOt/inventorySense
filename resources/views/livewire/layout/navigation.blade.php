@@ -60,6 +60,19 @@ new class extends Component
                             Presentaciones
                         </x-dropdown-link>
                     </x-nav-dropdown>
+                    <x-nav-dropdown
+                        tag="Personas" width="30"
+                        :active="request()->routeIs([
+                            'providers.index',
+                        ])"
+                    >
+                        <x-dropdown-link
+                            :href="route('providers.index')" wire:navigate
+                            :active="request()->routeIs('providers.*')"
+                        >
+                            Proveedores
+                        </x-dropdown-link>
+                    </x-nav-dropdown>
                 </div>
             </div>
 
@@ -136,6 +149,19 @@ new class extends Component
                     :active="request()->routeIs('product-presentations.index')"
                 >
                     Presentaciones
+                </x-dropdown-link>
+            </x-responsive-nav-dropdown>
+            <x-responsive-nav-dropdown
+                tag="Personas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
+                :active="request()->routeIs([
+                    'providers.*',
+                ])"
+            >
+                <x-dropdown-link
+                    :href="route('providers.index')" wire:navigate
+                    :active="request()->routeIs('providers.*')"
+                >
+                    Proveedores
                 </x-dropdown-link>
             </x-responsive-nav-dropdown>
         </div>

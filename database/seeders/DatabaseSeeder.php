@@ -6,6 +6,7 @@ use App\Models\Products\Presentation as ProductPresentation;
 use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
 use App\Models\Products\Type as ProductType;
+use App\Models\Provider;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,6 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Provider::factory(30)->create();
+    
         User::factory()->create([
             'name' => 'Fernando Joel',
             'email' => 'sd.kettei@gmail.com',
