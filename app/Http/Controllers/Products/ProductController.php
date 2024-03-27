@@ -132,7 +132,7 @@ class ProductController extends Controller
         return redirect()->route('products.show', $product->id);
     }
 
-    public function delete(Product $product)
+    public function destroy(Product $product)
     {
         $product->delete();
         return redirect()->route('products.index');

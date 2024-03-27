@@ -35,7 +35,11 @@ new class extends Component
                     </x-nav-link>
                     <x-nav-dropdown
                         tag="Productos" width="30"
-                        :active="request()->routeIs(['products.*', 'product-types.controller'])"
+                        :active="request()->routeIs([
+                            'products.*',
+                            'product-types.index',
+                            'product-presentations.index'
+                        ])"
                     >
                         <x-dropdown-link
                             :href="route('products.index')" wire:navigate
@@ -44,10 +48,16 @@ new class extends Component
                             Productos
                         </x-dropdown-link>
                         <x-dropdown-link
-                            :href="route('product-types.controller')" wire:navigate
-                            :active="request()->routeIs('product-types.controller')"
+                            :href="route('product-types.index')" wire:navigate
+                            :active="request()->routeIs('product-types.index')"
                         >
                             Tipos
+                        </x-dropdown-link>
+                        <x-dropdown-link
+                            :href="route('product-presentations.index')" wire:navigate
+                            :active="request()->routeIs('product-presentations.index')"
+                        >
+                            Presentaciones
                         </x-dropdown-link>
                     </x-nav-dropdown>
                 </div>
@@ -102,8 +112,12 @@ new class extends Component
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-dropdown
-                tag="Productos" width="30"
-                :active="request()->routeIs(['products.*', 'product-types.controller'])"
+                tag="Productos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
+                :active="request()->routeIs([
+                    'products.*',
+                    'product-types.index',
+                    'product-presentations.index'
+                ])"
             >
                 <x-dropdown-link
                     :href="route('products.index')" wire:navigate
@@ -112,13 +126,18 @@ new class extends Component
                     Productos
                 </x-dropdown-link>
                 <x-dropdown-link
-                    :href="route('product-types.controller')" wire:navigate
-                    :active="request()->routeIs('product-types.controller')"
+                    :href="route('product-types.index')" wire:navigate
+                    :active="request()->routeIs('product-types.index')"
                 >
                     Tipos
                 </x-dropdown-link>
+                <x-dropdown-link
+                    :href="route('product-presentations.index')" wire:navigate
+                    :active="request()->routeIs('product-presentations.index')"
+                >
+                    Presentaciones
+                </x-dropdown-link>
             </x-responsive-nav-dropdown>
-            </div>
         </div>
 
         <!-- Responsive Settings Options -->

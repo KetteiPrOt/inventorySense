@@ -86,7 +86,7 @@
 
         <x-modal name="confirm-product-deletion" :show="$errors->isNotEmpty()" focusable>
             <form
-                action="{{route('products.delete', $product->id)}}"
+                action="{{route('products.destroy', $product->id)}}"
                 method="post"
                 class="p-6"
             >

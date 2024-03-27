@@ -1,22 +1,38 @@
-<div>
-    <x-secondary-button
-        x-data
-        x-on:click.prevent="$dispatch('open-modal', 'create-type')"
-    >
-        Crear nuevo
-    </x-secondary-button>
-    <x-modal name="create-type">
-        <livewire:entities.products.types.create.main />
-    </x-modal>
+<x-layouts.primary
+    header="Tipos de producto"
+>
+    <div class="flex justify-center sm:justify-start">
+        <x-secondary-button
+            x-data
+            x-on:click.prevent="$dispatch('open-modal', 'create-type')"
+        >
+            Crear nuevo
+        </x-secondary-button>
+        <x-modal name="create-type">
+            <livewire:entities.products.types.create.main
+                :page="request()->query('page')"
+                :search="request()->query('search')"
+            />
+        </x-modal>
+    </div>
 
-    <x-text-input
-        wire:model.live="search"
-        class="block mt-4"
-        placeholder="Buscar..."
-        maxlength="49"
-    />
+    <form class="mb-4">
+        <x-text-input
+            name="search"
+            class="mt-4"
+            minlength="2"
+            maxlength="49"
+            value="{{request()->query('search')}}"
+        />
+        <x-primary-button class="mt-1">
+            Buscar
+        </x-primary-button>
+        <x-input-error
+            :messages="$errors->get('search')"
+        />
+    </form>
 
-    <x-table class="mt-4 max-w-sm">
+    <x-table class="max-w-sm mb-1">
         <x-slot:head>
             <x-table.tr :hover="false">
                 <x-table.th>
@@ -27,30 +43,32 @@
         </x-slot:head>
         <x-slot:body>
             @forelse($types as $type)
-                <x-table.tr wire:key="{{$type->id}}">
+                <x-table.tr>
                     <x-table.td>
                         {{$type->name}}
                     </x-table.td>
                     <x-table.td>
                         <div class="w-full flex justify-around">
-                            <x-icons.edit
-                                class="w-6 h-6 cursor-pointer"
-                                x-data
-                                x-on:click.prevent="$dispatch('open-modal', 'edit-type-{{$type->id}}')"
+                            <livewire:entities.products.types.edit.main
+                                :key="$type->id"
+                                :$type
+                                :page="request()->query('page')"
+                                :search="request()->query('search')"
                             />
-                            <x-modal name="edit-type-{{$type->id}}">
-                                <livewire:entities.products.types.edit.main
-                                    :key="$type->id"
-                                    :$type
-                                />
-                            </x-modal>
-                            <x-icons.delete
-                                x-data
+                            <button
+                                x-data class="w-7 h-7 focus:outline-offset-4 focus:outline-red-500"
                                 x-on:click.prevent="$dispatch('open-modal', 'confirm-type-{{$type->id}}-deletion')"
-                                class="w-7 h-7 cursor-pointer" color="#EF4444"
-                            />
+                            >
+                                <x-icons.delete class="w-full h-full cursor-pointer" color="#EF4444" />
+                            </button>
                             <x-modal name="confirm-type-{{$type->id}}-deletion">
-                                <div class="p-6">
+                                <form
+                                    action="{{route('product-types.destroy', $type->id)}}"
+                                    method="post" class="p-6"
+                                >
+                                    @csrf
+                                    @method('delete')
+
                                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                         ¿Seguro que deseas eliminar el tipo de producto?
                                     </h2>
@@ -64,14 +82,11 @@
                                             Cancelar
                                         </x-secondary-button>
 
-                                        <x-danger-button
-                                            class="ms-3"
-                                            x-on:click="$wire.delete({{$type->id}});"
-                                        >
-                                            Eliminar Tipo
+                                        <x-danger-button class="ms-3">
+                                            Eliminar
                                         </x-danger-button>
                                     </div>
-                                </div>
+                                </form>
                             </x-modal>
                         </div>
                     </x-table.td>
@@ -88,13 +103,9 @@
             @endforelse
         </x-slot:body>
     </x-table>
-    <div class="max-w-sm mt-1">
-        {{$types->links(data: ['scrollTo' => false])}}
+    <div class="max-w-sm">
+        {{$types->links()}}
     </div>
-    @script
-    <script>
-        $wire.on('type-updated', () => $wire.$refresh());
-        $wire.on('type-created', () => $wire.$refresh());
-    </script>
-    @endscript
-</div>
+
+
+</x-layouts.primary>

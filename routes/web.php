@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Products\PresentationController;
 use App\Http\Controllers\Products\ProductController;
-use App\Livewire\Entities\Products\Types\Controller as TypeController;
+use App\Http\Controllers\Products\TypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'));
@@ -23,7 +24,15 @@ Route::middleware(['auth'])->controller(ProductController::class)->group(functio
     Route::get('/productos/{product}', 'show')->name('products.show');
     Route::get('/productos/{product}/editar', 'edit')->name('products.edit');
     Route::put('/productos/{product}', 'update')->name('products.update');
-    Route::delete('/productos/{product}', 'delete')->name('products.delete');
+    Route::delete('/productos/{product}', 'destroy')->name('products.destroy');
 });
 
-Route::middleware(['auth'])->get('/tipos', TypeController::class)->name('product-types.controller');
+Route::middleware(['auth'])->controller(TypeController::class)->group(function(){
+    Route::get('/tipos', 'index')->name('product-types.index');
+    Route::delete('/tipos/{type}', 'destroy')->name('product-types.destroy');
+});
+
+Route::middleware(['auth'])->controller(PresentationController::class)->group(function(){
+    Route::get('/presentaciones', 'index')->name('product-presentations.index');
+    Route::delete('/presentaciones/{presentation}', 'destroy')->name('product-presentations.destroy');
+});

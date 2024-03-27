@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Entities\Products\Types\Create;
+namespace App\Livewire\Entities\Products\Presentations\Create;
 
-use App\Models\Products\Type;
+use App\Models\Products\Presentation;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -20,30 +20,30 @@ class Main extends Component
         $this->search = $search;
     }
 
-    public $name;
+    public $content;
 
     public function rules()
     {
-        return ['name' => 'required|string|min:2|max:49|unique:product_types,name'];
+        return ['content' => 'required|integer|min:1|max:65000|unique:product_presentations,content'];
     }
 
     public function  validationAttributes()
     {
-        return ['name' => 'nombre'];
+        return ['content' => 'contenido'];
     }
 
     public function render()
     {
-        return view('livewire..entities.products.types.create.main');
+        return view('livewire..entities.products.presentations.create.main');
     }
 
     public function create()
     {
         $this->validate();
-        Type::create(['name' => mb_strtoupper($this->name)]);
-        $this->dispatch('type-created');
-        $this->reset('name');
-        return redirect()->route('product-types.index', [
+        Presentation::create(['content' => $this->content]);
+        $this->dispatch('presentation-created');
+        $this->reset('content');
+        return redirect()->route('product-presentations.index', [
             'page' => $this->page,
             'search' => $this->search
         ]);

@@ -77,9 +77,13 @@
         </section>
 
         <div class="flex justify-center sm:justify-start mt-6">
-            <x-primary-button id="submitButton">
-                Guardar Producto
+            <x-primary-button id="submitButton" class="mr-1">
+                Guardar
             </x-primary-button>
+
+            <x-secondary-link-button :href="route('products.index')" class="ml-1">
+                Cancelar
+            </x-secondary-link-button>
         </div>
     </form>
 </x-layouts.primary>

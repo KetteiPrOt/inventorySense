@@ -10,6 +10,12 @@ use Livewire\Component;
 class Main extends Component
 {
     #[Locked]
+    public ?int $page = null;
+
+    #[Locked]
+    public ?string $search = null;
+
+    #[Locked]
     public Type $type;
 
     public $name;
@@ -29,10 +35,12 @@ class Main extends Component
         return ['name' => 'nombre'];
     }
 
-    public function mount(Type $type)
+    public function mount(Type $type, ?int $page, ?string $search)
     {
         $this->type = $type;
         $this->name = $type->name;
+        $this->$page = $page;
+        $this->search = $search;
     }
 
     public function render()
@@ -44,7 +52,10 @@ class Main extends Component
     {
         $this->validate();
         $this->type->update(['name' => mb_strtoupper($this->name)]);
-        $this->name = $this->type->name;
         $this->dispatch('type-updated');
+        return redirect()->route('product-types.index', [
+            'page' => $this->page,
+            'search' => $this->search
+        ]);
     }
 }

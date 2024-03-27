@@ -14,7 +14,7 @@ class Presentation extends Model
 
     public $timestamps = false;
 
-    protected $fillabe = ['content'];
+    protected $fillable = ['content'];
 
     public static $initialPresentations = [200, 375, 750, 1000, 1500, 600, 700];
 

@@ -28,10 +28,12 @@
     <x-dropdown align="{{$align}}" width="{{$width}}">
         <x-slot name="trigger">
             <button class="
-                inline-flex items-center focus:outline-none
+                inline-flex justify-between items-center focus:outline-none
                 {{$active ? 'focus:text-indigo-800' : 'focus:text-gray-800'}}
             ">
-                <div x-data="{{ json_encode(['tag' => $tag]) }}" x-text="tag"></div>
+                <div>
+                    {!! $tag !!}
+                </div>
 
                 <div class="ms-1">
                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -45,3 +47,4 @@
             {{ $slot }}
         </x-slot>
     </x-dropdown>
+</div>
