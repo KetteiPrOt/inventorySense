@@ -63,7 +63,7 @@ new class extends Component
                     <x-nav-dropdown
                         tag="Personas" width="30"
                         :active="request()->routeIs([
-                            'providers.index',
+                            'providers.*',
                         ])"
                     >
                         <x-dropdown-link

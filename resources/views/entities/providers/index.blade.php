@@ -26,9 +26,17 @@
 
     <x-table class="mb-1">
         <x-slot:head>
-            <x-table.tr :hover="true">
+            <x-table.tr :hover="false">
+                <x-table.th>N.</x-table.th>
                 <x-table.th>
-                    Nombre
+                    <x-icons.order
+                        :data="[
+                            'column' => 'name',
+                            'currentColumn' => $filters['column'],
+                            'order' => $filters['order'],
+                            'route' => 'providers.index'
+                        ]"
+                    >Nombre</x-icons.order>
                 </x-table.th>
                 <x-table.th>
                     <div class="hidden sm:block text-center">
@@ -41,11 +49,14 @@
             @foreach($providers as $provider)
                 <x-table.tr>
                     <x-table.td>
+                        {{$provider->n}}
+                    </x-table.td>
+                    <x-table.td>
                         {{$provider->name}}
                     </x-table.td>
                     <x-table.td>
                         <div class="text-center">
-                            <a href="#" class="inline-block w-5 h-5">
+                            <a href="{{route('providers.show', $provider->id)}}" class="inline-block w-5 h-5">
                                 <x-icons.magnifying-glass
                                     class="w-full h-full"
                                 />

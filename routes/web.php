@@ -42,4 +42,5 @@ Route::middleware(['auth'])->controller(ProviderController::class)->group(functi
     Route::get('/proveedores', 'index')->name('providers.index');
     Route::get('/proveedores/crear', 'create')->name('providers.create');
     Route::post('/proveedores', 'store')->name('providers.store');
+    Route::get('/proveedores/{provider}', 'show')->name('providers.show');
 });

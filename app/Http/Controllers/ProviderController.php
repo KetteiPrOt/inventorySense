@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Providers\StoreRequest;
 use App\Models\Provider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,18 +13,37 @@ class ProviderController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'search' => 'nullable|string|min:2|max:255',
+            'column' => 'nullable|string|size:4',
+            'order' => 'nullable|string|min:3|max:4'
         ], attributes: ['search' => 'Buscar']);
         if($validator->fails()){
-            return redirect()->route('products.index')->withErrors($validator)->withInput();
+            return redirect()->route('providers.index')->withErrors($validator)->withInput();
         }
         $validated = $validator->validated();
-        $query = Provider::orderBy('name');
         if(isset($validated['search'])){
             $search = $validated['search'];
-            $query->whereRaw("`name` LIKE ?", ["%$search%"]);
+            $query = Provider::whereRaw("`name` LIKE ?", ["%$search%"]);
+        }
+        $column = match($validated['column'] ?? null){
+            'name' => 'name', default => 'name'
+        };
+        $order = match($validated['order'] ?? null){
+            'desc' => 'desc', 'asc' => 'asc', default => 'asc'
+        };
+        $providers = isset($validated['search'])
+            ? $query->orderBy($column, $order)
+            : Provider::orderBy($column, $order);
+        $providers = $providers->paginate(5)->withQueryString();
+        foreach($providers as $key => $provider){
+            $provider->n =
+                ($key + 1) + ($providers->currentPage() - 1) * $providers->perPage();
         }
         return view('entities.providers.index', [
-            'providers' => $query->paginate(5)->withQueryString()
+            'providers' => $providers,
+            'filters' => [
+                'column' => $column,
+                'order' => $order
+            ]
         ]);
     }
 
@@ -32,8 +52,17 @@ class ProviderController extends Controller
         return view('entities.providers.create');
     }
 
-    public function store()
+    public function store(StoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $provider = Provider::create($validated);
+        return redirect()->route('providers.show', $provider->id);
+    }
+
+    public function show(Provider $provider)
+    {
+        return view('entities.providers.show', [
+            'provider' => $provider
+        ]);
     }
 }

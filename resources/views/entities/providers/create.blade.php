@@ -1,7 +1,7 @@
 <x-layouts.primary
     header="Crear proveedor"
 >
-    <form method="post">
+    <form action="{{route('providers.store')}}" method="post">
         @csrf
 
         <section class="space-y-6">
@@ -59,7 +59,7 @@
                 <x-text-input
                     id="ruc" name="ruc"
                     class="mt-1 block w-full max-w-sm"
-                    minlength="13" maxlength="13"
+                    minlength="10" maxlength="20"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('ruc')" />
             </div>
