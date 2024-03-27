@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Providers\StoreRequest;
+use App\Http\Requests\Providers\UpdateRequest;
 use App\Models\Provider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -64,5 +65,25 @@ class ProviderController extends Controller
         return view('entities.providers.show', [
             'provider' => $provider
         ]);
+    }
+
+    public function edit(Provider $provider)
+    {
+        return view('entities.providers.edit', [
+            'provider' => $provider
+        ]);
+    }
+
+    public function update(UpdateRequest $request, Provider $provider)
+    {
+        $validated = $request->validated();
+        $provider->update($validated);
+        return redirect()->route('providers.show', $provider->id);
+    }
+
+    public function destroy(Provider $provider)
+    {
+        $provider->delete();
+        return redirect()->route('providers.index');
     }
 }

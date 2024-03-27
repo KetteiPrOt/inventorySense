@@ -1,7 +1,8 @@
 <x-layouts.primary
-    header="Crear proveedor"
+    header="Editar proveedor"
 >
-    <form action="{{route('providers.store')}}" method="post">
+    <form action="{{route('providers.update', $provider->id)}}" method="post">
+        @method('put')
         @csrf
 
         <section class="space-y-6">
@@ -11,7 +12,7 @@
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Especifique el nombre, número telefónico, correo electrónico, RUC, dirección, y razón social del proveedor para crearlo.
+                    Especifique el nuevo nombre, número telefónico, correo electrónico, RUC, dirección, y razón social del proveedor para actualizarlo.
                 </p>
             </header>
 
@@ -24,7 +25,7 @@
                     id="name" name="name" 
                     class="mt-1 block w-full max-w-sm"
                     minlength="2" maxlength="255"
-                    value="{{old('name')}}"
+                    value="{{old('name', $provider->name)}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
@@ -37,7 +38,7 @@
                     id="phone" name="phone" 
                     class="mt-1 block w-full max-w-sm"
                     minlength="10" maxlength="20"
-                    value="{{old('phone')}}"
+                    value="{{old('phone', $provider->phone)}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('phone')" />
             </div>
@@ -50,7 +51,7 @@
                     id="email" name="email" type="email"
                     class="mt-1 block w-full max-w-sm"
                     minlength="3" maxlength="400"
-                    value="{{old('email')}}"
+                    value="{{old('email', $provider->email)}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
             </div>
@@ -63,7 +64,7 @@
                     id="ruc" name="ruc"
                     class="mt-1 block w-full max-w-sm"
                     minlength="10" maxlength="20"
-                    value="{{old('ruc')}}"
+                    value="{{old('ruc', $provider->ruc)}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('ruc')" />
             </div>
@@ -76,7 +77,7 @@
                     id="address" name="address"
                     class="mt-1 block w-full max-w-sm"
                     minlength="2" maxlength="255"
-                    value="{{old('address')}}"
+                    value="{{old('address', $provider->address)}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('address')" />
             </div>
@@ -89,7 +90,7 @@
                     id="social_reason" name="social_reason"
                     class="mt-1 block w-full max-w-sm"
                     minlength="2" maxlength="255"
-                    value="{{old('social_reason')}}"
+                    value="{{old('social_reason', $provider->social_reason)}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('social_reason')" />
             </div>
@@ -100,9 +101,9 @@
                 Guardar
             </x-primary-button>
 
-            <x-secondary-link-button :href="route('providers.index')" class="ml-1">
+            <x-secondary-link-button :href="route('providers.show', $provider->id)" class="ml-1">
                 Cancelar
             </x-secondary-link-button>
         </div>
-    </form>
+</form>
 </x-layouts.primary>

@@ -71,7 +71,7 @@
 
     <div>
         <x-secondary-link-button
-            {{-- :href="route('products.edit', $product->id)" --}}
+            :href="route('providers.edit', $provider->id)"
         >
             Editar
         </x-secondary-link-button>
@@ -81,7 +81,7 @@
 
         <x-modal name="confirm-product-deletion" :show="$errors->isNotEmpty()" focusable>
             <form
-                {{-- action="{{route('products.destroy', $product->id)}}" --}}
+                action="{{route('providers.destroy', $provider->id)}}"
                 method="post"
                 class="p-6"
             >

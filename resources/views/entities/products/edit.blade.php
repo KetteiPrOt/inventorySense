@@ -81,7 +81,7 @@
                 Guardar
             </x-primary-button>
 
-            <x-secondary-link-button :href="route('products.index')" class="ml-1">
+            <x-secondary-link-button :href="route('products.show', $product->id)" class="ml-1">
                 Cancelar
             </x-secondary-link-button>
         </div>

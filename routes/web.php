@@ -43,4 +43,7 @@ Route::middleware(['auth'])->controller(ProviderController::class)->group(functi
     Route::get('/proveedores/crear', 'create')->name('providers.create');
     Route::post('/proveedores', 'store')->name('providers.store');
     Route::get('/proveedores/{provider}', 'show')->name('providers.show');
+    Route::get('/proveedores/{provider}/editar', 'edit')->name('providers.edit');
+    Route::put('/proveedores/{provider}', 'update')->name('providers.update');
+    Route::delete('/proveedores/{provider}', 'destroy')->name('providers.destroy');
 });
