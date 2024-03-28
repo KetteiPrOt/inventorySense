@@ -5,6 +5,7 @@ use App\Http\Controllers\Products\PresentationController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\TypeController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'));
@@ -57,4 +58,14 @@ Route::middleware(['auth'])->controller(ClientController::class)->group(function
     Route::get('/clientes/{client}/editar', 'edit')->name('clients.edit');
     Route::put('/clientes/{client}', 'update')->name('clients.update');
     Route::delete('/clientes/{client}', 'destroy')->name('clients.destroy');
+});
+
+Route::middleware(['auth'])->controller(UserController::class)->group(function(){
+    Route::get('/usuarios', 'index')->name('users.index');
+    Route::get('/usuarios/crear', 'create')->name('users.create');
+    Route::post('/usuarios', 'store')->name('users.store');
+    Route::get('/usuarios/{user}', 'show')->name('users.show');
+    // Route::get('/usuarios/{users}/editar', 'edit')->name('users.edit');
+    // Route::put('/usuarios/{users}', 'update')->name('users.update');
+    // Route::delete('/usuarios/{users}', 'destroy')->name('users.destroy');
 });

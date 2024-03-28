@@ -1,10 +1,10 @@
 <x-layouts.primary
-    header="Productos"
+    header="Usuarios"
 >
 
     <div class="flex flex-col items-center sm:items-start">
         <x-secondary-link-button
-            :href="route('products.create')"
+            :href="route('users.create')"
             class="mb-4"
         >
             Crear nuevo
@@ -28,53 +28,50 @@
     <x-table class="mb-1">
         <x-slot:head>
             <x-table.tr :hover="false">
-                <x-table.th>
-                    N.
-                </x-table.th>
+                <x-table.th>N.</x-table.th>
                 <x-table.th>
                     <x-icons.order
                         :data="[
-                            'column' => 'tag',
+                            'column' => 'name',
                             'currentColumn' => $filters['column'],
                             'order' => $filters['order'],
-                            'route' => 'products.index'
+                            'route' => 'users.index'
                         ]"
                     >Nombre</x-icons.order>
                 </x-table.th>
-                <x-table.th
-                    class="hidden sm:table-cell text-center"
-                >
-                    Inventario Iniciado
+                <x-table.th>
+                    <div class="hidden sm:block text-center">
+                        Inspeccionar
+                    </div>
                 </x-table.th>
             </x-table.tr>
         </x-slot:head>
         <x-slot:body>
-            @foreach($products as $product)
-                <x-table.tr
-                    :danger="!$product->started_inventory"
-                >
+            @foreach($users as $user)
+                <x-table.tr>
                     <x-table.td>
-                        {{$product->n}}
+                        {{$user->n}}
                     </x-table.td>
                     <x-table.td>
-                        <a href="{{route('products.show', $product->id)}}">
-                            {{$product->tag}}
-                        </a>
+                        {{$user->name}}
                     </x-table.td>
-                    <x-table.td
-                        class="hidden sm:table-cell text-center"
-                    >
-                        {{$product->started_inventory
-                            ? 'Si' : 'No'}}
+                    <x-table.td>
+                        <div class="text-center">
+                            <a href="{{route('users.show', $user->id)}}" class="inline-block w-5 h-5">
+                                <x-icons.magnifying-glass
+                                    class="w-full h-full"
+                                />
+                            </a>
+                        </div>
                     </x-table.td>
                 </x-table.tr>
             @endforeach
         </x-slot:body>
     </x-table>
-    {{$products->links()}}
-    @if($products->isEmpty())
+    {{$users->links()}}
+    @if($users->isEmpty())
         <p class="text-red-500">
-            No se encontraron productos...
+            No se encontraron usuarios...
         </p>
     @endif
 

@@ -1,17 +1,17 @@
 <x-layouts.primary
-    header="Crear proveedor"
+    header="Crear usuario"
 >
-    <form action="{{route('providers.store')}}" method="post">
+    <form action="{{route('users.store')}}" method="post">
         @csrf
 
         <section class="space-y-6">
             <header>
                 <h2 class="text-lg font-medium text-gray-900">
-                    Información del proveedor
+                    Información del usuario
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Especifique el nombre, número telefónico, correo electrónico, RUC, dirección, y razón social del proveedor para crearlo.
+                    Especifique el nombre, correo electrónico, y contraseña del usuario para crearlo.
                 </p>
             </header>
 
@@ -30,42 +30,45 @@
             </div>
 
             <div>
-                <x-input-label for="phone">
-                    Número teléfonico
-                </x-input-label>
-                <x-text-input
-                    id="phone" name="phone" 
-                    class="mt-1 block w-full max-w-sm"
-                    minlength="10" maxlength="20"
-                    value="{{old('phone')}}"
-                />
-                <x-input-error class="mt-2" :messages="$errors->get('phone')" />
-            </div>
-
-            <div>
-                <x-input-label for="email">
+                <x-input-label for="email" :required="true">
                     Correo electrónico
                 </x-input-label>
                 <x-text-input
+                    required
                     id="email" name="email" type="email"
                     class="mt-1 block w-full max-w-sm"
-                    minlength="3" maxlength="400"
+                    minlength="10" maxlength="20"
                     value="{{old('email')}}"
                 />
                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
             </div>
 
             <div>
-                <x-input-label for="ruc">
-                    RUC
+                <x-input-label for="password" :required="true">
+                    Contraseña
                 </x-input-label>
                 <x-text-input
-                    id="ruc" name="ruc"
+                    required
+                    id="password" name="password" type="password"
                     class="mt-1 block w-full max-w-sm"
-                    minlength="10" maxlength="20"
-                    value="{{old('ruc')}}"
+                    minlength="8" maxlength="255"
+                    value="{{old('password')}}"
                 />
-                <x-input-error class="mt-2" :messages="$errors->get('ruc')" />
+                <x-input-error class="mt-2" :messages="$errors->get('password')" />
+            </div>
+
+            <div>
+                <x-input-label for="password_confirmation" :required="true">
+                    Confirmar contraseña
+                </x-input-label>
+                <x-text-input
+                    required
+                    id="password_confirmation" name="password_confirmation" type="password"
+                    class="mt-1 block w-full max-w-sm"
+                    minlength="8" maxlength="255"
+                    value="{{old('password_confirmation')}}"
+                />
+                <x-input-error class="mt-2" :messages="$errors->get('password_confirmation')" />
             </div>
 
             <div>
@@ -82,16 +85,16 @@
             </div>
 
             <div>
-                <x-input-label for="social_reason">
-                    Razón social
+                <x-input-label for="identity_card">
+                    Número de cédula
                 </x-input-label>
                 <x-text-input
-                    id="social_reason" name="social_reason"
+                    id="identity_card" name="identity_card"
                     class="mt-1 block w-full max-w-sm"
-                    minlength="2" maxlength="255"
-                    value="{{old('social_reason')}}"
+                    minlength="10" maxlength="20"
+                    value="{{old('identity_card')}}"
                 />
-                <x-input-error class="mt-2" :messages="$errors->get('social_reason')" />
+                <x-input-error class="mt-2" :messages="$errors->get('identity_card')" />
             </div>
         </section>
 
@@ -100,7 +103,7 @@
                 Guardar
             </x-primary-button>
 
-            <x-secondary-link-button :href="route('providers.index')" class="ml-1">
+            <x-secondary-link-button :href="route('users.index')" class="ml-1">
                 Cancelar
             </x-secondary-link-button>
         </div>

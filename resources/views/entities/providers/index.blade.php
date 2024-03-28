@@ -16,6 +16,7 @@
         >
             <x-text-input
                 name="search" minlength="2" maxlength="255"
+                value="{{request()->query('search')}}"
             />
             <x-input-error :messages="$errors->get('search')" />
             <x-primary-button class="mt-1 sm:mt-0">
