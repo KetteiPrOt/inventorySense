@@ -43,29 +43,27 @@
         || $provider->address
         || $provider->social_reason
     )
-    <div class="sm:flex mb-6">
-        <div class="mb-4 sm:mb-0 sm:mr-12">
-            @if($provider->ruc)
-            <p>
-                <strong>RUC</strong> <br>
-                {{$provider->ruc}}
-            </p>
-            @endif
+    <div class="mb-6 sm:mr-12">
+        @if($provider->ruc)
+        <p>
+            <strong>RUC</strong> <br>
+            {{$provider->ruc}}
+        </p>
+        @endif
 
-            @if($provider->address)
-            <p>
-                <strong>Dirección</strong> <br>
-                {{$provider->address}}
-            </p>
-            @endif
+        @if($provider->address)
+        <p>
+            <strong>Dirección</strong> <br>
+            {{$provider->address}}
+        </p>
+        @endif
 
-            @if($provider->social_reason)
-            <p>
-                <strong>Razón social</strong> <br>
-                {{$provider->social_reason}}
-            </p>
-            @endif
-        </div>
+        @if($provider->social_reason)
+        <p>
+            <strong>Razón social</strong> <br>
+            {{$provider->social_reason}}
+        </p>
+        @endif
     </div>
     @endif
 

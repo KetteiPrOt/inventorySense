@@ -43,29 +43,27 @@
         || $client->address
         || $client->identity_card
     )
-    <div class="sm:flex mb-6">
-        <div class="mb-4 sm:mb-0 sm:mr-12">
-            @if($client->ruc)
-            <p>
-                <strong>RUC</strong> <br>
-                {{$client->ruc}}
-            </p>
-            @endif
+    <div class="mb-6 sm:mr-12">
+        @if($client->ruc)
+        <p>
+            <strong>RUC</strong> <br>
+            {{$client->ruc}}
+        </p>
+        @endif
 
-            @if($client->address)
-            <p>
-                <strong>Dirección</strong> <br>
-                {{$client->address}}
-            </p>
-            @endif
+        @if($client->address)
+        <p>
+            <strong>Dirección</strong> <br>
+            {{$client->address}}
+        </p>
+        @endif
 
-            @if($client->identity_card)
-            <p>
-                <strong>Número de cédula</strong> <br>
-                {{$client->identity_card}}
-            </p>
-            @endif
-        </div>
+        @if($client->identity_card)
+        <p>
+            <strong>Número de cédula</strong> <br>
+            {{$client->identity_card}}
+        </p>
+        @endif
     </div>
     @endif
 

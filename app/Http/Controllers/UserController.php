@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Users\StoreRequest;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -64,8 +65,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->load('roles');
         return view('entities.users.show', [
-            'user' => $user
+            'user' => $user,
+            'translator' => Permission::translator()
         ]);
     }
 }

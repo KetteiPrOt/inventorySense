@@ -30,24 +30,50 @@
     </div>
 
     @if($user->identity_card || $user->address)
-    <div class="sm:flex mb-6">
-        <div class="mb-4 sm:mb-0 sm:mr-12">
-            @if($user->identity_card)
-            <p>
-                <strong>Número de cédula</strong> <br>
-                {{$user->identity_card}}
-            </p>
-            @endif
+    <div class="mb-6 sm:mr-12">
+        @if($user->identity_card)
+        <p>
+            <strong>Número de cédula</strong> <br>
+            {{$user->identity_card}}
+        </p>
+        @endif
 
-            @if($user->address)
-            <p>
-                <strong>Dirección</strong> <br>
-                {{$user->address}}
-            </p>
-            @endif
-        </div>
+        @if($user->address)
+        <p>
+            <strong>Dirección</strong> <br>
+            {{$user->address}}
+        </p>
+        @endif
     </div>
     @endif
+
+    <div class="mb-6 sm:mr-12">
+        <p>
+            <strong>Roles</strong> <br>
+            @forelse($user->roles as $role)
+                @if($loop->last)
+                    {{$role->name}}.
+                @else
+                    {{$role->name}}, 
+                @endif
+            @empty
+                Ninguno.
+            @endforelse
+        </p>
+
+        <p>
+            <strong>Permisos directos</strong> <br>
+            @forelse($user->getDirectPermissions() as $permission)
+                @if($loop->last)
+                    {{$translator->translate($permission->name)}}.
+                @else
+                    {{$translator->translate($permission->name)}}, 
+                @endif
+            @empty
+                Ninguno.
+            @endforelse
+        </p>
+    </div>
 
     <div>
         <x-secondary-link-button

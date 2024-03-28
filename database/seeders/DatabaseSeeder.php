@@ -19,14 +19,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         Provider::factory(30)->create();
 
         Client::factory(30)->create();
+
+        // Register Roles and Permissions
+        $this->call([RolesSeeder::class]);
     
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Fernando Joel',
             'email' => 'sd.kettei@gmail.com',
         ]);
+
+        $user->assignRole('Administrador');
+        $user->givePermissionTo('products');
 
         foreach(ProductType::$initialTypes as $type){
             ProductType::create([
