@@ -14,13 +14,27 @@
                         </h2>
                 
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            Especifique el nuevo nombre, correo electrónico, y contraseña del usuario para actualizarlo.
+                            Especifique su propia contraseña actual junto al nuevo nombre, correo electrónico, contraseña, dirección, y número de cédula del usuario para actualizarlo.
                         </p>
                     </header>
 
                     <div>
+                        <x-input-label for="current_password" :required="true">
+                            Contraseña actual (del administrador)
+                        </x-input-label>
+                        <x-text-input
+                            required
+                            id="current_password" name="current_password" type="password"
+                            class="mt-1 block w-full max-w-sm"
+                            minlength="8" maxlength="255"
+                            value="{{old('current_password')}}"
+                        />
+                        <x-input-error class="mt-2" :messages="$errors->get('current_password')" />
+                    </div>
+
+                    <div>
                         <x-input-label for="name" :required="true">
-                            Nombre
+                            Nombre del usuario
                         </x-input-label>
                         <x-text-input
                             required
@@ -34,7 +48,7 @@
 
                     <div>
                         <x-input-label for="email" :required="true">
-                            Correo electrónico
+                            Correo electrónico del usuario
                         </x-input-label>
                         <x-text-input
                             required
@@ -48,7 +62,7 @@
 
                     <div>
                         <x-input-label for="password">
-                            Contraseña
+                            Nueva contraseña (del usuario)
                         </x-input-label>
                         <x-text-input
                             id="password" name="password" type="password"
@@ -61,7 +75,7 @@
 
                     <div>
                         <x-input-label for="password_confirmation">
-                            Confirmar contraseña
+                            Confirmar nueva contraseña (del usuario)
                         </x-input-label>
                         <x-text-input
                             id="password_confirmation" name="password_confirmation" type="password"
@@ -74,7 +88,7 @@
 
                     <div>
                         <x-input-label for="address">
-                            Dirección
+                            Dirección del usuario
                         </x-input-label>
                         <x-text-input
                             id="address" name="address"
@@ -87,7 +101,7 @@
 
                     <div>
                         <x-input-label for="identity_card">
-                            Número de cédula
+                            Número de cédula del usuario
                         </x-input-label>
                         <x-text-input
                             id="identity_card" name="identity_card"

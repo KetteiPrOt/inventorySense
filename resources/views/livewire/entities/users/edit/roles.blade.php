@@ -26,8 +26,12 @@
                     </x-table.tr>
                 </x-slot:head>
                 <x-slot:body>
+                    {{--
+                        This DIV element helps Livewire to doesn't dizzy with the DOM's changes
+                    --}}
+                    <div>
                     @foreach($user->roles as $key => $role)
-                        <x-table.tr>
+                        <x-table.tr wire:key="{{$role->id}}">
                             <x-table.td class="text-center">
                                 {{$key + 1}}
                             </x-table.td>
@@ -43,7 +47,10 @@
                                     >
                                         <x-icons.plus color="#fff" class="w-3 h-3 rotate-45" />
                                     </x-secondary-button>
-                                    <x-modal name="confirm-role{{$role->id}}-deletion" :show="$errors->isNotEmpty()" focusable>
+                                    <x-modal
+                                        wire:key="{{$role->id}}"
+                                        name="confirm-role{{$role->id}}-deletion" :show="$errors->isNotEmpty()" focusable
+                                    >
                                         <div class="p-6">                    
                                             <h2 class="text-left text-lg font-medium text-gray-900 dark:text-gray-100">
                                                 ¿Seguro que deseas remover el rol?
@@ -80,6 +87,7 @@
                             </x-table.td>
                         </x-table.tr>
                     @endforeach
+                    </div>
                 </x-slot:body>
             </x-table>
             @if($user->roles->isEmpty())

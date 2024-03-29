@@ -11,7 +11,7 @@
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Especifique el nombre, correo electrónico, y contraseña del usuario para crearlo.
+                    Especifique el nombre, correo electrónico, contraseña, dirección, y número de cédula del usuario para crearlo.
                 </p>
             </header>
 

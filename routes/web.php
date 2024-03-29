@@ -68,5 +68,5 @@ Route::middleware(['auth'])->controller(UserController::class)->group(function()
     Route::get('/usuarios/{user}/editar', 'edit')->name('users.edit');
     Route::put('/usuarios/{user}', 'update')->name('users.update');
     Route::put('/usuarios/{user}/permisos', 'updatePermissions')->name('users.update-permissions');
-    // Route::delete('/usuarios/{user}', 'destroy')->name('users.destroy');
+    Route::delete('/usuarios/{user}', 'destroy')->name('users.destroy');
 });

@@ -6,6 +6,7 @@ use App\Http\Requests\Users\StoreRequest;
 use App\Http\Requests\Users\UpdatePermissionsRequest;
 use App\Http\Requests\Users\UpdateRequest;
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -70,7 +71,8 @@ class UserController extends Controller
         $user->load(['roles', 'permissions']);
         return view('entities.users.show', [
             'user' => $user,
-            'translator' => Permission::translator()
+            'translator' => Permission::translator(),
+            'superAdmin' => Role::$superAdmin
         ]);
     }
 
@@ -84,7 +86,18 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, User $user)
     {
-        return 'XD';
+        $validated = $request->validated();
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'address' => $validated['address'] ?? null,
+            'identity_card' => $validated['identity_card'] ?? null
+        ];
+        if(isset($validated['password'])){
+            $data['password'] = Hash::make($validated['password']);
+        }
+        $user->update($data);
+        return redirect()->route('users.show', $user->id);
     }
 
     public function updatePermissions(UpdatePermissionsRequest $request, User $user)
@@ -98,5 +111,13 @@ class UserController extends Controller
             }
         }
         return redirect()->route('users.show', $user->id);
+    }
+
+    public function destroy(User $user)
+    {
+        if(!$user->hasRole(Role::$superAdmin)){
+            $user->delete();
+        }
+        return redirect()->route('users.index');
     }
 }

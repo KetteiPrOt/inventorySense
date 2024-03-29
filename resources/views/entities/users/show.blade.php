@@ -81,37 +81,40 @@
         >
             Editar
         </x-secondary-link-button>
-        <x-danger-button
-            x-data x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion')"
-        >Eliminar</x-danger-button>
 
-        <x-modal name="confirm-product-deletion" :show="$errors->isNotEmpty()" focusable>
-            <form
-                {{-- action="{{route('users.destroy', $user->id)}}" --}}
-                method="post"
-                class="p-6"
-            >
-                @csrf
-                @method('delete')
+        @if(!$user->hasRole($superAdmin))
+            <x-danger-button
+                x-data x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+            >Eliminar</x-danger-button>
 
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    ¿Seguro que deseas eliminar el usuario?
-                </h2>
+            <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
+                <form
+                    action="{{route('users.destroy', $user->id)}}"
+                    method="post"
+                    class="p-6"
+                >
+                    @csrf
+                    @method('delete')
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Una vez que el usuario sea eliminado se perderá <strong>por siempre y de forma irreversible</strong> toda su información. Además en los registros ascociados de compras, ventas, reportes, e inventario se establecerá el usuario como "Eliminado".
-                </p>
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        ¿Seguro que deseas eliminar el usuario?
+                    </h2>
 
-                <div class="mt-6 flex justify-end">
-                    <x-secondary-button x-on:click="$dispatch('close')">
-                        Cancelar
-                    </x-secondary-button>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        Una vez que el usuario sea eliminado se perderá <strong>por siempre y de forma irreversible</strong> toda su información. Además en los registros ascociados de compras, ventas, reportes, e inventario se establecerá el usuario como "Eliminado".
+                    </p>
 
-                    <x-danger-button class="ms-3">
-                        Eliminar
-                    </x-danger-button>
-                </div>
-            </form>
-        </x-modal>
+                    <div class="mt-6 flex justify-end">
+                        <x-secondary-button x-on:click="$dispatch('close')">
+                            Cancelar
+                        </x-secondary-button>
+
+                        <x-danger-button class="ms-3">
+                            Eliminar
+                        </x-danger-button>
+                    </div>
+                </form>
+            </x-modal>
+        @endif
     </div>
 </x-layouts.primary>
