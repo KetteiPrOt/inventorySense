@@ -1,6 +1,6 @@
-@props(['header', 'totalSections' => 1])
+@props(['header', 'title' => null, 'totalSections' => 1])
 
-<x-app-layout>
+<x-app-layout :$title>
     <!-- The only way to do great work is to love what you do. - Steve Jobs -->
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
