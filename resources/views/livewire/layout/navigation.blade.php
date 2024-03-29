@@ -45,7 +45,7 @@ new class extends Component
                             :href="route('products.index')" wire:navigate
                             :active="request()->routeIs('products.*')"
                         >
-                            Productos
+                            Listado
                         </x-dropdown-link>
                         <x-dropdown-link
                             :href="route('product-types.index')" wire:navigate
@@ -150,7 +150,7 @@ new class extends Component
                     :href="route('products.index')" wire:navigate
                     :active="request()->routeIs('products.*')"
                 >
-                    Productos
+                    Listado
                 </x-dropdown-link>
                 <x-dropdown-link
                     :href="route('product-types.index')" wire:navigate

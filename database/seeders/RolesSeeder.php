@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 
 class RolesSeeder extends Seeder
 {
@@ -15,8 +15,14 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         /// Roles
-        Role::create(['name' => 'Administrador']);
+        Role::create(['name' => Role::$superAdmin]);
         $seller = Role::create(['name' => 'Vendedor']);
+        Role::create(['name' => 'Vendedor_1']);
+        Role::create(['name' => 'Vendedor_2']);
+        Role::create(['name' => 'Vendedor_3']);
+        Role::create(['name' => 'Vendedor_4']);
+        Role::create(['name' => 'Vendedor_5']);
+        Role::create(['name' => 'Vendedor_6']);
 
         // Permissions
         foreach(Permission::$permissions as $permission){

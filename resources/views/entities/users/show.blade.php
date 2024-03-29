@@ -77,7 +77,7 @@
 
     <div>
         <x-secondary-link-button
-            {{-- :href="route('users.edit', $user->id)" --}}
+            :href="route('users.edit', $user->id)"
         >
             Editar
         </x-secondary-link-button>

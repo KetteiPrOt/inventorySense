@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Users\StoreRequest;
+use App\Http\Requests\Users\UpdatePermissionsRequest;
+use App\Http\Requests\Users\UpdateRequest;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -65,10 +67,36 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load('roles');
+        $user->load(['roles', 'permissions']);
         return view('entities.users.show', [
             'user' => $user,
             'translator' => Permission::translator()
         ]);
+    }
+
+    public function edit(User $user)
+    {
+        return view('entities.users.edit', [
+            'user' => $user,
+            'translator' => Permission::translator()
+        ]);
+    }
+
+    public function update(UpdateRequest $request, User $user)
+    {
+        return 'XD';
+    }
+
+    public function updatePermissions(UpdatePermissionsRequest $request, User $user)
+    {
+        $validated = $request->validated();
+        foreach(Permission::$permissions as $permission){
+            if(isset($validated[$permission])){
+                $user->givePermissionTo($permission);
+            } else {
+                $user->revokePermissionTo($permission);
+            }
+        }
+        return redirect()->route('users.show', $user->id);
     }
 }

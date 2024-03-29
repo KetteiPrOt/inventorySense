@@ -8,6 +8,7 @@ use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
 use App\Models\Products\Type as ProductType;
 use App\Models\Provider;
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -32,7 +33,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'sd.kettei@gmail.com',
         ]);
 
-        $user->assignRole('Administrador');
+        $user->assignRole(Role::$superAdmin);
         $user->givePermissionTo('products');
 
         foreach(ProductType::$initialTypes as $type){

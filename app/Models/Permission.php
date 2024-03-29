@@ -10,7 +10,8 @@ class Permission extends SpatieModel
         'products',
         'clients',
         'providers',
-        'sellers',
+        'users',
+        'roles',
         'purchases',
         'sales',
         'kardex',
@@ -18,54 +19,55 @@ class Permission extends SpatieModel
         'inventory',
         'sales-report',
         'purchases-report',
-        'permissions'
-    ];
-
-    public static array $directPermissions = [
-        'products',
-        'clients',
-        'providers',
-        'sellers',
-        'purchases',
-        'sales',
-        'kardex',
-        'cash-closing',
-        'inventory',
-        'sales-report',
-        'purchases-report',
-        // Only role Administrator can manage permissions
-        // 'permissions'
     ];
 
     public static array $permissionNames = [
         'products' => 'Productos',
         'clients' => 'Clientes',
         'providers' => 'Proveedores',
-        'sellers' => 'Vendedores',
-        'purchases' => 'Compras',
-        'sales' => 'Ventas',
+        'users' => 'Usuarios',
+        'roles' => 'Roles',
+        'purchases' => 'Registrar compras',
+        'sales' => 'Registrar ventas',
         'kardex' => 'Kardex',
-        'cash-closing' => 'Cierre de Caja',
-        'inventory' => 'Reporte de stock',
-        'sales-report' => 'Reporte de Ventas',
-        'purchases-report' => 'Reporte de Compras',
-        'permissions' => 'Parametrizar permisos'
+        'cash-closing' => 'Cierre de caja',
+        'inventory' => 'Inventario',
+        'sales-report' => 'Reporte de ventas',
+        'purchases-report' => 'Reporte de compras',
+        'permissions' => 'Parametrizar permisos',
+    ];
+
+    public static array $directPermissions = [
+        'products',
+        'clients',
+        'providers',
+        // Only Super Admin can manage user accounts and direct permissions
+        // 'users',
+        'roles',
+        'purchases',
+        'sales',
+        'kardex',
+        'cash-closing',
+        'inventory',
+        'sales-report',
+        'purchases-report',
     ];
 
     public static array $directPermissionNames = [
         'products' => 'Productos',
         'clients' => 'Clientes',
         'providers' => 'Proveedores',
-        'sellers' => 'Vendedores',
-        'purchases' => 'Compras',
-        'sales' => 'Ventas',
+        // Only Super Admin can manage user accounts and direct permissions
+        // 'users' => 'Usuarios',
+        'roles' => 'Roles',
+        'purchases' => 'Registrar compras',
+        'sales' => 'Registrar ventas',
         'kardex' => 'Kardex',
-        'cash-closing' => 'Cierre de Caja',
-        'inventory' => 'Reporte de stock',
-        'sales-report' => 'Reporte de Ventas',
-        'purchases-report' => 'Reporte de Compras',
-        // Only role Administrator can manage permissions
-        // 'permissions'
+        'cash-closing' => 'Cierre de caja',
+        'inventory' => 'Inventario',
+        'sales-report' => 'Reporte de ventas',
+        'purchases-report' => 'Reporte de compras',
+        'permissions' => 'Parametrizar permisos',
     ];
 
     public static function translator(): object
