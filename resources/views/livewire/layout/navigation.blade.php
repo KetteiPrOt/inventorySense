@@ -86,6 +86,12 @@ new class extends Component
                             Usuarios
                         </x-dropdown-link>
                     </x-nav-dropdown>
+                    <x-nav-link
+                        href="{{route('roles.index')}}"
+                        :active="request()->routeIs('roles.*')"
+                    >
+                        Roles
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -188,6 +194,12 @@ new class extends Component
                     Usuarios
                 </x-dropdown-link>
             </x-responsive-nav-dropdown>
+            <x-responsive-nav-link
+                href="{{route('roles.index')}}"
+                :active="request()->routeIs('roles.*')"
+            >
+                Roles
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

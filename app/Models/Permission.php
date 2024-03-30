@@ -41,9 +41,9 @@ class Permission extends SpatieModel
         'products',
         'clients',
         'providers',
-        // Only Super Admin can manage user accounts and direct permissions
+        // Only Super Admin can manage user accounts, roles, and direct permissions
         // 'users',
-        'roles',
+        // 'roles',
         'purchases',
         'sales',
         'kardex',
@@ -57,9 +57,9 @@ class Permission extends SpatieModel
         'products' => 'Productos',
         'clients' => 'Clientes',
         'providers' => 'Proveedores',
-        // Only Super Admin can manage user accounts and direct permissions
+        // Only Super Admin can manage user accounts, roles, and direct permissions
         // 'users' => 'Usuarios',
-        'roles' => 'Roles',
+        // 'roles' => 'Roles',
         'purchases' => 'Registrar compras',
         'sales' => 'Registrar ventas',
         'kardex' => 'Kardex',

@@ -5,6 +5,7 @@ use App\Http\Controllers\Products\PresentationController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\TypeController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,4 +70,14 @@ Route::middleware(['auth'])->controller(UserController::class)->group(function()
     Route::put('/usuarios/{user}', 'update')->name('users.update');
     Route::put('/usuarios/{user}/permisos', 'updatePermissions')->name('users.update-permissions');
     Route::delete('/usuarios/{user}', 'destroy')->name('users.destroy');
+});
+
+Route::middleware(['auth'])->controller(RoleController::class)->group(function(){
+    Route::get('/roles', 'index')->name('roles.index');
+    Route::get('/roles/crear', 'create')->name('roles.create');
+    Route::post('/roles', 'store')->name('roles.store');
+    Route::get('/roles/{role}', 'show')->name('roles.show');
+    Route::get('/roles/{role}/editar', 'edit')->name('roles.edit');
+    Route::put('/roles/{role}', 'update')->name('roles.update');
+    Route::delete('/roles/{role}', 'destroy')->name('roles.destroy');
 });

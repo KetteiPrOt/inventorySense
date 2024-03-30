@@ -25,7 +25,7 @@
                 <div class="
                     {{$visualLayout ? 'bg-yellow-200' : ''}}
                     {{-- Main Line Height --}}
-                    h-[92.5%]
+                    h-[91.8%]
                     flex justify-center items-center
                     border-r-2 border-black
                 ">
