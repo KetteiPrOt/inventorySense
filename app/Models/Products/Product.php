@@ -2,6 +2,7 @@
 
 namespace App\Models\Products;
 
+use App\Models\Invoices\Movements\Movement;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,5 +38,10 @@ class Product extends Model
             $this->presentation
             ? ' ' .$this->presentation->content . 'ml'
             : null;
+    }
+
+    public function movements(): HasMany
+    {
+        return $this->hasMany(Movement::class);
     }
 }

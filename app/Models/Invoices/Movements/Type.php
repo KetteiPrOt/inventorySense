@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models\Invoices\Movements;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Type extends Model
+{
+    use HasFactory;
+
+    public $timestamps = false;
+
+    protected $table = 'movement_types';
+
+    protected $fillable = ['name', 'category'];
+
+    public function movements(): HasMany
+    {
+        return $this->hasMany(Movement::class);
+    }
+}

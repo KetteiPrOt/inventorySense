@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Invoices\PurchaseInvoice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Provider extends Model
 {
@@ -17,4 +19,9 @@ class Provider extends Model
         'address',
         'social_reason'
     ];
+
+    public function purchaseInvoices(): HasMany
+    {
+        return $this->hasMany(PurchaseInvoice::class);
+    }
 }

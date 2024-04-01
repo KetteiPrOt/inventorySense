@@ -31,7 +31,7 @@ class RolesSeeder extends Seeder
 
         // Assign Permissions to Roles
         $sellerPermissions = [
-            'sales'
+            'create-sales'
         ];
         foreach($sellerPermissions as $sellerPermission){
             $seller->givePermissionTo($sellerPermission);
