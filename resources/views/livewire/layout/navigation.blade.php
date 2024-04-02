@@ -86,6 +86,19 @@ new class extends Component
                             Usuarios
                         </x-dropdown-link>
                     </x-nav-dropdown>
+                    <x-nav-dropdown
+                        tag="Compras" width="30"
+                        :active="request()->routeIs([
+                            'purchases.*'
+                        ])"
+                    >
+                        <x-dropdown-link
+                            :href="route('purchases.create')" wire:navigate
+                            :active="request()->routeIs('purchases.create')"
+                        >
+                            Registrar
+                        </x-dropdown-link>
+                    </x-nav-dropdown>
                     <x-nav-link
                         href="{{route('roles.index')}}"
                         :active="request()->routeIs('roles.*')"
@@ -192,6 +205,19 @@ new class extends Component
                     :active="request()->routeIs('users.*')"
                 >
                     Usuarios
+                </x-dropdown-link>
+            </x-responsive-nav-dropdown>
+            <x-responsive-nav-dropdown
+                tag="Compras &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
+                :active="request()->routeIs([
+                    'purchases.*'
+                ])"
+            >
+                <x-dropdown-link
+                    :href="route('purchases.create')" wire:navigate
+                    :active="request()->routeIs('purchases.create')"
+                >
+                    Registrar
                 </x-dropdown-link>
             </x-responsive-nav-dropdown>
             <x-responsive-nav-link

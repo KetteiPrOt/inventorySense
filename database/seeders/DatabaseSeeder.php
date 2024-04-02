@@ -2,16 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Client;
+use App\Models\Invoices\Movements\Type as MovementType;
 use App\Models\Products\Presentation as ProductPresentation;
-use App\Models\Products\Product;
-use App\Models\Products\SalePrice;
 use App\Models\Products\Type as ProductType;
-use App\Models\Provider;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Warehouse;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,73 +19,54 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        Provider::factory(30)->create();
-
-        Client::factory(30)->create();
-
-        // Register Roles and Permissions
-        $this->call([RolesSeeder::class]);
-    
-        $user = User::factory()->create([
-            'name' => 'Fernando Joel',
-            'email' => 'sd.kettei@gmail.com',
-        ]);
-
-        $user->assignRole(Role::$superAdmin);
-        $user->givePermissionTo('products');
-
+        // Initial product types
         foreach(ProductType::$initialTypes as $type){
             ProductType::create([
                 'name' => $type
             ]);
         }
 
-        foreach(ProductPresentation::$initialPresentations as $presentation){
+        // Initial product presentations
+        foreach(
+            ProductPresentation::$initialPresentations
+            as $presentation
+        ){
             ProductPresentation::create([
                 'content' => $presentation
             ]);
         }
 
-        $products = [
-            ['JHONNIE RED', 1, 1],
-            ['JHONNIE BLACK', 1, 1],
-            ['JHONNIE GOLD', 1, 1],
-            ['JHONNIE DOUBLE BLACK', 1, 1],
-            ['JHONNIE RED', 1, 2],
-            ['JHONNIE BLACK', 1, 2],
-            ['JHONNIE GOLD', 1, 2],
-            ['JHONNIE DOUBLE BLACK', 1, 2],
-            ['JHONNIE RED', 1, 3],
-            ['JHONNIE RED', 1, 4],
-            ['JHONNIE BLACK', 1, 3],
-            ['JHONNIE BLACK', 1, 4],
-            ['JHONNIE GOLD', 1, 3],
-            ['JHONNIE GOLD', 1, 4],
-            ['JHONNIE DOUBLE BLACK', 1, 3],
-            ['JHONNIE DOUBLE BLACK', 1, 4],
+        // Warehouses
+        Warehouse::create(['name' => 'Licorería']);
+        Warehouse::create(['name' => 'Deposito']);
+
+        // Roles and permissions
+        $this->call([RolesSeeder::class]);
+
+        // Admin user
+        $admin = User::create([
+            'name' => 'Administrador',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('temporary_admin_password_*k45Rg23%')
+        ]);
+
+        $admin->assignRole(Role::$superAdmin);
+
+        // Movement types
+        $expenseTypes = [
+            MovementType::$initialInventoryName,
+            MovementType::$purchaseName
         ];
-        foreach($products as $product){
-            $id = Product::create([
-                'name' => $product[0],
-                'presentation_id' => $product[1],
-                'type_id' => $product[2]
-            ])->id;
-            SalePrice::create([
-                'price' => 10.75,
-                'units_number' => 1,
-                'product_id' => $id
-            ]);
-            SalePrice::create([
-                'price' => 10.50,
-                'units_number' => 6,
-                'product_id' => $id
-            ]);
-            SalePrice::create([
-                'price' => 10,
-                'units_number' => 12,
-                'product_id' => $id
-            ]);
+        foreach($expenseTypes as $name){
+            MovementType::create(['name' => $name, 'category' => 'e']);
         }
+
+        $incomeTypes = [MovementType::$saleName, 'Donación', 'Publicidad'];
+        foreach($incomeTypes as $name){
+            MovementType::create(['name' => $name, 'category' => 'i']);
+        }
+
+        // Products
+        $this->call([ProductsSeeder::class]);
     }
 }

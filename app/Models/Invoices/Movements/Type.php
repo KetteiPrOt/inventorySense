@@ -20,4 +20,25 @@ class Type extends Model
     {
         return $this->hasMany(Movement::class);
     }
+
+    public static $initialInventoryName = 'Inventario Inicial';
+
+    public static $purchaseName = 'Compra';
+
+    public static $saleName = 'Venta';
+
+    public static function initialInventory(): Type
+    {
+        return Type::where('name', Type::$initialInventoryName)->first();
+    }
+
+    public static function purchase(): Type
+    {
+        return Type::where('name', Type::$purchaseName)->first();
+    }
+
+    public static function sale(): Type
+    {
+        return Type::where('name', Type::$saleName)->first();
+    }
 }

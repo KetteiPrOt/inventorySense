@@ -17,12 +17,6 @@ class RolesSeeder extends Seeder
         /// Roles
         Role::create(['name' => Role::$superAdmin]);
         $seller = Role::create(['name' => 'Vendedor']);
-        Role::create(['name' => 'Vendedor_1']);
-        Role::create(['name' => 'Vendedor_2']);
-        Role::create(['name' => 'Vendedor_3']);
-        Role::create(['name' => 'Vendedor_4']);
-        Role::create(['name' => 'Vendedor_5']);
-        Role::create(['name' => 'Vendedor_6']);
 
         // Permissions
         foreach(Permission::$permissions as $permission){

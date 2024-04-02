@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\Invoices\Purchases\Controller as PurchaseController;
 use App\Http\Controllers\Products\PresentationController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\TypeController;
@@ -80,4 +81,8 @@ Route::middleware(['auth'])->controller(RoleController::class)->group(function()
     Route::get('/roles/{role}/editar', 'edit')->name('roles.edit');
     Route::put('/roles/{role}', 'update')->name('roles.update');
     Route::delete('/roles/{role}', 'destroy')->name('roles.destroy');
+});
+
+Route::middleware(['auth'])->controller(PurchaseController::class)->group(function(){
+    Route::get('/compras/crear', 'create')->name('purchases.create');
 });
