@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Entities\Products\Types\Index;
+namespace App\Livewire\Entities\Warehouses\Index;
 
-use App\Models\Products\Type;
+use App\Models\Warehouse;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -35,32 +35,32 @@ class Choose extends Component
     public function render()
     {
         if($this->selectedByDefault){
-            $typeSelectedByDefault = Type::find($this->selectedByDefault);
+            $warehouseSelectedByDefault = Warehouse::find($this->selectedByDefault);
         } else {
-            $types = $this->queryTypes();
-            if($types?->count() == 0){
-                $this->resetPage('product-type');
+            $warehouses = $this->queryWarehouses();
+            if($warehouses?->count() == 0){
+                $this->resetPage('warehouse');
             }
         }
-        return view('livewire..entities.products.types.index.choose', [
-            'types' => $types ?? null,
-            'typeSelectedByDefault' => $typeSelectedByDefault ?? null,
+        return view('livewire..entities.warehouses.index.choose', [
+            'warehouses' => $warehouses ?? null,
+            'warehouseSelectedByDefault' => $warehouseSelectedByDefault ?? null,
             'required' => $this->required
         ]);
     }
 
-    private function queryTypes(): object|null
+    private function queryWarehouses(): object|null
     {
         $validated = $this->validateSearch();
         if(!$this->showAllByDefault && is_null($validated)){
-            $types = null;
+            $warehouses = null;
         } else {
-            $types =
-                Type::whereRaw("`name` LIKE ?", ["%$validated%"])
+            $warehouses =
+                Warehouse::whereRaw("`name` LIKE ?", ["%$validated%"])
                     ->orderBy('name')
-                    ->simplePaginate(5, pageName: 'product-type');
+                    ->simplePaginate(5, pageName: 'warehouse');
         }
-        return $types;
+        return $warehouses;
     }
 
     private function validateSearch(): string|null
@@ -69,7 +69,7 @@ class Choose extends Component
         if(is_string($this->search)){
             if(
                 mb_strlen($this->search) >= 2
-                && mb_strlen($this->search) < 49
+                && mb_strlen($this->search) < 255
             ){
                 $validated = mb_strtoupper($this->search);
             }

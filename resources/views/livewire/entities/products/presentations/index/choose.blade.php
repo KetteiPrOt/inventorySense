@@ -1,5 +1,5 @@
 <div>
-    <x-input-label for="productPresentationSearch" :required="true">
+    <x-input-label for="productPresentationSearch" :required="$required">
         Presentación
     </x-input-label>
     <x-text-input
@@ -18,7 +18,7 @@
                         <input
                             type="radio"
                             value="{{$presentation->id}}"
-                            required
+                            @required($required)
                             id="presentationInput{{$presentation->id}}"
                             class="rounded-full mr-2"
                             name="product_presentation"
@@ -37,7 +37,7 @@
                             checked
                             type="radio"
                             value="{{$presentationSelectedByDefault->id}}"
-                            required
+                            @required($required)
                             id="presentationInput{{$presentationSelectedByDefault->id}}"
                             class="rounded-full mr-2"
                             name="product_presentation"

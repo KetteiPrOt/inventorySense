@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->smallInteger('amount')->unsigned();
             $table->decimal('unitary_purchase_price', 8, 2);
-            $table->decimal('total_purchase_price', 8, 2);
+            $table->decimal('total_purchase_price', 13, 2);
             // Foreign Keys
             $table->unsignedInteger('product_id');
             $table->foreign('product_id', 'movement_product')

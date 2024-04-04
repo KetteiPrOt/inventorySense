@@ -13,15 +13,23 @@ class Choose extends Component
 
     private ?int $selectedByDefault = null;
 
+    #[Locked]
+    public bool $required = true;
+
     public $search = null;
 
     #[Locked]
     public bool $showAllByDefault = true;
 
-    public function mount(bool $showAllByDefault = true, int $selectedByDefault = null)
+    public function mount(
+        bool $showAllByDefault = true,
+        int $selectedByDefault = null,
+        bool $required = true
+    )
     {
         $this->showAllByDefault = $showAllByDefault;
         $this->selectedByDefault = $selectedByDefault;
+        $this->required = $required;
     }
 
     public function render()
@@ -36,7 +44,8 @@ class Choose extends Component
         }
         return view('livewire..entities.products.presentations.index.choose', [
             'presentations' => $presentations ?? null,
-            'presentationSelectedByDefault' => $presentationSelectedByDefault ?? null
+            'presentationSelectedByDefault' => $presentationSelectedByDefault ?? null,
+            'required' => $this->required
         ]);
     }
 

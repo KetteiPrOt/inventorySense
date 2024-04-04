@@ -1,49 +1,49 @@
 <div>
-    <x-input-label for="productTypeSearch" :required="$required">
-        Tipo
+    <x-input-label for="warehouseSearch" :required="$required">
+        Bodega
     </x-input-label>
     <x-text-input
-        id="productTypeSearch"
+        id="warehouseSearch"
         class="mt-1 block w-full max-w-sm"
         placeholder="Buscar..."
-        maxlength="49"
+        maxlength="255"
         wire:model.live="search"
     />
     <x-table class="max-w-sm">
         <x-slot:body>
-            @if(!is_null($types))
-            @foreach($types as $type)
+            @if(!is_null($warehouses))
+            @foreach($warehouses as $warehouse)
                 <x-table.tr>
                     <x-table.td>
                         <input
                             type="radio"
-                            value="{{$type->id}}"
+                            value="{{$warehouse->id}}"
                             @required($required)
-                            id="typeInput{{$type->id}}"
+                            id="warehouseInput{{$warehouse->id}}"
                             class="rounded-full mr-2"
-                            name="product_type"
+                            name="warehouse"
                         />
-                        <label for="typeInput{{$type->id}}">
-                            {{$type->name}}
+                        <label for="warehouseInput{{$warehouse->id}}">
+                            {{$warehouse->name}}
                         </label>
                     </x-table.td>
                 </x-table.tr>
             @endforeach
             @endif
-            @if(!is_null($typeSelectedByDefault))
+            @if(!is_null($warehouseSelectedByDefault))
                 <x-table.tr>
                     <x-table.td>
                         <input
                             checked
                             type="radio"
-                            value="{{$typeSelectedByDefault->id}}"
+                            value="{{$warehouseSelectedByDefault->id}}"
                             @required($required)
-                            id="typeInput{{$typeSelectedByDefault->id}}"
+                            id="warehouseInput{{$warehouseSelectedByDefault->id}}"
                             class="rounded-full mr-2"
-                            name="product_type"
+                            name="warehouse"
                         />
-                        <label for="typeInput{{$typeSelectedByDefault->id}}">
-                            {{$typeSelectedByDefault->name}}
+                        <label for="warehouseInput{{$warehouseSelectedByDefault->id}}">
+                            {{$warehouseSelectedByDefault->name}}
                         </label>
                     </x-table.td>
                 </x-table.tr>
@@ -51,12 +51,12 @@
         </x-slot:body>
     </x-table>
     <div class="max-w-sm mt-2">
-        {{$types?->links(data: ['scrollTo' => false])}}
-        @if($types?->isEmpty() && is_null($typeSelectedByDefault))
+        {{$warehouses?->links(data: ['scrollTo' => false])}}
+        @if($warehouses?->isEmpty() && is_null($warehouseSelectedByDefault))
             <span class="text-red-500">
-                No se encontraron tipos...
+                No se encontraron bodegas...
             </span>
         @endif
     </div>
-    <x-input-error class="mt-2" :messages="$errors->get('product_type')" />
+    <x-input-error class="mt-2" :messages="$errors->get('warehouse')" />
 </div>

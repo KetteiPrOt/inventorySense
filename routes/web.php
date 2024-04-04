@@ -85,4 +85,5 @@ Route::middleware(['auth'])->controller(RoleController::class)->group(function()
 
 Route::middleware(['auth'])->controller(PurchaseController::class)->group(function(){
     Route::get('/compras/crear', 'create')->name('purchases.create');
+    Route::post('/compras', 'store')->name('purchases.store');
 });

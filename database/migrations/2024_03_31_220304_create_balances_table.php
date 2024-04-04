@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->smallInteger('amount')->unsigned();
             $table->decimal('unitary_price', 8, 2);
-            $table->decimal('total_price', 8, 2);
+            $table->decimal('total_price', 13, 2);
         });
     }
 

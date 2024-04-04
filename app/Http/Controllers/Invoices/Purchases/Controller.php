@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Invoices\Purchases;
 
 use App\Http\Controllers\Controller as BaseController;
-use Illuminate\Http\Request;
+use App\Http\Requests\Invoices\Purchases\StoreRequest;
 
 class Controller extends BaseController
 {
     public function create()
     {
-        return 'XD';
+        return view('entities.invoices.purchases.create');
+    }
+
+    public function store(StoreRequest $request)
+    {
+        dump($request->input());
     }
 }
