@@ -193,7 +193,7 @@
 @endif
 
 <div class="mt-6">
-    <x-input-label for="searchProductInput">
+    <x-input-label for="searchProductInput" :required="true">
         Productos
     </x-input-label>
     <x-text-input
@@ -236,6 +236,31 @@
         {{$searchedProducts->links(data: ['scrollTo' => false])}}
     </div>
 @endif
+
+<x-input-error
+    :messages="$errors->get('products')"
+/>
+@foreach($errors->get('products.*') as $error)
+    <x-input-error :messages="$error"/>
+@endforeach
+<x-input-error
+    :messages="$errors->get('amounts')"
+/>
+@foreach($errors->get('amounts.*') as $error)
+    <x-input-error :messages="$error"/>
+@endforeach
+<x-input-error
+    :messages="$errors->get('movement_types')"
+/>
+@foreach($errors->get('movement_types.*') as $error)
+    <x-input-error :messages="$error"/>
+@endforeach
+<x-input-error
+    :messages="$errors->get('unitary_purchase_prices')"
+/>
+@foreach($errors->get('unitary_purchase_prices.*') as $error)
+    <x-input-error :messages="$error"/>
+@endforeach
 
 @script
 <script>

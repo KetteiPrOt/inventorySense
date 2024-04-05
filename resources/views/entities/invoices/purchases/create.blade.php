@@ -37,7 +37,7 @@
                     id="invoiceNumberInput" name="number" 
                     class="mt-1 block w-full max-w-sm"
                 />
-                <x-input-error class="mt-2" :messages="$errors->get('product_name')" />
+                <x-input-error class="mt-2" :messages="$errors->get('number')" />
                 <span x-show="invalidNumber" class="text-red-500 block">
                     El número de factura esta incompleto.
                 </span>
@@ -50,7 +50,7 @@
             </div>
 
             <div
-                x-data="{ open: false, invalidDate: false }"
+                x-data="{open: false, invalidDate: false}"
                 x-on:invalid-due-payment-date-input.window="
                     $el.scrollIntoView({ behavior: 'smooth' }); open = true; invalidDate = true;
                 "

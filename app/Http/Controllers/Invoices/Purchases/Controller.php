@@ -14,6 +14,7 @@ class Controller extends BaseController
 
     public function store(StoreRequest $request)
     {
-        dump($request->input());
+        $validated = $request->validated();
+        dump($validated);
     }
 }
