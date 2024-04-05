@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Products;
 
-use App\Rules\Products\SameSize;
+use App\Rules\ArrayDefaultKeys;
+use App\Rules\ArraySameSize;
 use App\Rules\Products\UniqueTag;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,9 +23,13 @@ class StoreRequest extends FormRequest
             'product_presentation' => 'required|integer|exists:product_presentations,id',
             'product_name' => ['required', 'string', 'min:2', 'max:255', new UniqueTag],
             'min_stock' => 'required|integer|min:1|max:65000',
-            'sale_prices' => 'required|array|min:1',
+            'sale_prices' => [
+                'required', 'array', 'min:1', new ArrayDefaultKeys
+            ],
             'sale_prices.*' => 'decimal:0,2|min:0.01|max:9999.99|distinct:strict',
-            'units_numbers' => ['required', 'array', 'min:1', new SameSize('sale_prices')],
+            'units_numbers' => [
+                'required', 'array', 'min:1', new ArrayDefaultKeys, new ArraySameSize('sale_prices')
+            ],
             'units_numbers.0' => 'max:1',
             'units_numbers.*' => 'integer|min:1|max:65000|distinct:strict'
         ];
