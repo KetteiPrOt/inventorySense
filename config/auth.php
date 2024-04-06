@@ -4,6 +4,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Administrator
+    |--------------------------------------------------------------------------
+    |
+    | This values determine the initial credentials that the application give
+    | to Administrator user.
+    |
+    */
+
+    'admin_username' => env('ADMIN_USERNAME'),
+
+    'admin_password' => env('ADMIN_PASSWORD'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Defaults
     |--------------------------------------------------------------------------
     |
