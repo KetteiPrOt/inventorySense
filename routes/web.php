@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\Invoices\Sales\Controller as SaleController;
 use App\Http\Controllers\Invoices\Purchases\Controller as PurchaseController;
 use App\Http\Controllers\Products\PresentationController;
 use App\Http\Controllers\Products\ProductController;
@@ -86,4 +87,9 @@ Route::middleware(['auth'])->controller(RoleController::class)->group(function()
 Route::middleware(['auth'])->controller(PurchaseController::class)->group(function(){
     Route::get('/compras/crear', 'create')->name('purchases.create');
     Route::post('/compras', 'store')->name('purchases.store');
+});
+
+Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
+    Route::get('/ventas/crear', 'create')->name('sales.create');
+    // Route::post('/ventas', 'store')->name('sales.store');
 });

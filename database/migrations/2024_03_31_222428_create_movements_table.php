@@ -27,11 +27,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('movement_types')
                 ->restrictOnDelete()->cascadeOnUpdate();
-            $table->unsignedBigInteger('balance_id');
-            $table->foreign('balance_id', 'balance_movement')
-                ->references('id')
-                ->on('balances')
-                ->restrictOnDelete()->cascadeOnUpdate();
             // Polimorphic relationships
             $table->unsignedInteger('invoice_id');
             $table->string('invoice_type', 255);

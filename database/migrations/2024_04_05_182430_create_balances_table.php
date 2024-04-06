@@ -16,6 +16,12 @@ return new class extends Migration
             $table->smallInteger('amount')->unsigned();
             $table->decimal('unitary_price', 8, 2);
             $table->decimal('total_price', 13, 2);
+            // Foreign Keys
+            $table->unsignedBigInteger('movement_id');
+            $table->foreign('movement_id', 'balance_movement')
+                ->references('id')
+                ->on('movements')
+                ->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

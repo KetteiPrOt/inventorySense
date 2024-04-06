@@ -12,7 +12,7 @@ class Balance extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['amount', 'unitary_price', 'total_price'];
+    protected $fillable = ['amount', 'unitary_price', 'total_price', 'movement_id'];
 
     public function movement(): BelongsTo
     {

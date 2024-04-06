@@ -22,8 +22,7 @@ class Movement extends Model
         'product_id',
         'invoice_id',
         'invoice_type',
-        'type_id',
-        'balance_id'
+        'type_id'
     ];
 
     public function product(): BelongsTo
@@ -41,13 +40,13 @@ class Movement extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function balance(): HasOne
-    {
-        return $this->hasOne(Balance::class);
-    }
-
     public function income(): BelongsTo
     {
         return $this->belongsTo(Income::class);
+    }
+
+    public function balance(): HasOne
+    {
+        return $this->hasOne(Balance::class);
     }
 }

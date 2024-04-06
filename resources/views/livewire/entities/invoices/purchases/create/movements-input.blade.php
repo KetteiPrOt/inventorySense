@@ -118,11 +118,12 @@
                         class="col-span-1 lg:text-center  flex items-center lg:table-cell"
                     >
                         <div class="flex items-center lg:justify-center">
-                            <input x-model="totalPrice" type="number" hidden class="total-purchase-price-input">
+                            <input x-model="totalPrice" hidden class="total-purchase-price-input">
                             <label class="mr-1 lg:hidden">
                                 Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </label>
                             $<x-text-input
+                                type="text"
                                 class="w-48 lg:w-20" readonly
                                 id="totalPurchasePriceInput{{$product->id}}"
                                 x-model="displayTotalPrice"
