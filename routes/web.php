@@ -23,7 +23,7 @@ Route::view('profile', 'profile')
 
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth'])->controller(ProductController::class)->group(function(){
+Route::middleware(['auth', 'can:products'])->controller(ProductController::class)->group(function(){
     Route::get('/productos', 'index')->name('products.index');
     Route::get('/productos/crear', 'create')->name('products.create');
     Route::post('/productos', 'store')->name('products.store');
@@ -33,17 +33,17 @@ Route::middleware(['auth'])->controller(ProductController::class)->group(functio
     Route::delete('/productos/{product}', 'destroy')->name('products.destroy');
 });
 
-Route::middleware(['auth'])->controller(TypeController::class)->group(function(){
+Route::middleware(['auth', 'can:products'])->controller(TypeController::class)->group(function(){
     Route::get('/tipos', 'index')->name('product-types.index');
     Route::delete('/tipos/{type}', 'destroy')->name('product-types.destroy');
 });
 
-Route::middleware(['auth'])->controller(PresentationController::class)->group(function(){
+Route::middleware(['auth', 'can:products'])->controller(PresentationController::class)->group(function(){
     Route::get('/presentaciones', 'index')->name('product-presentations.index');
     Route::delete('/presentaciones/{presentation}', 'destroy')->name('product-presentations.destroy');
 });
 
-Route::middleware(['auth'])->controller(ProviderController::class)->group(function(){
+Route::middleware(['auth', 'can:providers'])->controller(ProviderController::class)->group(function(){
     Route::get('/proveedores', 'index')->name('providers.index');
     Route::get('/proveedores/crear', 'create')->name('providers.create');
     Route::post('/proveedores', 'store')->name('providers.store');
@@ -53,7 +53,7 @@ Route::middleware(['auth'])->controller(ProviderController::class)->group(functi
     Route::delete('/proveedores/{provider}', 'destroy')->name('providers.destroy');
 });
 
-Route::middleware(['auth'])->controller(ClientController::class)->group(function(){
+Route::middleware(['auth', 'can:clients'])->controller(ClientController::class)->group(function(){
     Route::get('/clientes', 'index')->name('clients.index');
     Route::get('/clientes/crear', 'create')->name('clients.create');
     Route::post('/clientes', 'store')->name('clients.store');
@@ -63,7 +63,7 @@ Route::middleware(['auth'])->controller(ClientController::class)->group(function
     Route::delete('/clientes/{client}', 'destroy')->name('clients.destroy');
 });
 
-Route::middleware(['auth'])->controller(UserController::class)->group(function(){
+Route::middleware(['auth', 'can:users'])->controller(UserController::class)->group(function(){
     Route::get('/usuarios', 'index')->name('users.index');
     Route::get('/usuarios/crear', 'create')->name('users.create');
     Route::post('/usuarios', 'store')->name('users.store');
@@ -74,7 +74,7 @@ Route::middleware(['auth'])->controller(UserController::class)->group(function()
     Route::delete('/usuarios/{user}', 'destroy')->name('users.destroy');
 });
 
-Route::middleware(['auth'])->controller(RoleController::class)->group(function(){
+Route::middleware(['auth', 'can:roles'])->controller(RoleController::class)->group(function(){
     Route::get('/roles', 'index')->name('roles.index');
     Route::get('/roles/crear', 'create')->name('roles.create');
     Route::post('/roles', 'store')->name('roles.store');
@@ -85,11 +85,14 @@ Route::middleware(['auth'])->controller(RoleController::class)->group(function()
 });
 
 Route::middleware(['auth'])->controller(PurchaseController::class)->group(function(){
-    Route::get('/compras/crear', 'create')->name('purchases.create');
-    Route::post('/compras', 'store')->name('purchases.store');
+    Route::middleware(['can:purchases-create'])
+        ->get('/compras/crear', 'create')->name('purchases.create');
+    Route::middleware(['can:purchases-create'])
+        ->post('/compras', 'store')->name('purchases.store');
 });
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
-    Route::get('/ventas/crear', 'create')->name('sales.create');
+    Route::middleware(['can:sales-create'])
+        ->get('/ventas/crear', 'create')->name('sales.create');
     // Route::post('/ventas', 'store')->name('sales.store');
 });

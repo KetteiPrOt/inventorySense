@@ -32,79 +32,95 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-dropdown
-                        tag="Productos" width="30"
-                        :active="request()->routeIs([
-                            'products.*',
-                            'product-types.index',
-                            'product-presentations.index'
-                        ])"
-                    >
-                        <x-dropdown-link
-                            :href="route('products.index')" wire:navigate
-                            :active="request()->routeIs('products.*')"
+                    @can('products')
+                        <x-nav-dropdown
+                            tag="Productos" width="30"
+                            :active="request()->routeIs([
+                                'products.*',
+                                'product-types.index',
+                                'product-presentations.index'
+                            ])"
                         >
-                            Listado
-                        </x-dropdown-link>
-                        <x-dropdown-link
-                            :href="route('product-types.index')" wire:navigate
-                            :active="request()->routeIs('product-types.index')"
+                            <x-dropdown-link
+                                :href="route('products.index')" wire:navigate
+                                :active="request()->routeIs('products.*')"
+                            >
+                                Listado
+                            </x-dropdown-link>
+                            <x-dropdown-link
+                                :href="route('product-types.index')" wire:navigate
+                                :active="request()->routeIs('product-types.index')"
+                            >
+                                Tipos
+                            </x-dropdown-link>
+                            <x-dropdown-link
+                                :href="route('product-presentations.index')" wire:navigate
+                                :active="request()->routeIs('product-presentations.index')"
+                            >
+                                Presentaciones
+                            </x-dropdown-link>
+                        </x-nav-dropdown>
+                    @endcan
+                    @canany(['providers', 'clients', 'cash-closing'])
+                        <x-nav-dropdown
+                            tag="Personas" width="30"
+                            :active="request()->routeIs([
+                                'providers.*',
+                                'clients.*',
+                                'users.*'
+                            ])"
                         >
-                            Tipos
-                        </x-dropdown-link>
-                        <x-dropdown-link
-                            :href="route('product-presentations.index')" wire:navigate
-                            :active="request()->routeIs('product-presentations.index')"
+                            @can('providers')
+                                <x-dropdown-link
+                                    :href="route('providers.index')" wire:navigate
+                                    :active="request()->routeIs('providers.*')"
+                                >
+                                    Proveedores
+                                </x-dropdown-link>
+                            @endcan
+                            @can('clients')
+                                <x-dropdown-link
+                                    :href="route('clients.index')" wire:navigate
+                                    :active="request()->routeIs('clients.*')"
+                                >
+                                    Clientes
+                                </x-dropdown-link>
+                            @endcan
+                            @can('users')
+                                <x-dropdown-link
+                                    :href="route('users.index')" wire:navigate
+                                    :active="request()->routeIs('users.*')"
+                                >
+                                    Usuarios
+                                </x-dropdown-link>
+                            @endcan
+                        </x-nav-dropdown>
+                    @endcan
+                    @canany(['create-purchases', 'kardex', 'purchases-report'])
+                        <x-nav-dropdown
+                            tag="Compras" width="30"
+                            :active="request()->routeIs([
+                                'purchases.*'
+                            ])"
                         >
-                            Presentaciones
-                        </x-dropdown-link>
-                    </x-nav-dropdown>
-                    <x-nav-dropdown
-                        tag="Personas" width="30"
-                        :active="request()->routeIs([
-                            'providers.*',
-                            'clients.*',
-                            'users.*'
-                        ])"
-                    >
-                        <x-dropdown-link
-                            :href="route('providers.index')" wire:navigate
-                            :active="request()->routeIs('providers.*')"
+                            @can('create-purchases')
+                                <x-dropdown-link
+                                    :href="route('purchases.create')" wire:navigate
+                                    :active="request()->routeIs('purchases.create')"
+                                >
+                                    Registrar
+                                </x-dropdown-link>
+                            @endcan
+                        </x-nav-dropdown>
+                    @endcan
+                    @can('roles')
+                        <x-nav-link
+                            href="{{route('roles.index')}}"
+                            :active="request()->routeIs('roles.*')"
                         >
-                            Proveedores
-                        </x-dropdown-link>
-                        <x-dropdown-link
-                            :href="route('clients.index')" wire:navigate
-                            :active="request()->routeIs('clients.*')"
-                        >
-                            Clientes
-                        </x-dropdown-link>
-                        <x-dropdown-link
-                            :href="route('users.index')" wire:navigate
-                            :active="request()->routeIs('users.*')"
-                        >
-                            Usuarios
-                        </x-dropdown-link>
-                    </x-nav-dropdown>
-                    <x-nav-dropdown
-                        tag="Compras" width="30"
-                        :active="request()->routeIs([
-                            'purchases.*'
-                        ])"
-                    >
-                        <x-dropdown-link
-                            :href="route('purchases.create')" wire:navigate
-                            :active="request()->routeIs('purchases.create')"
-                        >
-                            Registrar
-                        </x-dropdown-link>
-                    </x-nav-dropdown>
-                    <x-nav-link
-                        href="{{route('roles.index')}}"
-                        :active="request()->routeIs('roles.*')"
-                    >
-                        Roles
-                    </x-nav-link>
+                            Roles
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -153,79 +169,95 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-dropdown
-                tag="Productos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
-                :active="request()->routeIs([
-                    'products.*',
-                    'product-types.index',
-                    'product-presentations.index'
-                ])"
-            >
-                <x-dropdown-link
-                    :href="route('products.index')" wire:navigate
-                    :active="request()->routeIs('products.*')"
+            @can('products')
+                <x-responsive-nav-dropdown
+                    tag="Productos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
+                    :active="request()->routeIs([
+                        'products.*',
+                        'product-types.index',
+                        'product-presentations.index'
+                    ])"
                 >
-                    Listado
-                </x-dropdown-link>
-                <x-dropdown-link
-                    :href="route('product-types.index')" wire:navigate
-                    :active="request()->routeIs('product-types.index')"
+                    <x-dropdown-link
+                        :href="route('products.index')" wire:navigate
+                        :active="request()->routeIs('products.*')"
+                    >
+                        Listado
+                    </x-dropdown-link>
+                    <x-dropdown-link
+                        :href="route('product-types.index')" wire:navigate
+                        :active="request()->routeIs('product-types.index')"
+                    >
+                        Tipos
+                    </x-dropdown-link>
+                    <x-dropdown-link
+                        :href="route('product-presentations.index')" wire:navigate
+                        :active="request()->routeIs('product-presentations.index')"
+                    >
+                        Presentaciones
+                    </x-dropdown-link>
+                </x-responsive-nav-dropdown>
+            @endcan
+            @canany(['providers', 'clients', 'users'])
+                <x-responsive-nav-dropdown
+                    tag="Personas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
+                    :active="request()->routeIs([
+                        'providers.*',
+                        'clients.*',
+                        'users.*'
+                    ])"
                 >
-                    Tipos
-                </x-dropdown-link>
-                <x-dropdown-link
-                    :href="route('product-presentations.index')" wire:navigate
-                    :active="request()->routeIs('product-presentations.index')"
+                    @can('providers')
+                        <x-dropdown-link
+                            :href="route('providers.index')" wire:navigate
+                            :active="request()->routeIs('providers.*')"
+                        >
+                            Proveedores
+                        </x-dropdown-link>
+                    @endcan
+                    @can('clients')
+                        <x-dropdown-link
+                            :href="route('clients.index')" wire:navigate
+                            :active="request()->routeIs('clients.*')"
+                        >
+                            Clientes
+                        </x-dropdown-link>
+                    @endcan
+                    @can('users')
+                        <x-dropdown-link
+                            :href="route('users.index')" wire:navigate
+                            :active="request()->routeIs('users.*')"
+                        >
+                            Usuarios
+                        </x-dropdown-link>
+                    @endcan
+                </x-responsive-nav-dropdown>
+            @endcanany
+            @canany(['create-purchases', 'kardex', 'purchases-report'])
+                <x-responsive-nav-dropdown
+                    tag="Compras &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
+                    :active="request()->routeIs([
+                        'purchases.*'
+                    ])"
                 >
-                    Presentaciones
-                </x-dropdown-link>
-            </x-responsive-nav-dropdown>
-            <x-responsive-nav-dropdown
-                tag="Personas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
-                :active="request()->routeIs([
-                    'providers.*',
-                    'clients.*',
-                    'users.*'
-                ])"
-            >
-                <x-dropdown-link
-                    :href="route('providers.index')" wire:navigate
-                    :active="request()->routeIs('providers.*')"
+                    @can('create-purchases')
+                        <x-dropdown-link
+                            :href="route('purchases.create')" wire:navigate
+                            :active="request()->routeIs('purchases.create')"
+                        >
+                            Registrar
+                        </x-dropdown-link>
+                    @endcan
+                </x-responsive-nav-dropdown>
+            @endcanany
+            @can('roles')
+                <x-responsive-nav-link
+                    href="{{route('roles.index')}}"
+                    :active="request()->routeIs('roles.*')"
                 >
-                    Proveedores
-                </x-dropdown-link>
-                <x-dropdown-link
-                    :href="route('clients.index')" wire:navigate
-                    :active="request()->routeIs('clients.*')"
-                >
-                    Clientes
-                </x-dropdown-link>
-                <x-dropdown-link
-                    :href="route('users.index')" wire:navigate
-                    :active="request()->routeIs('users.*')"
-                >
-                    Usuarios
-                </x-dropdown-link>
-            </x-responsive-nav-dropdown>
-            <x-responsive-nav-dropdown
-                tag="Compras &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="24"
-                :active="request()->routeIs([
-                    'purchases.*'
-                ])"
-            >
-                <x-dropdown-link
-                    :href="route('purchases.create')" wire:navigate
-                    :active="request()->routeIs('purchases.create')"
-                >
-                    Registrar
-                </x-dropdown-link>
-            </x-responsive-nav-dropdown>
-            <x-responsive-nav-link
-                href="{{route('roles.index')}}"
-                :active="request()->routeIs('roles.*')"
-            >
-                Roles
-            </x-responsive-nav-link>
+                    Roles
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
