@@ -9,6 +9,6 @@ class Controller extends BaseController
 {
     public function create()
     {
-        return 'XD';
+        return view('entities.invoices.sales.create');
     }
 }

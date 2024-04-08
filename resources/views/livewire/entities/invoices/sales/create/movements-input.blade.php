@@ -32,23 +32,73 @@
                         lg:table-row
                         border-b-2 border-t-2 lg:border-b lg:border-t-0
                     "
-                    x-data="movementInput"
-                    x-on:changed-movement-input-value="synchronizeValues"
+                    x-data="movementInput(
+                        {{$product->salePrices[0]->price}},
+                        {{$product->id}}
+                    )"
+                    x-on:changed-movement-input-value="synchronizeValues(); updateSalePrices()"
                 >
                     <x-table.td
                         class="
                             col-span-1
                             flex items-center justify-center text-center
                             lg:table-cell
-                            text-base
-                            font-bold
-                            lg:text-sm
-                            lg:font-normal
                             lg:text-left
                         "
                     >
                         <input name="products[]" value="{{$product->id}}"  hidden>
-                        {{$product->tag}}
+                        <button
+                            class="
+                                inline
+                                text-base
+                                font-bold
+                                lg:text-sm
+                                lg:font-normal
+                                lg:text-left
+                            "
+                            x-data
+                            x-on:click.prevent="$dispatch('open-modal', 'info-product{{$product->id}}')"
+                        >{{$product->tag}}</button>
+                        <x-modal name="info-product{{$product->id}}">
+                            <div class="text-left p-4">
+                                <h3 class="text-lg font-medium text-gray-900">
+                                    Ofertas especiales
+                                </h3>
+                                @if($product->salePrices->count() === 1)
+                                    <p class="mt-1 text-sm text-blue-600">
+                                        Este producto no tiene precios de oferta actualmente....
+                                    </p>
+                                @else
+                                    <x-table class="max-w-sm mt-1">
+                                        <x-slot:head>
+                                            <x-table.tr :hover="false">
+                                                <x-table.th>
+                                                    Desde
+                                                </x-table.th>
+                                                <x-table.th>
+                                                    Precio de venta
+                                                </x-table.th>
+                                            </x-table.tr>
+                                        </x-slot:head>
+                                        <x-slot:body>
+                                            @foreach($product->salePrices->sortBy('units_number') as $salePrice)
+                                                <x-table.tr>
+                                                    <x-table.td>
+                                                        {{
+                                                            $salePrice->units_number . ' '
+                                                            . ($salePrice->units_number == 1 ? 'unidad' : 'unidades')
+                                                        }}
+                                                    </x-table.td>
+                                                    <x-table.td>
+                                                        ${{$salePrice->price}}
+                                                    </x-table.td>
+                                                </x-table.tr>
+                                            @endforeach
+                                        </x-slot:body>
+                                    </x-table>
+                                @endif
+                            </div>
+                        </x-modal>
                     </x-table.td>
                     <x-table.td
                         class="col-span-1 lg:text-center flex items-center lg:table-cell"
@@ -67,17 +117,11 @@
                                 "
                                 id="movementTypeInput{{$product->id}}"
                             >
-                                @if($product->started_inventory)
-                                    @foreach($movementTypes as $type)
-                                        <option
-                                            value="{{$type->id}}"
-                                        >{{$type->name}}</option>
-                                    @endforeach
-                                @else
-                                        <option
-                                            value="{{$initialInventory->id}}"
-                                        >{{$initialInventory->name}}</option>
-                                @endif
+                                @foreach($movementTypes as $type)
+                                    <option
+                                        value="{{$type->id}}"
+                                    >{{$type->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </x-table.td>
@@ -92,7 +136,7 @@
                                 name="amounts[]"
                                 class="w-48 lg:w-20"
                                 id="amountInput{{$product->id}}"
-                                min="1" max="65000" step="1" required
+                                min="1" max="{{$product->latestBalance->amount}}" step="1" required
                                 x-model="amount"
                                 x-on:keyup="$dispatch('changed-movement-input-value')"
                                 x-on:change="$dispatch('changed-movement-input-value')"
@@ -103,32 +147,46 @@
                         class="col-span-1 lg:text-center  flex items-center lg:table-cell"
                     >
                         <div class="flex items-center lg:justify-center">
-                            <label for="unitaryPurchasePriceInput{{$product->id}}" class="mr-1 lg:hidden">
+                            <label for="unitarySalePriceInput{{$product->id}}" class="mr-1 lg:hidden">
                                 Precio&nbsp;&nbsp;&nbsp;
                             </label>
-                            $<x-number-input
-                                name="unitary_purchase_prices[]"
-                                class="w-48 lg:w-20"
-                                id="unitaryPurchasePriceInput{{$product->id}}"
-                                min="0.01" max="999999.99" step="0.01" required
-                                x-model="unitaryPrice"
-                                x-on:keyup="$dispatch('changed-movement-input-value')"
+                            $<select
+                                name="unitary_sale_prices[]"
+                                class="
+                                    w-48 lg:w-20
+                                    p-1 pr-8
+                                    border-gray-300
+                                    focus:border-indigo-500 focus:ring-indigo-500
+                                    rounded-md shadow-sm
+                                "
+                                id="unitarySalePriceInput{{$product->id}}"
                                 x-on:change="$dispatch('changed-movement-input-value')"
-                            />
+                            >
+                                @foreach($product->salePrices->sortBy('units_number') as $salePrice)
+                                    <option
+                                        @if(!$loop->first)
+                                            class="hidden"
+                                        @endif
+                                        data-units-number="{{$salePrice->units_number}}"
+                                        id="unitarySalePrice{{$salePrice->id}}"
+                                        value="{{$salePrice->id}}"
+                                    >{{$salePrice->price}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </x-table.td>
                     <x-table.td
                         class="col-span-1 lg:text-center  flex items-center lg:table-cell"
                     >
                         <div class="flex items-center lg:justify-center">
-                            <div x-text="totalPrice" class="hidden total-purchase-price-input"></div>
-                            <label class="mr-1 lg:hidden" for="totalPurchasePriceInput{{$product->id}}">
+                            <div x-text="totalPrice" class="hidden total-sale-price-input"></div>
+                            <label class="mr-1 lg:hidden" for="totalSalePriceInput{{$product->id}}">
                                 Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </label>
                             $<x-text-input
                                 type="text"
                                 class="w-48 lg:w-20" readonly
-                                id="totalPurchasePriceInput{{$product->id}}"
+                                id="totalSalePriceInput{{$product->id}}"
                                 x-model="displayTotalPrice"
                             />
                         </div>
@@ -143,7 +201,7 @@
                         <x-secondary-button
                             x-on:click="
                                 $wire.removeProduct({{$product->id}});
-                                $dispatch('changed-movement-input-value');
+                                $dispatch('removed-movement-input');
                             "
                             class="bg-red-500 hover:bg-red-400"
                         >
@@ -166,7 +224,7 @@
                     displayTotal: '$0.00',
                     synchronizeTotal() {
                         const inputs = Array.from(
-                            document.querySelectorAll('.total-purchase-price-input')
+                            document.querySelectorAll('.total-sale-price-input')
                         );
                         let summation = 0;
                         for(const input of inputs){
@@ -174,9 +232,14 @@
                         }
                         const formater = $store.priceFormater.create();
                         this.displayTotal = `$${formater.format(summation)}`;
+                    },
+                    init() {
+                        this.synchronizeTotal();
                     }
                 }"
                 x-on:changed-movement-input-value.window.debounce="synchronizeTotal"
+                x-on:removed-movement-input.window.debounce.400ms="synchronizeTotal"
+                x-on:added-movement-input.window.debounce.400ms="synchronizeTotal"
             >
                 <x-table.td class="hidden lg:table-cell"></x-table.td>
                 <x-table.td class="hidden lg:table-cell"></x-table.td>
@@ -216,22 +279,49 @@
                 <x-table.th>
                     Nombre
                 </x-table.th>
+                <x-table.th>
+                    Disponible
+                </x-table.th>
                 <x-table.th></x-table.th>
             </x-table.tr>
         </x-slot:head>
         <x-slot:body>
             @foreach($searchedProducts as $product)
-                <x-table.tr wire:key="{{$product->id}}">
+                <x-table.tr x-data wire:key="{{$product->id}}">
                     <x-table.td>
                         {{$product->tag}}
                     </x-table.td>
-                    <x-table.td>
-                        <x-secondary-button
-                            wire:click="addProduct({{$product->id}})"
-                        >
-                            <x-icons.take-hand class="w-5 h-5" />
-                        </x-secondary-button>
-                    </x-table.td>
+                    @if(
+                        !$product->started_inventory
+                        || ($product->latestBalance?->amount === 0)
+                        || ($product->latestBalance?->amount === null)
+                    )
+                        <x-table.td class="text-center">
+                            <span class="text-red-500">0</span>
+                        </x-table.td>
+                        <x-table.td>
+                            <x-secondary-button
+                                disabled
+                                class="opacity-50"
+                            >
+                                <x-icons.take-hand class="w-5 h-5" />
+                            </x-secondary-button>
+                        </x-table.td>
+                    @else
+                        <x-table.td class="text-center text-red-500">
+                            {{$product->latestBalance->amount}}
+                        </x-table.td>
+                        <x-table.td>
+                            <x-secondary-button
+                                x-on:click="
+                                    $wire.addProduct({{$product->id}})
+                                    $dispatch('added-movement-input');
+                                "
+                            >
+                                <x-icons.take-hand class="w-5 h-5" />
+                            </x-secondary-button>
+                        </x-table.td>
+                    @endif
                 </x-table.tr>
             @endforeach
         </x-slot:body>
@@ -260,9 +350,9 @@
     <x-input-error :messages="$error"/>
 @endforeach
 <x-input-error
-    :messages="$errors->get('unitary_purchase_prices')"
+    :messages="$errors->get('unitary_sale_prices')"
 />
-@foreach($errors->get('unitary_purchase_prices.*') as $error)
+@foreach($errors->get('unitary_sale_prices.*') as $error)
     <x-input-error :messages="$error"/>
 @endforeach
 
@@ -279,20 +369,53 @@
         }
     });
 
-    Alpine.data('movementInput', () => {
+    Alpine.data('movementInput', (initialSalePrice, productId) => {
         return {
             amount: 1,
-            unitaryPrice: 0,
+            productId: productId,
+            unitaryPrice: initialSalePrice,
             totalPrice: 0.00,
             displayTotalPrice: '0.00',
-            synchronizeValues() {
+            formater: null,
+            init() {
+                this.formater = $store.priceFormater.create();
                 this.totalPrice = (this.amount * this.unitaryPrice).toFixed(2);
-                const formater = $store.priceFormater.create();
-                this.displayTotalPrice = formater.format(this.totalPrice);
+                this.displayTotalPrice = this.formater.format(this.totalPrice);
+            },
+            synchronizeValues() {
+                this.unitaryPrice = this.selectedSalePrice();
+                this.totalPrice = (this.amount * this.unitaryPrice).toFixed(2);
+                this.displayTotalPrice = this.formater.format(this.totalPrice);
+            },
+            selectedSalePrice() {
+                const unitaryPriceInput = this.findUnitarySalePriceInput();
+                let salePrice = unitaryPriceInput.selectedOptions.item(0).textContent;
+                salePrice = parseFloat(salePrice);
+                return salePrice;
+            },
+            updateSalePrices() {
+                const unitarySalePriceInput = this.findUnitarySalePriceInput(),
+                      options = Array.from(unitarySalePriceInput.options);
+                for(let option of options){
+                    let amount = parseInt(this.amount);
+                    amount = Number.isNaN(amount) || (amount === 0)
+                        ? 1 : amount;
+                    if(!(amount >= parseInt(option.dataset.unitsNumber))){
+                        option.classList.add('hidden');
+                        option.selected = false;
+                        options[0].selected = true;
+                    } else {
+                        option.classList.remove('hidden');
+                    }
+                }
+            },
+            // General utilities
+            findUnitarySalePriceInput() {
+                return document.getElementById(`unitarySalePriceInput${this.productId}`);
             }
         }
     });
 </script>
 @endscript
 
-</div> 
+</div>

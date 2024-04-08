@@ -1,56 +1,34 @@
 <x-layouts.primary
-    header="Crear compra"
+    header="Crear venta"
 >
-    <form action="{{route('purchases.store')}}" method="post" name="createPurchase">
+    <form action="{{__('#')/*route('sales.store')*/}}" method="post" name="createSale">
         @csrf
 
         <section class="space-y-6">
             <header>
                 <h2 class="text-lg font-medium text-gray-900">
-                    Información de la compra
+                    Información de la venta
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Seleccione la bodega, el proveedor, especifique el número de factura, comentario, plazo de pago (opcional), y los productos de la compra para crearla.
+                    Seleccione la bodega, el cliente, especifique opcionalmente algún comentario, plazo de pago, y los productos de la venta para crearla.
                 </p>
             </header>
 
             <div>
                 <livewire:entities.warehouses.index.choose
-                    :selected-by-default="session('purchases-selected-warehouse')"
+                    :selected-by-default="session('sales-selected-warehouse')"
                 />
-            </div>
-
-            <div
-                x-data="{ invalidNumber: false }"
-                x-on:invalid-invoice-number-input.window="
-                    invalidNumber = true; $el.scrollIntoView({ behavior: 'smooth' });
-                "
-                x-on:valid-invoice-number-input.window="invalidNumber = false"
-            >
-                <x-input-label for="invoiceNumberInput" :required="false">
-                    Número de factura
-                </x-input-label>
-                <x-text-input
-                    x-data
-                    x-mask="999-999-999999999" placeholder="000-000-000000000"
-                    id="invoiceNumberInput" name="number" 
-                    class="mt-1 block w-full max-w-sm"
-                />
-                <x-input-error class="mt-2" :messages="$errors->get('number')" />
-                <span x-show="invalidNumber" class="text-red-500 block">
-                    El número de factura esta incompleto.
-                </span>
             </div>
 
             <div>
-                <livewire:entities.providers.index.choose
+                <livewire:entities.clients.index.choose
                     :required="false"
                 />
             </div>
 
             <div
-                x-data="reactivePaidInput"
+                x-data="{open: false, invalidDate: false}"
                 x-on:invalid-due-payment-date-input.window="
                     $el.scrollIntoView({ behavior: 'smooth' }); open = true; invalidDate = true;
                 "
@@ -64,7 +42,7 @@
                         <input
                             id="paidInput" class="rounded mr-2"
                             type="checkbox" name="paid"
-                            @checked(!is_null(old('paid')))
+                            @checked(!is_null(old('paid', true)))
                             x-on:change="
                                 open = $event.target.checked
                                     ? open = false
@@ -120,16 +98,16 @@
         <section class="space-y-6 mt-6">
             <header>
                 <h2 class="text-lg font-medium text-gray-900">
-                    Productos comprados
+                    Productos vendidos
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Seleccione los productos, especificando la cantidad y precio de compra.
+                    Seleccione los productos, especificando la cantidad y opcionalmente algún precio de oferta.
                 </p>
             </header>
 
             <div>
-                <livewire:entities.invoices.purchases.create.movements-input />
+                <livewire:entities.invoices.sales.create.movements-input />
             </div>
         </section>
 
@@ -153,33 +131,20 @@
 
     <script>
         const validate = ($event, $dispatch) => {
-            let valid;
-            let productsInput = document.forms.createPurchase.elements['products[]'];
+            let productsInput = document.forms.createSale.elements['products[]'];
             if((typeof productsInput) === 'undefined'){
                 $event.preventDefault();
                 $dispatch('invalid-input', {message: 'Selecciona al menos un producto...'});
             } else {
                 $dispatch('valid-input');
             }
-            valid = duePaymentInput();
+            let valid = duePaymentInput();
             if(!valid){
                 $event.preventDefault();
                 $dispatch('invalid-due-payment-date-input');
             } else {
                 $dispatch('valid-due-payment-date-input');
             }
-            valid = invoiceNumberInput();
-            if(!valid){
-                $event.preventDefault();
-                $dispatch('invalid-invoice-number-input');
-            } else {
-                $dispatch('valid-invoice-number-input');
-            }
-        };
-
-        const invoiceNumberInput = () => {
-            const input = document.getElementById('invoiceNumberInput');
-            return (input.value.length == 17) || (input.value.length == 0);
         };
 
         const duePaymentInput = () => {

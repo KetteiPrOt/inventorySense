@@ -113,6 +113,23 @@ new class extends Component
                             @endcan
                         </x-nav-dropdown>
                     @endcan
+                    @canany(['create-sales', 'cash-closing', 'sales-report'])
+                        <x-nav-dropdown
+                            tag="Ventas" width="30"
+                            :active="request()->routeIs([
+                                'sales.*'
+                            ])"
+                        >
+                            @can('create-sales')
+                                <x-dropdown-link
+                                    :href="route('sales.create')" wire:navigate
+                                    :active="request()->routeIs('sales.create')"
+                                >
+                                    Registrar
+                                </x-dropdown-link>
+                            @endcan
+                        </x-nav-dropdown>
+                    @endcan
                     @can('roles')
                         <x-nav-link
                             href="{{route('roles.index')}}"
@@ -244,6 +261,24 @@ new class extends Component
                         <x-dropdown-link
                             :href="route('purchases.create')" wire:navigate
                             :active="request()->routeIs('purchases.create')"
+                        >
+                            Registrar
+                        </x-dropdown-link>
+                    @endcan
+                </x-responsive-nav-dropdown>
+            @endcanany
+            @canany(['create-sales', 'cash-closing', 'sales-report'])
+                <x-responsive-nav-dropdown
+                    tag="Ventas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                    width="24"
+                    :active="request()->routeIs([
+                        'sales.*'
+                    ])"
+                >
+                    @can('create-sales')
+                        <x-dropdown-link
+                            :href="route('sales.create')" wire:navigate
+                            :active="request()->routeIs('sales.create')"
                         >
                             Registrar
                         </x-dropdown-link>

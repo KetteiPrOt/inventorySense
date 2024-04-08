@@ -38,6 +38,8 @@ class Controller extends BaseController
                 'type_id' => $validated['movement_types'][$key],
             ]);
         }
+        // Save the choosed warehouse in session
+        $request->session()->put('purchases-selected-warehouse', intval($validated['warehouse']));
         // return redirect()->route('purchases.show', [
         //    'ínvoice' => $invoice->id
         // );

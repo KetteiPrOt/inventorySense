@@ -2,11 +2,15 @@
 
 namespace App\Models\Products;
 
+use App\Models\Invoices\Movements\Balance;
 use App\Models\Invoices\Movements\Movement;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Product extends Model
 {
@@ -43,5 +47,21 @@ class Product extends Model
     public function movements(): HasMany
     {
         return $this->hasMany(Movement::class);
+    }
+
+    public function latestMovement(): HasOne
+    {
+        return $this->hasOne(Movement::class)->latestOfMany();
+    }
+
+    public function balances(): HasManyThrough
+    {
+        return $this->hasManyThrough(Balance::class, Movement::class);
+    }
+
+    public function latestBalance(): HasOneThrough
+    {
+        return $this->hasOneThrough(Balance::class, Movement::class)
+            ->orderBy('id', 'desc');
     }
 }

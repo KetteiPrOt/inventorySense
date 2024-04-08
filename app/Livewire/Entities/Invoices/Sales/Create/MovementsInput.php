@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Entities\Invoices\Purchases\Create;
+namespace App\Livewire\Entities\Invoices\Sales\Create;
 
 use App\Models\Invoices\Movements\Type;
 use App\Models\Products\Product;
@@ -25,12 +25,10 @@ class MovementsInput extends Component
         if($searchedProducts->isEmpty()){
             $this->resetPage('products-searched');
         }
-        return view('livewire..entities.invoices.purchases.create.movements-input', [
+        return view('livewire.entities.invoices.sales.create.movements-input', [
             'selectedProductsCollection' => $selectedProducts,
             'searchedProducts' => $searchedProducts,
-            'movementTypes' => Type::where('category', 'e')
-                ->where('name', '!=', Type::$initialInventoryName)->get(),
-            'initialInventory' => Type::initialInventory()
+            'movementTypes' => Type::where('category', 'i')->get()
         ]);
     }
 
@@ -61,7 +59,7 @@ class MovementsInput extends Component
         $products = collect([]);
         if($search){
             $products = 
-                Product::leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
+                Product::with('latestBalance')->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
                     ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
                     ->selectRaw("
                         products.id,
@@ -102,7 +100,12 @@ class MovementsInput extends Component
     public function addProduct($id)
     {
         $id = $this->validateId($id);
-        if(!is_null($id)){
+        $product = Product::with('latestBalance')->find($id);
+        if(
+            !is_null($product)
+            && $product->started_inventory
+            && $product->latestBalance?->amount > 0
+        ){
             $selectedProductsFlipped = array_flip($this->selectedProducts);
             if(!Arr::has($selectedProductsFlipped, $id)){
                 $this->selectedProducts[] = $id;
