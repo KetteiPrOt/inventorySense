@@ -12,7 +12,7 @@ new class extends Component
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        $this->redirect('/');
     }
 }; ?>
 
@@ -23,7 +23,7 @@ new class extends Component
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
+                    <a href="{{ route('dashboard') }}">
                         <x-application-logo
                             class="w-16 h-16"
                         />
@@ -42,19 +42,19 @@ new class extends Component
                             ])"
                         >
                             <x-dropdown-link
-                                :href="route('products.index')" wire:navigate
+                                :href="route('products.index')"
                                 :active="request()->routeIs('products.*')"
                             >
                                 Listado
                             </x-dropdown-link>
                             <x-dropdown-link
-                                :href="route('product-types.index')" wire:navigate
+                                :href="route('product-types.index')"
                                 :active="request()->routeIs('product-types.index')"
                             >
                                 Tipos
                             </x-dropdown-link>
                             <x-dropdown-link
-                                :href="route('product-presentations.index')" wire:navigate
+                                :href="route('product-presentations.index')"
                                 :active="request()->routeIs('product-presentations.index')"
                             >
                                 Presentaciones
@@ -72,7 +72,7 @@ new class extends Component
                         >
                             @can('providers')
                                 <x-dropdown-link
-                                    :href="route('providers.index')" wire:navigate
+                                    :href="route('providers.index')"
                                     :active="request()->routeIs('providers.*')"
                                 >
                                     Proveedores
@@ -80,7 +80,7 @@ new class extends Component
                             @endcan
                             @can('clients')
                                 <x-dropdown-link
-                                    :href="route('clients.index')" wire:navigate
+                                    :href="route('clients.index')"
                                     :active="request()->routeIs('clients.*')"
                                 >
                                     Clientes
@@ -88,7 +88,7 @@ new class extends Component
                             @endcan
                             @can('users')
                                 <x-dropdown-link
-                                    :href="route('users.index')" wire:navigate
+                                    :href="route('users.index')"
                                     :active="request()->routeIs('users.*')"
                                 >
                                     Usuarios
@@ -105,7 +105,7 @@ new class extends Component
                         >
                             @can('create-purchases')
                                 <x-dropdown-link
-                                    :href="route('purchases.create')" wire:navigate
+                                    :href="route('purchases.create')"
                                     :active="request()->routeIs('purchases.create')"
                                 >
                                     Registrar
@@ -122,7 +122,7 @@ new class extends Component
                         >
                             @can('create-sales')
                                 <x-dropdown-link
-                                    :href="route('sales.create')" wire:navigate
+                                    :href="route('sales.create')"
                                     :active="request()->routeIs('sales.create')"
                                 >
                                     Registrar
@@ -196,19 +196,19 @@ new class extends Component
                     ])"
                 >
                     <x-dropdown-link
-                        :href="route('products.index')" wire:navigate
+                        :href="route('products.index')"
                         :active="request()->routeIs('products.*')"
                     >
                         Listado
                     </x-dropdown-link>
                     <x-dropdown-link
-                        :href="route('product-types.index')" wire:navigate
+                        :href="route('product-types.index')"
                         :active="request()->routeIs('product-types.index')"
                     >
                         Tipos
                     </x-dropdown-link>
                     <x-dropdown-link
-                        :href="route('product-presentations.index')" wire:navigate
+                        :href="route('product-presentations.index')"
                         :active="request()->routeIs('product-presentations.index')"
                     >
                         Presentaciones
@@ -226,7 +226,7 @@ new class extends Component
                 >
                     @can('providers')
                         <x-dropdown-link
-                            :href="route('providers.index')" wire:navigate
+                            :href="route('providers.index')"
                             :active="request()->routeIs('providers.*')"
                         >
                             Proveedores
@@ -234,7 +234,7 @@ new class extends Component
                     @endcan
                     @can('clients')
                         <x-dropdown-link
-                            :href="route('clients.index')" wire:navigate
+                            :href="route('clients.index')"
                             :active="request()->routeIs('clients.*')"
                         >
                             Clientes
@@ -242,7 +242,7 @@ new class extends Component
                     @endcan
                     @can('users')
                         <x-dropdown-link
-                            :href="route('users.index')" wire:navigate
+                            :href="route('users.index')"
                             :active="request()->routeIs('users.*')"
                         >
                             Usuarios
@@ -259,7 +259,7 @@ new class extends Component
                 >
                     @can('create-purchases')
                         <x-dropdown-link
-                            :href="route('purchases.create')" wire:navigate
+                            :href="route('purchases.create')"
                             :active="request()->routeIs('purchases.create')"
                         >
                             Registrar
@@ -277,7 +277,7 @@ new class extends Component
                 >
                     @can('create-sales')
                         <x-dropdown-link
-                            :href="route('sales.create')" wire:navigate
+                            :href="route('sales.create')"
                             :active="request()->routeIs('sales.create')"
                         >
                             Registrar
@@ -303,7 +303,7 @@ new class extends Component
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                <x-responsive-nav-link :href="route('profile')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 

@@ -17,7 +17,7 @@
 
             <div>
                 <livewire:entities.warehouses.index.choose
-                    :selected-by-default="session('purchases-selected-warehouse')"
+                    :selected-by-default="old('warehouse', session('purchases-selected-warehouse'))"
                 />
             </div>
 

@@ -49,7 +49,7 @@ class Controller extends BaseController
         $total_price = bcadd($inputData['total_purchase_price'], $lastBalance->total_price, 2);
         Balance::create([
             'amount' => $amount, // last_amount + current_amount
-            'unitary_price' => bcdiv($total_price, $amount, 2), // average_weigthed_method (total_price / amount)
+            'unitary_price' => round(bcdiv($total_price, $amount, 3), 2), // average_weigthed_method (total_price / amount)
             'total_price' => $total_price,// last_total + current_total
             'movement_id' => $movement->id
         ]);

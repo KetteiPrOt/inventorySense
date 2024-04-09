@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Invoices\Purchases;
+namespace App\Http\Requests\Invoices\Sales;
 
 use App\Rules\ArrayDefaultKeys;
 use App\Rules\ArraySameSize;
-use App\Rules\Invoices\Purchases\MovementTypes;
+use App\Rules\Invoices\Sales\ValidMovementsData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -22,8 +22,7 @@ class StoreRequest extends FormRequest
         $nextMonth = date('Y-m-d', mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
         return [
             'warehouse' => 'required|integer|exists:warehouses,id',
-            'number' => 'nullable|string|min:17|max:17',
-            'provider' => 'nullable|integer|exists:providers,id',
+            'client' => 'nullable|integer|exists:clients,id',
             'paid' => 'sometimes|accepted',
             'due_payment_date' => 
                 "required_without:paid|exclude_with:paid|date_format:Y-m-d|after_or_equal:$tomorrow|before_or_equal:$nextMonth",
@@ -32,7 +31,7 @@ class StoreRequest extends FormRequest
             'products.*' => 'integer|exists:products,id',
             'movement_types' => [
                 'required', 'array', 'min:1',
-                new ArraySameSize('products'), new ArrayDefaultKeys, new MovementTypes
+                new ArraySameSize('products'), new ArrayDefaultKeys
             ],
             'movement_types.*' => ['integer', 'exists:movement_types,id'],
             'amounts' => [
@@ -40,11 +39,11 @@ class StoreRequest extends FormRequest
                 new ArraySameSize('movement_types'), new ArrayDefaultKeys
             ],
             'amounts.*' => 'integer|min:1|max:65000',
-            'unitary_purchase_prices' => [
+            'unitary_sale_prices' => [
                 'required', 'array', 'min:1',
-                new ArraySameSize('amounts'), new ArrayDefaultKeys
+                new ArraySameSize('amounts'), new ArrayDefaultKeys, new ValidMovementsData
             ],
-            'unitary_purchase_prices.*' => 'decimal:0,2|min:0.01|max:999999.99'
+            'unitary_sale_prices.*' => 'integer|exists:product_sale_prices,id'
         ];
     }
 
@@ -52,8 +51,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'warehouse' => 'bodega',
-            'number' => 'número de factura',
-            'provider' => 'proveedor',
+            'client' => 'cliente',
             'paid' => 'factura pagada',
             'due_payment_date' => 'fecha de vencimiento',
             'comment' => 'comentario',
@@ -63,8 +61,8 @@ class StoreRequest extends FormRequest
             'movement_types.*' => 'tipo de movimiento #:position',
             'amounts' => 'cantidades',
             'amounts.*' => 'cantidad #:position',
-            'unitary_purchase_prices' => 'precios unitarios',
-            'unitary_purchase_prices.*' => 'precio unitario #:position'
+            'unitary_sale_prices' => 'precios unitarios',
+            'unitary_sale_prices.*' => 'precio unitario #:position'
         ];
     }
 }

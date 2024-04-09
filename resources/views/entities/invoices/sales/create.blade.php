@@ -1,7 +1,7 @@
 <x-layouts.primary
     header="Crear venta"
 >
-    <form action="{{__('#')/*route('sales.store')*/}}" method="post" name="createSale">
+    <form action="{{route('sales.store')}}" method="post" name="createSale">
         @csrf
 
         <section class="space-y-6">
@@ -17,7 +17,7 @@
 
             <div>
                 <livewire:entities.warehouses.index.choose
-                    :selected-by-default="session('sales-selected-warehouse')"
+                    :selected-by-default="old('warehouse', session('sales-selected-warehouse'))"
                 />
             </div>
 

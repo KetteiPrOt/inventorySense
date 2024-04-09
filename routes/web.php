@@ -94,5 +94,6 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
     Route::middleware(['can:sales-create'])
         ->get('/ventas/crear', 'create')->name('sales.create');
-    // Route::post('/ventas', 'store')->name('sales.store');
+    Route::middleware(['can:sales-create'])
+        ->post('/ventas', 'store')->name('sales.store');
 });
