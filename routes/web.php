@@ -89,6 +89,10 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
         ->get('/compras/crear', 'create')->name('purchases.create');
     Route::middleware(['can:purchases-create'])
         ->post('/compras', 'store')->name('purchases.store');
+    Route::middleware(['can:kardex'])
+        ->get('/compras/consultar-kardex', 'queryKardex')->name('purchases.query-kardex');
+    Route::middleware(['can:kardex'])
+        ->get('/compras/kardex', 'kardex')->name('purchases.kardex');
 });
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){

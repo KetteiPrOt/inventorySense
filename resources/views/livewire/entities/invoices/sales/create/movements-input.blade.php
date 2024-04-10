@@ -136,7 +136,12 @@
                                 name="amounts[]"
                                 class="w-48 lg:w-20"
                                 id="amountInput{{$product->id}}"
-                                min="1" max="{{$product->latestBalance->amount}}" step="1" required
+                                min="1"
+                                max="{{
+                                    $product->latestBalance->amount > 65000
+                                    ? 65000 : $product->latestBalance->amount
+                                }}"
+                                step="1" required
                                 x-model="amount"
                                 x-on:keyup="$dispatch('changed-movement-input-value')"
                                 x-on:change="$dispatch('changed-movement-input-value')"

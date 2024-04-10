@@ -7,6 +7,7 @@ use App\Models\Invoices\Movements\Balance;
 use App\Models\Invoices\Movements\Income;
 use App\Models\Invoices\Movements\Movement;
 use App\Models\Products\Product;
+use App\Models\Products\SalePrice;
 use Illuminate\Http\Request;
 
 class Controller extends BaseController
@@ -33,9 +34,10 @@ class Controller extends BaseController
             'movement_id' => $movement->id
         ]);
         // Create income
+        $unitary_sale_price = SalePrice::find($inputData['unitary_sale_price'])->price;
         Income::create([
-            'unitary_sale_price' => $inputData['unitary_sale_price'],
-            'total_sale_price' => bcmul($inputData['amount'], $inputData['unitary_sale_price'], 2),
+            'unitary_sale_price' => $unitary_sale_price,
+            'total_sale_price' => bcmul($inputData['amount'], $unitary_sale_price, 2),
             'movement_id' => $movement->id
         ]);
         return $movement;

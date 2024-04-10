@@ -27,6 +27,13 @@ class SaleInvoice extends Model
         'client_id'
     ];
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['user', 'warehouse', 'client'];
+
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);

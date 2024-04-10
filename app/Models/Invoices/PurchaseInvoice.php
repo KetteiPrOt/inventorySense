@@ -28,6 +28,13 @@ class PurchaseInvoice extends Model
         'provider_id'
     ];
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['user', 'warehouse', 'provider'];
+
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
