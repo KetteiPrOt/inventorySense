@@ -61,7 +61,7 @@ new class extends Component
                             </x-dropdown-link>
                         </x-nav-dropdown>
                     @endcan
-                    @canany(['providers', 'clients', 'cash-closing'])
+                    @canany(['providers', 'clients', 'users'])
                         <x-nav-dropdown
                             tag="Personas" width="30"
                             :active="request()->routeIs([
@@ -123,7 +123,7 @@ new class extends Component
                     @endcan
                     @canany(['create-sales', 'cash-closing', 'sales-report'])
                         <x-nav-dropdown
-                            tag="Ventas" width="30"
+                            tag="Ventas" width="32"
                             :active="request()->routeIs([
                                 'sales.*'
                             ])"
@@ -134,6 +134,14 @@ new class extends Component
                                     :active="request()->routeIs('sales.create')"
                                 >
                                     Registrar
+                                </x-dropdown-link>
+                            @endcan
+                            @can('cash-closing')
+                                <x-dropdown-link
+                                    :href="route('sales.query-cash-closing')"
+                                    :active="request()->routeIs('sales.query-cash-closing')"
+                                >
+                                    Cierre de caja
                                 </x-dropdown-link>
                             @endcan
                         </x-nav-dropdown>
@@ -286,7 +294,7 @@ new class extends Component
             @canany(['create-sales', 'cash-closing', 'sales-report'])
                 <x-responsive-nav-dropdown
                     tag="Ventas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                    width="24"
+                    width="32"
                     :active="request()->routeIs([
                         'sales.*'
                     ])"
@@ -297,6 +305,14 @@ new class extends Component
                             :active="request()->routeIs('sales.create')"
                         >
                             Registrar
+                        </x-dropdown-link>
+                    @endcan
+                    @can('cash-closing')
+                        <x-dropdown-link
+                            :href="route('sales.query-cash-closing')"
+                            :active="request()->routeIs('sales.query-cash-closing')"
+                        >
+                            Cierre de caja
                         </x-dropdown-link>
                     @endcan
                 </x-responsive-nav-dropdown>

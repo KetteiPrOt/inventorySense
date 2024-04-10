@@ -19,7 +19,7 @@
         </div>
     </header>
 
-    <div class="lg:hidden mt-2">
+    <div class="lg:hidden mt-6">
         {{$movements->links()}}
     </div>
 
@@ -52,9 +52,19 @@
                     class="block lg:table-cell lg:p-1 lg:border lg:border-slate-100 lg:text-slate-500"
                 >
                     @if($movement->category === 'e')
-                        {{$movement->invoice?->number ?? 'Sin número'}}
+                        <span class="hidden lg:inline">
+                            {{$movement->invoice?->number ?? 'Sin número'}}
+                        </span>
+                        <span class="inline lg:hidden">
+                            {{$movement->invoice?->number ?? 'Sin número de factura'}}
+                        </span>
                     @else
-                        {{'ID: ' . $movement->invoice->id}}
+                        <span class="hidden lg:inline">
+                            {{'ID: ' . $movement->invoice->id}}
+                        </span>
+                        <span class="inline lg:hidden">
+                            {{'Factura ID: ' . $movement->invoice->id}}
+                        </span>
                     @endif
                 </td>
                 <td

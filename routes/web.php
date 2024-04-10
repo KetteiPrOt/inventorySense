@@ -85,9 +85,9 @@ Route::middleware(['auth', 'can:roles'])->controller(RoleController::class)->gro
 });
 
 Route::middleware(['auth'])->controller(PurchaseController::class)->group(function(){
-    Route::middleware(['can:purchases-create'])
+    Route::middleware(['can:create-purchases'])
         ->get('/compras/crear', 'create')->name('purchases.create');
-    Route::middleware(['can:purchases-create'])
+    Route::middleware(['can:create-purchases'])
         ->post('/compras', 'store')->name('purchases.store');
     Route::middleware(['can:kardex'])
         ->get('/compras/consultar-kardex', 'queryKardex')->name('purchases.query-kardex');
@@ -96,8 +96,12 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
 });
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
-    Route::middleware(['can:sales-create'])
+    Route::middleware(['can:create-sales'])
         ->get('/ventas/crear', 'create')->name('sales.create');
-    Route::middleware(['can:sales-create'])
+    Route::middleware(['can:create-sales'])
         ->post('/ventas', 'store')->name('sales.store');
+    Route::middleware(['can:cash-closing'])
+        ->get('/ventas/consultar-cierre-de-caja', 'queryCashClosing')->name('sales.query-cash-closing');
+    Route::middleware(['can:cash-closing'])
+        ->get('/ventas/cierre-de-caja', 'cashClosing')->name('sales.cash-closing');
 });

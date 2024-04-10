@@ -1,7 +1,7 @@
 <div class="max-w-7xl overflow-x-auto">
 <table
     {!! $attributes->merge(['class' => "
-        mt-6 border-collapse table-auto w-full text-sm
+        mt-2 border-collapse table-auto w-full text-sm
     "]) !!}
 >
     <thead>

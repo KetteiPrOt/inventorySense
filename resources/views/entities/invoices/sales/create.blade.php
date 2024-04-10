@@ -42,7 +42,7 @@
                         <input
                             id="paidInput" class="rounded mr-2"
                             type="checkbox" name="paid"
-                            @checked(!is_null(old('paid', true)))
+                            checked
                             x-on:change="
                                 open = $event.target.checked
                                     ? open = false
@@ -52,7 +52,7 @@
                         <label
                             for="paidInput"
                             class="text-sm text-gray-600"
-                        >Compra ya pagada.</label>
+                        >Venta ya pagada.</label>
                     </div>
                     <x-input-error class="mt-2" :messages="$errors->get('paid')" />
                 </div>
@@ -190,12 +190,5 @@
             date.setMilliseconds(0);
             return date;
         };
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('reactivePaidInput', () => ({
-                open: {{is_null(old('paid')) ? 'true' : 'false'}},
-                invalidDate: false
-            }));
-        });
     </script>
 </x-layouts.primary>

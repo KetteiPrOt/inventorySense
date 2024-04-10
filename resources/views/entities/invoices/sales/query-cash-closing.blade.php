@@ -1,7 +1,7 @@
 <x-layouts.primary
-    header="Consultar kardex"
+    header="Consultar cierre de caja"
 >
-    <form action="{{route('purchases.kardex')}}">
+    <form action="{{route('sales.cash-closing')}}">
         <section class="space-y-6">
             <header>
                 <h2 class="text-lg font-medium text-gray-900">
@@ -9,22 +9,12 @@
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Seleccione un producto y especifique el intervalo de consulta para ver el kardex.
+                    Opcionalmente especifique el intervalo de consulta y seleccione la bodega @can('users'), el vendedor, @endcan y el producto para filtar en el cierre de caja.
                 </p>
             </header>
 
-            <div>
-                <livewire:entities.products.index.choose
-                    :selected-by-default="old('product')"
-                    :show-all-by-default="false"
-                />
-            </div>
-
             <div class="sm:flex flex-wrap">
                 <div class="mb-6 sm:mb-0 sm:mr-6">
-                    @php
-                        $lastMonth = mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"));
-                    @endphp
                     <x-input-label for="dateFromInput" :required="true">
                         Desde
                     </x-input-label>
@@ -32,7 +22,7 @@
                         required
                         id="dateFromInput"
                         name="date_from"
-                        value="{{old('date_from', date('Y-m-d', $lastMonth))}}"
+                        value="{{old('date_from', date('Y-m-d'))}}"
                         max="{{date('Y-m-d')}}"
                     />
                     <x-input-error class="mt-2" :messages="$errors->get('date_from')" />
@@ -51,6 +41,30 @@
                     />
                     <x-input-error class="mt-2" :messages="$errors->get('date_to')" />
                 </div>
+            </div>
+
+            <div>
+                <livewire:entities.warehouses.index.choose
+                    :selected-by-default="old('warehouse', session('sales-selected-warehouse'))"
+                    :required="false"
+                />
+            </div>
+
+            @can('users')
+                <div>
+                    <livewire:entities.users.index.choose
+                        :selected-by-default="auth()->user()->id"
+                        :required="false"
+                    />
+                </div>
+            @endcan
+
+            <div>
+                <livewire:entities.products.index.choose
+                    :required="false"
+                    :show-all-by-default="false"
+                    :selected-by-default="old('product')"
+                />
             </div>
         </section>
 

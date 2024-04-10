@@ -59,8 +59,8 @@ class Controller extends BaseController
     {
         $validated = $request->validated();
         $movements = 
-            Movement::
-                join('movement_types', 'movements.type_id', '=', 'movement_types.id')
+            Movement::with('invoice')
+                ->join('movement_types', 'movements.type_id', '=', 'movement_types.id')
                 ->join('balances', 'balances.movement_id', '=', 'movements.id')
                 ->join('products', 'products.id', '=', 'movements.product_id')
                 ->selectRaw("
