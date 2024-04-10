@@ -2,11 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Invoices\PurchaseInvoice;
 use App\Models\Products\Presentation;
 use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
 use App\Models\Products\Type;
 use Illuminate\Database\Seeder;
+use App\Http\Controllers\Invoices\Purchases\Expenses\Controller as ExpenseController;
+use App\Models\Invoices\Movements\Type as MovementType;
 
 class ProductsSeeder extends Seeder
 {
@@ -32,18 +35,38 @@ class ProductsSeeder extends Seeder
     public function run(): void
     {
         $products = $this->defineProducts();
-        foreach($products as $product){
+        foreach($products as $productData){
             // Product information
-            $productId = Product::create([
-                'name' => mb_strtoupper($product['name']),
-                'type_id' => $this->types[$product['type']],
-                'presentation_id' => $this->presentations[$product['content']],
-            ])->id;
+            $product = Product::create([
+                'name' => mb_strtoupper($productData['name']),
+                'type_id' => $this->types[$productData['type']],
+                'presentation_id' => $this->presentations[$productData['content']],
+            ]);
             // Product sale price
             SalePrice::create([
-                'price' => $product['price'],
+                'price' => $productData['price'],
                 'units_number' => 1,
-                'product_id' => $productId
+                'product_id' => $product->id
+            ]);
+            // Start Inventory
+            $invoice = PurchaseInvoice::create([
+                'number' => null,
+                'comment' => null,
+                'due_payment_date' => null,
+                'paid' => true,
+                'paid_date' => null,
+                'user_id' => 1,
+                'warehouse_id' => 1,
+                'provider_id' => null
+            ]);
+            $expenseController = new ExpenseController;
+            $expenseController->store([
+                'amount' => 200,
+                'unitary_purchase_price' => 10.00,
+                'product_id' => $product->id,
+                'invoice_id' => $invoice->id,
+                'invoice_type' => PurchaseInvoice::class,
+                'type_id' => MovementType::initialInventory()->id,
             ]);
         }
     }

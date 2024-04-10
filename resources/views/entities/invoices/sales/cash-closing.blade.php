@@ -178,4 +178,9 @@
     <div class="mt-2">
         {{$movements->links()}}
     </div>
+    @if($movements->isEmpty())
+        <p class="text-red-500">
+            No se encontraron ventas...
+        </p>
+    @endif
 </x-layouts.primary>

@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // Warehouses
-        Warehouse::create(['name' => 'Licorería']);
         Warehouse::create(['name' => 'Deposito']);
+        Warehouse::create(['name' => 'Licorería']);
 
         // Roles and permissions
         $this->call([RolesSeeder::class]);
