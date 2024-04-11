@@ -54,7 +54,7 @@
                             required
                             id="email" name="email" type="email"
                             class="mt-1 block w-full max-w-sm"
-                            minlength="10" maxlength="20"
+                            minlength="10" maxlength="255"
                             value="{{old('email', $user->email)}}"
                         />
                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
