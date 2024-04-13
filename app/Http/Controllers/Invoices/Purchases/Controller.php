@@ -40,7 +40,7 @@ class Controller extends BaseController
                 'invoice_id' => $invoice->id,
                 'invoice_type' => PurchaseInvoice::class,
                 'type_id' => $validated['movement_types'][$key],
-            ]);
+            ], $validated['warehouse']);
         }
         // Save the choosed warehouse in session
         $request->session()->put('purchases-selected-warehouse', intval($validated['warehouse']));

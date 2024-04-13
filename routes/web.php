@@ -97,6 +97,10 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
     Route::middleware(['can:create-sales'])
+        ->get('/ventas/seleccionar-bodega', 'selectWarehouse')->name('sales.select-warehouse');
+    Route::middleware(['can:create-sales'])
+        ->post('/ventas/guardar-bodega-seleccionada', 'saveSelectedWarehouse')->name('sales.save-selected-warehouse');
+    Route::middleware(['can:create-sales'])
         ->get('/ventas/crear', 'create')->name('sales.create');
     Route::middleware(['can:create-sales'])
         ->post('/ventas', 'store')->name('sales.store');

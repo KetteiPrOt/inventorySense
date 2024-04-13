@@ -13,12 +13,34 @@ use App\Models\User;
 use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class Controller extends BaseController
 {
+    public function selectWarehouse()
+    {
+        return view('entities.invoices.sales.select-warehouse');
+    }
+
+    public function saveSelectedWarehouse(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'warehouse' => 'required|integer|exists:warehouses,id'
+        ], attributes: ['warehouse' => 'bodega']);
+        if($validator->fails()){
+            return redirect()->route('sales.select-warehouse')->withErrors($validator)->withInput();
+        }
+        $validated = $validator->validated();
+        $request->session()->put('sales-selected-warehouse', intval($validated['warehouse']));
+        return redirect()->route('sales.create');
+    }
+
     public function create()
     {
-        return view('entities.invoices.sales.create');
+        return 
+            is_null(session('sales-selected-warehouse'))
+                ? redirect()->route('sales.select-warehouse')
+                : view('entities.invoices.sales.create', ['warehouse' => Warehouse::find(session('sales-selected-warehouse'))]);
     }
 
     public function store(StoreRequest $request, IncomeController $incomeController)
@@ -41,7 +63,7 @@ class Controller extends BaseController
                 'invoice_id' => $invoice->id,
                 'invoice_type' => SaleInvoice::class,
                 'type_id' => $validated['movement_types'][$key],
-            ]);
+            ], $validated['warehouse']);
         }
         // Save the choosed warehouse in session
         $request->session()->put('sales-selected-warehouse', intval($validated['warehouse']));

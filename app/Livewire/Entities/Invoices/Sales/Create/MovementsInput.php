@@ -4,6 +4,8 @@ namespace App\Livewire\Entities\Invoices\Sales\Create;
 
 use App\Models\Invoices\Movements\Type;
 use App\Models\Products\Product;
+use App\Models\Products\ProductWarehouse;
+use App\Models\Warehouse;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -14,9 +16,17 @@ class MovementsInput extends Component
     use WithPagination;
 
     #[Locked]
+    public ?int $selectedWarehouseId = null;
+
+    #[Locked]
     public array $selectedProducts = [];
 
     public $search;
+
+    public function mount(int $warehouseId)
+    {
+        $this->selectedWarehouseId = $warehouseId;
+    }
 
     public function render()
     {
@@ -37,7 +47,7 @@ class MovementsInput extends Component
         // I use multiple queries because this component needs to keep the order of the array in the resulting Collection
         $products = [];
         foreach($this->selectedProducts as $productId){
-            $products[] = Product::with('salePrices')->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
+            $product = Product::with('salePrices')->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
                 ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
                 ->selectRaw("
                     products.id,
@@ -49,6 +59,8 @@ class MovementsInput extends Component
                     products.started_inventory
                 ")->where('products.id', $productId)
                 ->first();
+            $product->loadWarehouseExistences($this->selectedWarehouseId);
+            $products[] = $product;
         }
         return collect($products);
     }
@@ -80,6 +92,9 @@ class MovementsInput extends Component
                     ->orderBy('tag')
                     ->simplePaginate(5, pageName: 'products-searched');
         }
+        foreach($products as $product){
+            $product->loadWarehouseExistences($this->selectedWarehouseId);
+        }
         return $products;
     }
 
@@ -100,11 +115,12 @@ class MovementsInput extends Component
     public function addProduct($id)
     {
         $id = $this->validateId($id);
-        $product = Product::with('latestBalance')->find($id);
+        $product = Product::find($id);
+        $product?->loadWarehouseExistences($this->selectedWarehouseId);
         if(
             !is_null($product)
             && $product->started_inventory
-            && $product->latestBalance?->amount > 0
+            && $product->warehouse_existences > 0
         ){
             $selectedProductsFlipped = array_flip($this->selectedProducts);
             if(!Arr::has($selectedProductsFlipped, $id)){

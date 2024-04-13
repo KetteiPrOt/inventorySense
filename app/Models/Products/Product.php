@@ -4,9 +4,11 @@ namespace App\Models\Products;
 
 use App\Models\Invoices\Movements\Balance;
 use App\Models\Invoices\Movements\Movement;
+use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -31,6 +33,23 @@ class Product extends Model
     public function salePrices(): HasMany
     {
         return $this->hasMany(SalePrice::class);
+    }
+
+    public function warehouses(): BelongsToMany
+    {
+        return $this->belongsToMany(Warehouse::class, 'product_warehouse', 'product_id', 'warehouse_id')
+            ->using(ProductWarehouse::class)
+            ->withPivot(['amount', 'balance_id']);
+    }
+
+    public function loadWarehouseExistences(int $warehouseId): void
+    {
+        $productWarehouse = ProductWarehouse::where(
+            'product_id', $this->id
+        )->where(
+            'warehouse_id', $warehouseId
+        )->first();
+        $this->warehouse_existences = $productWarehouse?->amount ?? 0;
     }
 
     public function loadTag(): void

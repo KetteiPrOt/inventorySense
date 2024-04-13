@@ -16,9 +16,22 @@
             </header>
 
             <div>
-                <livewire:entities.warehouses.index.choose
-                    :selected-by-default="old('warehouse', session('sales-selected-warehouse'))"
-                />
+                <x-input-label for="warehouseInput" :required="true">
+                    Bodega
+                </x-input-label>
+                <x-select-input
+                    name="warehouse"
+                    id="warehouseInput"
+                    class="mb-2 block w-full max-w-sm"
+                >
+                    <option selected value="{{$warehouse->id}}">
+                        {{$warehouse->name}}
+                    </option>
+                </x-select-input>
+                <x-secondary-link-button href="{{route('sales.select-warehouse')}}">
+                    Cambiar
+                </x-secondary-link-button>
+                <x-input-error class="mt-2" :messages="$errors->get('warehouse')" />
             </div>
 
             <div>
@@ -107,7 +120,9 @@
             </header>
 
             <div>
-                <livewire:entities.invoices.sales.create.movements-input />
+                <livewire:entities.invoices.sales.create.movements-input
+                    :warehouse-id="session('sales-selected-warehouse')"
+                />
             </div>
         </section>
 

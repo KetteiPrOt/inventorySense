@@ -40,7 +40,8 @@ class ValidMovementsData implements ValidationRule, DataAwareRule, ValidatorAwar
                     $fail('El producto #' . ($i + 1) . ' no tiene el inventario iniciado.');
                     break;
                 }
-                if(intval($amount) > $product->latestBalance->amount){
+                $product->loadWarehouseExistences($this->data['warehouse']);
+                if(intval($amount) > $product->warehouse_existences){
                     $fail('La cantidad #' . ($i + 1) . ' es mayor a la disponible.');
                     break;
                 }

@@ -7,12 +7,13 @@ use App\Models\Invoices\Movements\Balance;
 use App\Models\Invoices\Movements\Income;
 use App\Models\Invoices\Movements\Movement;
 use App\Models\Products\Product;
+use App\Models\Products\ProductWarehouse;
 use App\Models\Products\SalePrice;
 use Illuminate\Http\Request;
 
 class Controller extends BaseController
 {
-    public function store(array $inputData): Movement
+    public function store(array $inputData, int $warehouse_id): Movement
     {
         $product = Product::with('latestBalance')->find($inputData['product_id']);
         $latestBalance = $product->latestBalance;
@@ -40,6 +41,14 @@ class Controller extends BaseController
             'total_sale_price' => bcmul($inputData['amount'], $unitary_sale_price, 2),
             'movement_id' => $movement->id
         ]);
+        // Update product warehouse existence
+        $warehouseExistence = ProductWarehouse::where(
+            'product_id', $inputData['product_id']
+        )->where(
+            'warehouse_id', $warehouse_id
+        )->first();
+        $warehouseExistence->amount = $warehouseExistence->amount - intval($inputData['amount']);
+        $warehouseExistence->save();
         return $movement;
     }
 }

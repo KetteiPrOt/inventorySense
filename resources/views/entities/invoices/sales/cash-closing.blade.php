@@ -97,10 +97,10 @@
                             "
                         >
                             <span class="hidden sm:inline">
-                                ID: {{$movement->id}}
+                                ID: {{$movement->invoice->id}}
                             </span>
                             <span class="inline sm:hidden">
-                                Factura ID: {{$movement->id}}
+                                Factura ID: {{$movement->invoice->id}}
                             </span>
                         </x-table.td>
                         @if(!isset($filters['product']))

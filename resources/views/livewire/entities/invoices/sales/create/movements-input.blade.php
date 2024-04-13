@@ -138,8 +138,8 @@
                                 id="amountInput{{$product->id}}"
                                 min="1"
                                 max="{{
-                                    $product->latestBalance->amount > 65000
-                                    ? 65000 : $product->latestBalance->amount
+                                    $product->warehouse_existences > 65000
+                                    ? 65000 : $product->warehouse_existences
                                 }}"
                                 step="1" required
                                 x-model="amount"
@@ -298,8 +298,7 @@
                     </x-table.td>
                     @if(
                         !$product->started_inventory
-                        || ($product->latestBalance?->amount === 0)
-                        || ($product->latestBalance?->amount === null)
+                        || ($product->warehouse_existences === 0)
                     )
                         <x-table.td class="text-center">
                             <span class="text-red-500">0</span>
@@ -314,7 +313,7 @@
                         </x-table.td>
                     @else
                         <x-table.td class="text-center text-red-500">
-                            {{$product->latestBalance->amount}}
+                            {{$product->warehouse_existences}}
                         </x-table.td>
                         <x-table.td>
                             <x-secondary-button

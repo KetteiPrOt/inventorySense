@@ -25,11 +25,11 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->nullOnDelete()->cascadeOnUpdate();
-            $table->unsignedMediumInteger('warehouse_id')->nullable();
+            $table->unsignedMediumInteger('warehouse_id');
             $table->foreign('warehouse_id', 'purchase_invoice_warehouse')
                 ->references('id')
                 ->on('warehouses')
-                ->nullOnDelete()->cascadeOnUpdate();
+                ->noActionOnDelete()->cascadeOnUpdate();
             $table->unsignedInteger('provider_id')->nullable();
             $table->foreign('provider_id', 'provider_sale_invoice')
                 ->references('id')

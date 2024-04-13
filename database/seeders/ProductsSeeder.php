@@ -61,13 +61,32 @@ class ProductsSeeder extends Seeder
             ]);
             $expenseController = new ExpenseController;
             $expenseController->store([
-                'amount' => 200,
+                'amount' => 100,
                 'unitary_purchase_price' => 10.00,
                 'product_id' => $product->id,
                 'invoice_id' => $invoice->id,
                 'invoice_type' => PurchaseInvoice::class,
                 'type_id' => MovementType::initialInventory()->id,
+            ], 1);
+            // Push expense in the other warehouse
+            $invoice = PurchaseInvoice::create([
+                'number' => null,
+                'comment' => null,
+                'due_payment_date' => null,
+                'paid' => true,
+                'paid_date' => null,
+                'user_id' => 1,
+                'warehouse_id' => 2,
+                'provider_id' => null
             ]);
+            $expenseController->store([
+                'amount' => 100,
+                'unitary_purchase_price' => 10.00,
+                'product_id' => $product->id,
+                'invoice_id' => $invoice->id,
+                'invoice_type' => PurchaseInvoice::class,
+                'type_id' => MovementType::purchase()->id,
+            ], 2);
         }
     }
 
