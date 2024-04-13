@@ -114,9 +114,17 @@ new class extends Component
                             @can('kardex')
                                 <x-dropdown-link
                                     :href="route('purchases.query-kardex')"
-                                    :active="request()->routeIs('purchases.query-kardex')"
+                                    :active="request()->routeIs(['purchases.query-kardex', 'purchases.kardex'])"
                                 >
                                     Kardex
+                                </x-dropdown-link>
+                            @endcan
+                            @can('purchases-report')
+                                <x-dropdown-link
+                                    :href="route('purchases.query-index')"
+                                    :active="request()->routeIs(['purchases.query-index', 'purchases.index'])"
+                                >
+                                    Reporte
                                 </x-dropdown-link>
                             @endcan
                         </x-nav-dropdown>
@@ -139,7 +147,7 @@ new class extends Component
                             @can('cash-closing')
                                 <x-dropdown-link
                                     :href="route('sales.query-cash-closing')"
-                                    :active="request()->routeIs('sales.query-cash-closing')"
+                                    :active="request()->routeIs(['sales.query-cash-closing', 'sales.cash-closing'])"
                                 >
                                     Cierre de caja
                                 </x-dropdown-link>
@@ -284,9 +292,17 @@ new class extends Component
                     @can('kardex')
                         <x-dropdown-link
                             :href="route('purchases.query-kardex')"
-                            :active="request()->routeIs('purchases.query-kardex')"
+                            :active="request()->routeIs(['purchases.query-kardex', 'purchases.kardex'])"
                         >
                             Kardex
+                        </x-dropdown-link>
+                    @endcan
+                    @can('purchases-report')
+                        <x-dropdown-link
+                            :href="route('purchases.query-index')"
+                            :active="request()->routeIs(['purchases.query-index', 'purchases.index'])"
+                        >
+                            Reporte
                         </x-dropdown-link>
                     @endcan
                 </x-responsive-nav-dropdown>
@@ -310,7 +326,7 @@ new class extends Component
                     @can('cash-closing')
                         <x-dropdown-link
                             :href="route('sales.query-cash-closing')"
-                            :active="request()->routeIs('sales.query-cash-closing')"
+                            :active="request()->routeIs(['sales.query-cash-closing', 'sales.cash-closing'])"
                         >
                             Cierre de caja
                         </x-dropdown-link>

@@ -430,8 +430,61 @@
                             </span>
                         </a>
                         @endcan --}}
-                    </div>
 
+                        @can('purchases-report')
+                        <a
+                            href="{{route('purchases.query-index')}}"
+                            class="
+                                m-4 flex flex-col
+                                w-36 h-40 border border-slate-400 rounded
+                                justify-center items-center
+                                focus:outline-none focus:bg-gray-100
+                                hover:bg-gray-100
+                            "
+                        >
+                            <div class="h-1/2 flex justify-center items-center">
+                                <svg
+                                    class="w-16 h-16"
+                                    fill="#000000" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <g fill-rule="evenodd">
+                                        <path d="M1185.471 0v564.706h564.705V1920H169V0h1016.471Zm-225.77 1355.294H507.823v113.054h451.878v-113.054Zm338.711-225.881H507.823v112.94h790.589v-112.94Zm-112.941-225.884H507.823v112.941h677.648V903.529Zm225.882-225.882h-903.53v112.941h903.53V677.647ZM959.701 451.878H507.823v112.941h451.878V451.878Z"/>
+                                        <path d="M1667.673 345.623c30.38 30.268 51.84 66.635 65.619 106.164h-434.937V16.851c39.53 13.779 75.897 35.35 106.278 65.619l263.04 263.153Z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <span class="px-3 leading-5 text-center text-black mt-1">
+                                Reporte de compras
+                            </span>
+                        </a>
+                        @endcan
+
+                        {{-- @can('sales-report')
+                            <a
+                                href="{{__('#')/*route('sales.query-index')*/}}"
+                                class="
+                                    m-4 flex flex-col
+                                    w-36 h-40 border border-slate-400 rounded
+                                    justify-center items-center
+                                    focus:outline-none focus:bg-gray-100
+                                    hover:bg-gray-100
+                                "
+                            >
+                                <div class="h-1/2 flex justify-center items-center">
+                                    <svg
+                                        class="w-16 h-16"
+                                        fill="#000000" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M1706.235 1807.059H350.941V112.94h903.53v451.765h451.764v1242.353Zm-338.823-1670.74 315.443 315.447h-315.443V136.32Zm402.182 242.487L1440.372 49.58C1408.296 17.62 1365.717 0 1320.542 0H238v1920h1581.175V498.635c0-45.176-17.618-87.755-49.58-119.83ZM576.823 1242.353h790.589v-112.94H576.823v112.94Zm0-451.765h903.53V677.647h-903.53v112.941Zm0 677.647h451.765v-112.941H576.823v112.941Zm0-451.764h677.648V903.53H576.823v112.941Zm0-451.765h451.765V451.765H576.823v112.941Z" fill-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <span class="px-3 leading-5 text-center text-black mt-1">
+                                    Reporte de ventas
+                                </span>
+                            </a>
+                            @endcan --}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

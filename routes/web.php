@@ -85,6 +85,10 @@ Route::middleware(['auth', 'can:roles'])->controller(RoleController::class)->gro
 });
 
 Route::middleware(['auth'])->controller(PurchaseController::class)->group(function(){
+    Route::middleware(['can:purchases-report'])
+        ->get('/compras/consultar-reporte', 'queryIndex')->name('purchases.query-index');
+    Route::middleware(['can:purchases-report'])
+        ->get('/compras', 'index')->name('purchases.index');
     Route::middleware(['can:create-purchases'])
         ->get('/compras/crear', 'create')->name('purchases.create');
     Route::middleware(['can:create-purchases'])

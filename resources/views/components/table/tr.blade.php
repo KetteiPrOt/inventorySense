@@ -1,10 +1,21 @@
-@props(['danger' => false, 'hover' => true])
+@props(['danger' => false, 'alert' => false, 'hover' => true])
 
 @php
-    $classString = 
-        $hover
-        ? ($danger ? 'bg-red-100 hover:bg-red-200' : 'hover:bg-slate-100')
-        : '';
+    $classString = '';
+    if($danger){
+        $classString .= 'bg-red-100 ';
+    } else if($alert){
+        $classString .= 'bg-yellow-100 ';
+    }
+    if($hover){
+        if($danger){
+            $classString .= 'hover:bg-red-200 ';
+        } else if($alert){
+            $classString .= 'hover:bg-yellow-200 ';
+        } else {
+            $classString .= 'hover:bg-slate-100 ';
+        }
+    }
 @endphp
 
 <tr

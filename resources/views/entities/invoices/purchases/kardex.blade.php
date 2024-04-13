@@ -116,8 +116,8 @@
                         </x-table>
                     </div>
                     {{-- Balance detaild responsive table --}}
-                    <div class="mt-2 block lg:hidden">
-                        <strong>Existencias</strong>
+                    <div class="mt-3 block lg:hidden">
+                        <strong class="block mb-1 text-center">Existencias</strong>
                         <x-table>
                             <x-slot:head>
                                 <x-table.tr :hover="false">
