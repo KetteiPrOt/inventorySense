@@ -100,6 +100,10 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
 });
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
+    Route::middleware(['can:sales-report'])
+        ->get('/ventas/consultar-reporte', 'queryIndex')->name('sales.query-index');
+    Route::middleware(['can:sales-report'])
+        ->get('/ventas', 'index')->name('sales.index');
     Route::middleware(['can:create-sales'])
         ->get('/ventas/seleccionar-bodega', 'selectWarehouse')->name('sales.select-warehouse');
     Route::middleware(['can:create-sales'])

@@ -459,9 +459,9 @@
                         </a>
                         @endcan
 
-                        {{-- @can('sales-report')
+                        @can('sales-report')
                             <a
-                                href="{{__('#')/*route('sales.query-index')*/}}"
+                                href="{{route('sales.query-index')}}"
                                 class="
                                     m-4 flex flex-col
                                     w-36 h-40 border border-slate-400 rounded
@@ -482,7 +482,7 @@
                                     Reporte de ventas
                                 </span>
                             </a>
-                            @endcan --}}
+                            @endcan
                         </div>
                     </div>
                 </div>

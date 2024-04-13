@@ -152,6 +152,14 @@ new class extends Component
                                     Cierre de caja
                                 </x-dropdown-link>
                             @endcan
+                            @can('sales-report')
+                                <x-dropdown-link
+                                    :href="route('sales.query-index')"
+                                    :active="request()->routeIs(['sales.query-index', 'sales.index'])"
+                                >
+                                    Reporte
+                                </x-dropdown-link>
+                            @endcan
                         </x-nav-dropdown>
                     @endcan
                     @can('roles')
@@ -329,6 +337,14 @@ new class extends Component
                             :active="request()->routeIs(['sales.query-cash-closing', 'sales.cash-closing'])"
                         >
                             Cierre de caja
+                        </x-dropdown-link>
+                    @endcan
+                    @can('sales-report')
+                        <x-dropdown-link
+                            :href="route('sales.query-index')"
+                            :active="request()->routeIs(['sales.query-index', 'sales.index'])"
+                        >
+                            Reporte
                         </x-dropdown-link>
                     @endcan
                 </x-responsive-nav-dropdown>

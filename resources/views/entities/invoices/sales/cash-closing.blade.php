@@ -24,12 +24,21 @@
         @endif
 
         @if(isset($filters['user']))
-        <div>
-            <p>
-                <strong>Vendedor</strong> <br>
-                {{$filters['user']->name}}
-            </p>
-        </div>
+            <div>
+                <p>
+                    <strong>Vendedor</strong> <br>
+                    {{$filters['user']->name}}
+                </p>
+            </div>
+        @else
+            @if(!auth()->user()->can('users'))
+            <div>
+                <p>
+                    <strong>Vendedor</strong> <br>
+                    {{auth()->user()->name}}
+                </p>
+            </div>
+            @endif
         @endif
 
         @if(isset($filters['product']))

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Http\Controllers\Invoices\Sales\Incomes\Controller as IncomeController;
 use App\Http\Requests\Invoices\Sales\ShowCashClosingRequest;
 use App\Http\Requests\Invoices\Sales\StoreRequest;
+use App\Models\Client;
 use App\Models\Invoices\Movements\Movement;
 use App\Models\Invoices\SaleInvoice;
 use App\Models\Products\Product;
@@ -17,6 +18,92 @@ use Illuminate\Support\Facades\Validator;
 
 class Controller extends BaseController
 {
+    public function queryIndex()
+    {
+        return view('entities.invoices.sales.query-index');
+    }
+
+    public function index(Request $request)
+    {
+        $authUser = auth()->user();
+        if(!is_null($request->get('user'))){
+            if(!$authUser->can('users')){
+                abort(403);
+            }
+        }
+        $today = date('Y-m-d');
+        $validator = Validator::make($request->all(), [
+            'date_from' => "required|date_format:Y-m-d|before_or_equal:date_to",
+            'date_to' => "required|date_format:Y-m-d|before_or_equal:$today",
+            'report_type' => 'required|string|min:3|max:13',
+            'warehouse' => 'nullable|integer|exists:warehouses,id',
+            'user' => 'nullable|integer|exists:users,id',
+            'client' => 'nullable|integer|exists:clients,id'
+        ], attributes: [
+            'date_from' => 'fecha incial',
+            'date_to' => 'fecha final',
+            'report_type' => 'tipo de reporte',
+            'warehouse' => 'bodega',
+            'user' => 'usuario',
+            'client' => 'cliente'
+        ]);
+        if($validator->fails()){
+            return redirect()->route('sales.query-index')->withErrors($validator)->withInput();
+        }
+        $validated = $validator->validated();
+        $validated['report_type'] = match($validated['report_type']){
+            'all' => 0,
+            'only-paid' => 1,
+            'only-not-paid' => 2,
+            default => 0
+        };
+        $query = SaleInvoice::with('client')
+            ->where('created_at',  '<', $validated['date_to'] . ' 23:59:59')
+            ->where('created_at',  '>', $validated['date_from'] . ' 00:00:00');
+        if(isset($validated['warehouse'])){
+            $query = $query->where('warehouse_id', $validated['warehouse']);
+        }
+        if(isset($validated['user'])){
+            $query->where('user_id', $validated['user']);
+        } else {
+            if(!$authUser->can('users')){
+                $query->where('user_id', $authUser->id);
+            }
+        }
+        if(isset($validated['client'])){
+            $query = $query->where('client_id', $validated['client']);
+        }
+        if($validated['report_type'] === 1){
+            $query->where('paid', true);
+        }
+        if($validated['report_type'] === 2){
+            $query->where('paid', false);
+        }
+        $invoices = $query
+            ->orderBy('id', 'desc')
+            ->paginate(15)->withQueryString();
+        foreach($invoices as $invoice){
+            $invoice->total_price = '0.00';
+            foreach($invoice->movements as $movement){
+                $invoice->total_price = bcadd($invoice->total_price, $movement->income->total_sale_price, 2);
+            }
+        }
+        return view('entities.invoices.sales.index', [
+            'invoices' => $invoices,
+            'filters' => [
+                'date_from' => $validated['date_from'],
+                'date_to' => $validated['date_to'],
+                'report_type' => match($validated['report_type']){
+                    0 => 'Todas las ventas',
+                    1 => 'Ventas pagadas',
+                    2 => 'Ventas por pagar'
+                },
+                'warehouse' => isset($validated['warehouse']) ? Warehouse::find($validated['warehouse']) : null,
+                'user' => isset($validated['user']) ? User::find($validated['user']) : null,
+                'client' => isset($validated['client']) ? Client::find($validated['client']) : null
+            ]
+        ]);
+    }
     public function selectWarehouse()
     {
         return view('entities.invoices.sales.select-warehouse');
@@ -123,6 +210,11 @@ class Controller extends BaseController
                 }
                 if(isset($validated['user'])){
                     $query->where('user_id', $validated['user']);
+                } else {
+                    $authUser = auth()->user();
+                    if(!$authUser->can('users')){
+                        $query->where('user_id', $authUser->id);
+                    }
                 }
                 $query->where('paid', true)
                       ->where('created_at',  '<', $validated['date_to'] . ' 23:59:59')

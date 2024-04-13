@@ -4,7 +4,7 @@ namespace App\Models\Invoices\Movements;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Income extends Model
 {
@@ -14,8 +14,8 @@ class Income extends Model
 
     protected $fillable = ['unitary_sale_price', 'total_sale_price', 'movement_id'];
 
-    public function movement(): HasOne
+    public function movement(): BelongsTo
     {
-        return $this->hasOne(Movement::class);
+        return $this->belongsTo(Movement::class);
     }
 }

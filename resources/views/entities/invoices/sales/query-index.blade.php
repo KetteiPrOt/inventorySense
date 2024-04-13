@@ -1,7 +1,7 @@
 <x-layouts.primary
-    header="Consultar reporte de compras"
+    header="Consultar reporte de ventas"
 >
-    <form action="{{route('purchases.index')}}">
+    <form action="{{route('sales.index')}}">
         <section class="space-y-6">
             <header>
                 <h2 class="text-lg font-medium text-gray-900">
@@ -9,7 +9,7 @@
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Especifique el intervalo de consulta y seleccione el tipo de reporte de compras que desea consultar.
+                    Especifique el intervalo de consulta y seleccione el tipo de reporte de ventas que desea consultar. Opcionalmente puede filtar las ventas según el vendedor, cliente, o bodega.
                 </p>
             </header>
 
@@ -64,7 +64,7 @@
                                     name="report_type"
                                 />
                                 <label for="reportTypeInput0">
-                                    Todas las compras
+                                    Todas las ventas
                                 </label>
                                 </x-table.td>
                         </x-table.tr>
@@ -80,7 +80,7 @@
                                     name="report_type"
                                 />
                                 <label for="reportTypeInput1">
-                                    Solo compras <strong>pagadas</strong>
+                                    Solo ventas <strong>pagadas</strong>
                                 </label>
                                 </x-table.td>
                         </x-table.tr>
@@ -96,13 +96,33 @@
                                     name="report_type"
                                 />
                                 <label for="reportTypeInput2">
-                                    Solo compras <strong>no</strong> pagadas
+                                    Solo ventas <strong>no</strong> pagadas
                                 </label>
                                 </x-table.td>
                         </x-table.tr>
                     </x-slot:body>
                 </x-table>
                 <x-input-error class="mt-2" :messages="$errors->get('report_type')" />
+            </div>
+
+            @can('users')
+            <div>
+                <livewire:entities.users.index.choose
+                    :required="false"
+                />
+            </div>
+            @endcan
+
+            <div>
+                <livewire:entities.clients.index.choose
+                    :required="false"
+                />
+            </div>
+
+            <div>
+                <livewire:entities.warehouses.index.choose
+                    :required="false"
+                />
             </div>
         </section>
 

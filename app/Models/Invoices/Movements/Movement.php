@@ -40,9 +40,9 @@ class Movement extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function income(): BelongsTo
+    public function income(): HasOne
     {
-        return $this->belongsTo(Income::class);
+        return $this->hasOne(Income::class);
     }
 
     public function balance(): HasOne
