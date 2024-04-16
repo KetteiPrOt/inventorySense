@@ -14,7 +14,7 @@ class ShowCashClosingRequest extends FormRequest
     {
         $authorized = true;
         if(!is_null($this->get('user'))){
-            if(!auth()->user()->can('users')){
+            if(!auth()->user()->can('see-all-incomes')){
                 $authorized = false;
             }
         }

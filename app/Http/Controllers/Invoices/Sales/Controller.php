@@ -27,7 +27,7 @@ class Controller extends BaseController
     {
         $authUser = auth()->user();
         if(!is_null($request->get('user'))){
-            if(!$authUser->can('users')){
+            if(!$authUser->can('see-all-sales')){
                 abort(403);
             }
         }
@@ -66,7 +66,7 @@ class Controller extends BaseController
         if(isset($validated['user'])){
             $query->where('user_id', $validated['user']);
         } else {
-            if(!$authUser->can('users')){
+            if(!$authUser->can('see-all-sales')){
                 $query->where('user_id', $authUser->id);
             }
         }
@@ -96,7 +96,7 @@ class Controller extends BaseController
                 'report_type' => match($validated['report_type']){
                     0 => 'Todas las ventas',
                     1 => 'Ventas pagadas',
-                    2 => 'Ventas por pagar'
+                    2 => 'Ventas no pagadas'
                 },
                 'warehouse' => isset($validated['warehouse']) ? Warehouse::find($validated['warehouse']) : null,
                 'user' => isset($validated['user']) ? User::find($validated['user']) : null,
@@ -212,7 +212,7 @@ class Controller extends BaseController
                     $query->where('user_id', $validated['user']);
                 } else {
                     $authUser = auth()->user();
-                    if(!$authUser->can('users')){
+                    if(!$authUser->can('see-all-incomes')){
                         $query->where('user_id', $authUser->id);
                     }
                 }

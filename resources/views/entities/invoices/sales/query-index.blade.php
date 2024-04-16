@@ -105,7 +105,7 @@
                 <x-input-error class="mt-2" :messages="$errors->get('report_type')" />
             </div>
 
-            @can('users')
+            @can('see-all-sales')
             <div>
                 <livewire:entities.users.index.choose
                     :required="false"

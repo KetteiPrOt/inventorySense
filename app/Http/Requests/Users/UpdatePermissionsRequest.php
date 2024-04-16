@@ -14,11 +14,21 @@ class UpdatePermissionsRequest extends FormRequest
      */
     public function rules(): array
     {
-        $permissions = Permission::$directPermissions;
-        foreach($permissions as $permission){
-            $rules[$permission] = 'sometimes|accepted';
-        }
-        return $rules;
+        return [
+            'products' => 'sometimes|accepted',
+            'providers' => 'sometimes|accepted',
+            'clients' => 'sometimes|accepted',
+            'create-purchases' => 'sometimes|accepted',
+            'kardex' => 'sometimes|accepted',
+            'purchases-report' => 'sometimes|accepted',
+            'create-sales' => 'sometimes|accepted',
+            'cash-closing' => 'sometimes|accepted',
+            'see-all-incomes' => 'sometimes|accepted|exclude_without:cash-closing',
+            'sales-report' => 'sometimes|accepted',
+            'see-all-sales' => 'sometimes|accepted|exclude_without:sales-report',
+            'edit-all-sales' => 'sometimes|accepted|exclude_without:see-all-sales,sales-report',
+            'inventory' => 'sometimes|accepted'
+        ];
     }
 
     public function attributes(): array

@@ -68,7 +68,7 @@ class Controller extends BaseController
                 'report_type' => match($validated['report_type']){
                     0 => 'Todas las compras',
                     1 => 'Compras pagadas',
-                    2 => 'Compras por pagar'
+                    2 => 'Compras no pagadas'
                 }
             ]
         ]);
