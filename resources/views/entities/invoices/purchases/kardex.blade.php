@@ -52,7 +52,7 @@
                     class="block lg:table-cell lg:p-1 lg:border lg:border-slate-100 lg:text-slate-500"
                 >
                     @if($movement->category === 'e')
-                        <a href="#">
+                        <a href="{{route('purchases.show', $movement->invoice->id)}}">
                             <span class="hidden lg:inline underline text-blue-400">
                                 {{$movement->invoice?->number ?? 'Sin número'}}
                             </span>

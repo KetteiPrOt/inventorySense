@@ -155,4 +155,69 @@ class Controller extends BaseController
             ]
         ]);
     }
+
+    public function show(PurchaseInvoice $invoice)
+    {
+        if(
+            !(
+                auth()->user()->can('kardex')
+                || auth()->user()->can('purchases-report')
+            )
+        ){
+            abort(403);
+        }
+        $movements = Movement::
+            join('products', 'products.id', '=', 'movements.product_id')
+            ->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
+            ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
+            ->selectRaw("
+                    movements.id,
+                    movements.amount,
+                    movements.unitary_purchase_price,
+                    movements.total_purchase_price,
+                    CONCAT_WS(' ',
+                        `product_types`.`name`,
+                        `products`.`name`,
+                        CONCAT(`product_presentations`.`content`, 'ml')
+                    ) as `product_tag`
+                ")
+            ->where('invoice_id', $invoice->id)
+            ->where('invoice_type', PurchaseInvoice::class)
+            ->orderBy('id', 'asc')
+            ->get();
+        return view('entities.invoices.purchases.show', [
+            'invoice' => $invoice,
+            'movements' => $movements,
+            'total_prices_summation' => $movements->sum('total_purchase_price')
+        ]);
+    }
+
+    public function update(Request $request, PurchaseInvoice $invoice)
+    {
+        if(
+            !(
+                auth()->user()->can('kardex')
+                || auth()->user()->can('purchases-report')
+            )
+        ){
+            abort(403);
+        }
+        $today = date('Y-m-d');
+        $created_at = date('Y-m-d', strtotime($invoice->created_at));
+        $validator = Validator::make($request->all(), [
+            'paid_date' => "required|date_format:Y-m-d|before_or_equal:$today|after_or_equal:$created_at"
+        ], attributes: ['paid_date' => 'fecha de pago']);
+        if($validator->fails()){
+            return redirect()->route('purchases.show', $invoice->id)->withErrors($validator)->withInput();
+        }
+        $validated = $validator->validated();
+        $invoice->paid = true;
+        if($validated['paid_date'] === $created_at){
+            $invoice->paid_date = null;
+        } else {
+            $invoice->paid_date = $validated['paid_date'];
+        }
+        $invoice->save();
+        return redirect()->route('purchases.show', $invoice->id);
+    }
 }

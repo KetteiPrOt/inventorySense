@@ -97,6 +97,8 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
         ->get('/compras/consultar-kardex', 'queryKardex')->name('purchases.query-kardex');
     Route::middleware(['can:kardex'])
         ->get('/compras/kardex', 'kardex')->name('purchases.kardex');
+    Route::get('/compras/{invoice}', 'show')->name('purchases.show');
+    Route::put('/compras/{invoice}', 'update')->name('purchases.update');
 });
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
@@ -116,6 +118,6 @@ Route::middleware(['auth'])->controller(SaleController::class)->group(function()
         ->get('/ventas/consultar-cierre-de-caja', 'queryCashClosing')->name('sales.query-cash-closing');
     Route::middleware(['can:cash-closing'])
         ->get('/ventas/cierre-de-caja', 'cashClosing')->name('sales.cash-closing');
-    Route::get('/sales/{invoice}', 'show')->name('sales.show');
-    Route::put('/sales/{invoice}', 'update')->name('sales.update');
+    Route::get('/ventas/{invoice}', 'show')->name('sales.show');
+    Route::put('/ventas/{invoice}', 'update')->name('sales.update');
 });

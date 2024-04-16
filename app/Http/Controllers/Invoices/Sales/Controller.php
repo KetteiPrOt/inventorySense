@@ -267,6 +267,7 @@ class Controller extends BaseController
                     ) as `product_tag`
                 ")
             ->where('invoice_id', $invoice->id)
+            ->where('invoice_type', SaleInvoice::class)
             ->orderBy('id', 'asc')
             ->get();
         return view('entities.invoices.sales.show', [

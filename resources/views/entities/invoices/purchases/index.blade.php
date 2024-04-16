@@ -93,12 +93,14 @@
                     <x-table.td
                         class="order-2 block md:table-cell"
                     >
-                        <span class="hidden md:inline">
-                            {{$invoice->number ?? 'Sin número'}}
-                        </span>
-                        <span class="md:hidden">
-                            {{$invoice->number ?? 'Sin número de factura'}}
-                        </span>
+                        <a href="{{route('purchases.show', $invoice->id)}}">
+                            <span class="hidden md:inline text-blue-400 underline">
+                                {{$invoice->number ?? 'Sin número'}}
+                            </span>
+                            <span class="md:hidden text-blue-400 underline">
+                                {{$invoice->number ?? 'Sin número de factura'}}
+                            </span>
+                        </a>
                     </x-table.td>
                     <x-table.td
                         class="order-3 block md:table-cell"
