@@ -35,7 +35,7 @@
                 </p>
             </div>
         @else
-            @if(!auth()->user()->can('users'))
+            @if(!auth()->user()->can('see-all-sales'))
             <div>
                 <p>
                     <strong>Vendedor</strong> <br>
@@ -129,7 +129,14 @@
                         <x-table.td
                             class="order-2 block md:table-cell"
                         >
-                            ID: {{$invoice->id}}
+                            <a href="{{route('sales.show', $invoice->id)}}">
+                                <span class="hidden md:inline underline text-blue-400">
+                                    ID: {{$invoice->id}}
+                                </span>
+                                <span class="md:hidden underline text-blue-400">
+                                    Factura ID: {{$invoice->id}}
+                                </span>
+                            </a>
                         </x-table.td>
                         <x-table.td
                             class="order-3 block md:table-cell"

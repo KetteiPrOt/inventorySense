@@ -52,19 +52,23 @@
                     class="block lg:table-cell lg:p-1 lg:border lg:border-slate-100 lg:text-slate-500"
                 >
                     @if($movement->category === 'e')
-                        <span class="hidden lg:inline">
-                            {{$movement->invoice?->number ?? 'Sin número'}}
-                        </span>
-                        <span class="inline lg:hidden">
-                            {{$movement->invoice?->number ?? 'Sin número de factura'}}
-                        </span>
+                        <a href="#">
+                            <span class="hidden lg:inline underline text-blue-400">
+                                {{$movement->invoice?->number ?? 'Sin número'}}
+                            </span>
+                            <span class="inline lg:hidden underline text-blue-400">
+                                {{$movement->invoice?->number ?? 'Sin número de factura'}}
+                            </span>
+                        </a>
                     @else
-                        <span class="hidden lg:inline">
-                            {{'ID: ' . $movement->invoice->id}}
-                        </span>
-                        <span class="inline lg:hidden">
-                            {{'Factura ID: ' . $movement->invoice->id}}
-                        </span>
+                        <a href="{{route('sales.show', $movement->invoice->id)}}">
+                            <span class="hidden lg:inline underline text-blue-400">
+                                {{'ID: ' . $movement->invoice->id}}
+                            </span>
+                            <span class="inline lg:hidden underline text-blue-400">
+                                {{'Factura ID: ' . $movement->invoice->id}}
+                            </span>
+                        </a>
                     @endif
                 </td>
                 <td

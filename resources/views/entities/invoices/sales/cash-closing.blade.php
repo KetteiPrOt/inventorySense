@@ -23,6 +23,10 @@
         </div>
         @endif
 
+        
+        @php
+            $authUser = auth()->user();
+        @endphp
         @if(isset($filters['user']))
             <div>
                 <p>
@@ -31,11 +35,11 @@
                 </p>
             </div>
         @else
-            @if(!auth()->user()->can('users'))
+            @if(!$authUser->can('see-all-incomes'))
             <div>
                 <p>
                     <strong>Vendedor</strong> <br>
-                    {{auth()->user()->name}}
+                    {{$authUser->name}}
                 </p>
             </div>
             @endif
@@ -105,12 +109,26 @@
                                 sm:table-cell sm:text-sm sm:font-normal
                             "
                         >
-                            <span class="hidden sm:inline">
-                                ID: {{$movement->invoice->id}}
-                            </span>
-                            <span class="inline sm:hidden">
-                                Factura ID: {{$movement->invoice->id}}
-                            </span>
+                            @if(
+                                $authUser->can('see-all-sales')
+                                || $authUser->id === $movement->invoice->user->id
+                            )
+                                <a href="{{route('sales.show', $movement->invoice->id)}}">
+                                    <span class="hidden sm:inline underline text-blue-400">
+                                        ID: {{$movement->invoice->id}}
+                                    </span>
+                                    <span class="inline sm:hidden underline text-blue-400">
+                                        Factura ID: {{$movement->invoice->id}}
+                                    </span>
+                                </a>
+                            @else
+                                <span class="hidden sm:inline">
+                                    ID: {{$movement->invoice->id}}
+                                </span>
+                                <span class="inline sm:hidden">
+                                    Factura ID: {{$movement->invoice->id}}
+                                </span>
+                            @endif
                         </x-table.td>
                         @if(!isset($filters['product']))
                             <x-table.td

@@ -242,4 +242,61 @@ class Controller extends BaseController
             ]
         ]);
     }
+
+    public function show(SaleInvoice $invoice)
+    {
+        if(auth()->user()->id !== $invoice->user_id){
+            if(!auth()->user()->can('see-all-sales')){
+                abort(403);
+            }
+        }
+        $movements = Movement::
+            join('incomes', 'incomes.movement_id', '=', 'movements.id')
+            ->join('products', 'products.id', '=', 'movements.product_id')
+            ->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
+            ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
+            ->selectRaw("
+                    movements.id,
+                    movements.amount,
+                    incomes.unitary_sale_price,
+                    incomes.total_sale_price,
+                    CONCAT_WS(' ',
+                        `product_types`.`name`,
+                        `products`.`name`,
+                        CONCAT(`product_presentations`.`content`, 'ml')
+                    ) as `product_tag`
+                ")
+            ->where('invoice_id', $invoice->id)
+            ->orderBy('id', 'asc')
+            ->get();
+        return view('entities.invoices.sales.show', [
+            'invoice' => $invoice,
+            'movements' => $movements,
+            'total_prices_summation' => $movements->sum('total_sale_price')
+        ]);
+    }
+
+    public function update(Request $request, SaleInvoice $invoice)
+    {
+        if(!auth()->user()->can('edit-all-sales')){
+            abort(403);
+        }
+        $today = date('Y-m-d');
+        $created_at = date('Y-m-d', strtotime($invoice->created_at));
+        $validator = Validator::make($request->all(), [
+            'paid_date' => "required|date_format:Y-m-d|before_or_equal:$today|after_or_equal:$created_at"
+        ], attributes: ['paid_date' => 'fecha de pago']);
+        if($validator->fails()){
+            return redirect()->route('sales.show', $invoice->id)->withErrors($validator)->withInput();
+        }
+        $validated = $validator->validated();
+        $invoice->paid = true;
+        if($validated['paid_date'] === $created_at){
+            $invoice->paid_date = null;
+        } else {
+            $invoice->paid_date = $validated['paid_date'];
+        }
+        $invoice->save();
+        return redirect()->route('sales.show', $invoice->id);
+    }
 }
