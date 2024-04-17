@@ -28,12 +28,12 @@ class Controller extends BaseController
         $unitary_price = $amount > 0
             ? round(bcdiv($total_price, "$amount", 3), 2)
             : 0;
-        Balance::create([
+        $balanceId = Balance::create([
             'amount' => $amount,
             'total_price' => $total_price,
             'unitary_price' => $unitary_price,
             'movement_id' => $movement->id
-        ]);
+        ])->id;
         // Create income
         $unitary_sale_price = SalePrice::find($inputData['unitary_sale_price'])->price;
         Income::create([
@@ -48,6 +48,7 @@ class Controller extends BaseController
             'warehouse_id', $warehouse_id
         )->first();
         $warehouseExistence->amount = $warehouseExistence->amount - intval($inputData['amount']);
+        $warehouseExistence->balance_id = $balanceId;
         $warehouseExistence->save();
         return $movement;
     }

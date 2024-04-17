@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Invoices\Sales\Controller as SaleController;
 use App\Http\Controllers\Invoices\Purchases\Controller as PurchaseController;
 use App\Http\Controllers\Products\PresentationController;
@@ -120,4 +121,11 @@ Route::middleware(['auth'])->controller(SaleController::class)->group(function()
         ->get('/ventas/cierre-de-caja', 'cashClosing')->name('sales.cash-closing');
     Route::get('/ventas/{invoice}', 'show')->name('sales.show');
     Route::put('/ventas/{invoice}', 'update')->name('sales.update');
+});
+
+Route::middleware(['auth'])->controller(InventoryController::class)->group(function(){
+    Route::middleware(['can:inventory'])
+        ->get('/inventario/consultar', 'queryIndex')->name('inventory.query-index');
+    Route::middleware(['can:inventory'])
+        ->get('/inventario', 'index')->name('inventory.index');
 });

@@ -403,9 +403,9 @@
                         </a>
                         @endcan
 
-                        {{-- @can('inventory')
+                        @can('inventory')
                         <a
-                            href="{{__('#')/*route('inventory.query')*/}}"
+                            href="{{route('inventory.query-index')}}"
                             class="
                                 m-4 flex flex-col
                                 w-36 h-40 border border-slate-400 rounded
@@ -429,7 +429,7 @@
                                 Inventario
                             </span>
                         </a>
-                        @endcan --}}
+                        @endcan
 
                         @can('purchases-report')
                         <a

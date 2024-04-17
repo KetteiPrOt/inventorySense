@@ -170,6 +170,14 @@ new class extends Component
                             Roles
                         </x-nav-link>
                     @endcan
+                    @can('inventory')
+                        <x-nav-link
+                            href="{{route('inventory.query-index')}}"
+                            :active="request()->routeIs('inventory.*')"
+                        >
+                            Inventario
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -355,6 +363,14 @@ new class extends Component
                     :active="request()->routeIs('roles.*')"
                 >
                     Roles
+                </x-responsive-nav-link>
+            @endcan
+            @can('inventory')
+                <x-responsive-nav-link
+                    href="{{route('inventory.query-index')}}"
+                    :active="request()->routeIs('inventory.*')"
+                >
+                    Inventario
                 </x-responsive-nav-link>
             @endcan
         </div>
