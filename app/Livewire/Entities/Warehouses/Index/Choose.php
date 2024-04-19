@@ -11,7 +11,7 @@ class Choose extends Component
 {
     use WithPagination;
 
-    private ?int $selectedByDefault = null;
+    protected ?int $selectedByDefault = null;
 
     #[Locked]
     public bool $required = true;
@@ -49,7 +49,7 @@ class Choose extends Component
         ]);
     }
 
-    private function queryWarehouses(): object|null
+    protected function queryWarehouses(): object|null
     {
         $validated = $this->validateSearch();
         if(!$this->showAllByDefault && is_null($validated)){
@@ -63,7 +63,7 @@ class Choose extends Component
         return $warehouses;
     }
 
-    private function validateSearch(): string|null
+    protected function validateSearch(): string|null
     {
         $validated = null;
         if(is_string($this->search)){

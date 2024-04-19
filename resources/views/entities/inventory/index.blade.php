@@ -2,11 +2,23 @@
     header="Inventario"
 >
     @if(isset($filters['warehouse']))
-        <p class="mb-6">
+        <p class="mb-4">
             <strong>Bodega</strong> <br>
             {{$filters['warehouse']->name}}
         </p>
     @endif
+
+    <form action="{{request()->url()}}" class="mb-4 flex flex-col items-start sm:block">
+        <input hidden name="warehouse" value="{{$filters['warehouse']?->id}}">
+        <x-text-input
+            placeholder="Producto..."
+            name="search_product" minlength="2" maxlength="255"
+            value="{{request()->query('search_product')}}"
+        />
+        <x-primary-button class="mt-1 sm:mt-0">
+            Buscar
+        </x-primary-button>
+    </form>
 
     <div class="mb-2 sm:hidden">
         {{$products->links()}}
@@ -20,7 +32,14 @@
                     :hover="false"
                 >
                     <x-table.th>
-                        Producto
+                        <x-icons.order
+                            :data="[
+                                'column' => 'tag',
+                                'currentColumn' => $filters['column'],
+                                'order' => $filters['order'],
+                                'route' => 'inventory.index'
+                            ]"
+                        >Producto</x-icons.order>
                     </x-table.th>
                     @if(!isset($filters['warehouse']))
                         <x-table.th>
@@ -28,13 +47,34 @@
                         </x-table.th>
                     @endif
                     <x-table.th>
-                        Cantidad
+                        <x-icons.order
+                            :data="[
+                                'column' => 'amount',
+                                'currentColumn' => $filters['column'],
+                                'order' => $filters['order'],
+                                'route' => 'inventory.index'
+                            ]"
+                        >Cantidad</x-icons.order>
                     </x-table.th>
                     <x-table.th>
-                        P. unitario
+                        <x-icons.order
+                            :data="[
+                                'column' => 'unitary_price',
+                                'currentColumn' => $filters['column'],
+                                'order' => $filters['order'],
+                                'route' => 'inventory.index'
+                            ]"
+                        >P. unitario</x-icons.order>
                     </x-table.th>
                     <x-table.th>
-                        P. total
+                        <x-icons.order
+                            :data="[
+                                'column' => 'total_price',
+                                'currentColumn' => $filters['column'],
+                                'order' => $filters['order'],
+                                'route' => 'inventory.index'
+                            ]"
+                        >P. total</x-icons.order>
                     </x-table.th>
                 </x-table.tr>
             </x-slot:head>
@@ -134,11 +174,7 @@
 
     @if($products->isEmpty())
         <p class="text-red-500">
-            @if(isset($filters['warehouse']))
-                No se encontraron existencias de productos en esta bodega...
-            @else
-                No se encontraron productos registrados...
-            @endif
+            No se encontraron productos...
         </p>
     @endif
 </x-layouts.primary>
