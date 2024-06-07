@@ -158,27 +158,7 @@
                         </x-table>
                     </div>
                 </td>
-                <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
-                    @if($movement->category === 'i')
-                    {{$movement->amount}}
-                    @endif
-                </td>
-                <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
-                    @if($movement->category === 'i')
-                    ${{number_format(
-                        $movement->unitary_purchase_price,
-                        2, '.', ','
-                    )}}
-                    @endif
-                </td>
-                <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-r lg:border-slate-100 lg:text-slate-500 lg:text-center">
-                    @if($movement->category === 'i')
-                    ${{number_format(
-                        $movement->total_purchase_price,
-                        2, '.', ','
-                    )}}
-                    @endif
-                </td>
+                {{-- Incomes --}}
                 <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
                     @if($movement->category === 'e')
                     {{$movement->amount}}
@@ -200,6 +180,29 @@
                     )}}
                     @endif
                 </td>
+                {{-- Expenses --}}
+                <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
+                    @if($movement->category === 'i')
+                    {{$movement->amount}}
+                    @endif
+                </td>
+                <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
+                    @if($movement->category === 'i')
+                    ${{number_format(
+                        $movement->unitary_purchase_price,
+                        2, '.', ','
+                    )}}
+                    @endif
+                </td>
+                <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-r lg:border-slate-100 lg:text-slate-500 lg:text-center">
+                    @if($movement->category === 'i')
+                    ${{number_format(
+                        $movement->total_purchase_price,
+                        2, '.', ','
+                    )}}
+                    @endif
+                </td>
+                {{-- Balances --}}
                 <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
                     {{$movement->balance->amount}}
                 </td>

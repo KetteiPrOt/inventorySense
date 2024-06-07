@@ -143,7 +143,7 @@ class Controller extends BaseController
                           ->where('created_at',  '>', $validated['date_from'] . ' 00:00:00');
                 })
                 ->orderBy('id', 'asc')
-                ->paginate(2)->withQueryString();
+                ->paginate(15)->withQueryString();
         $product = Product::find($validated['product']);
         $product->loadTag();
         if(isset($validated['page'])){
