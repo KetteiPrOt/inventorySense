@@ -142,18 +142,23 @@ class Controller extends BaseController
                     $query->where('created_at',  '<', $validated['date_to'] . ' 23:59:59')
                           ->where('created_at',  '>', $validated['date_from'] . ' 00:00:00');
                 })
-                ->orderBy('id', 'desc')
-                ->paginate(10)->withQueryString();
+                ->orderBy('id', 'asc')
+                ->paginate(2)->withQueryString();
         $product = Product::find($validated['product']);
         $product->loadTag();
-        return view('entities.invoices.purchases.kardex', [
-            'movements' => $movements,
-            'filters' => [
-                'product' => $product,
-                'date_from' => $validated['date_from'],
-                'date_to' => $validated['date_to']
-            ]
-        ]);
+        if(isset($validated['page'])){
+            return view('entities.invoices.purchases.kardex', [
+                'movements' => $movements,
+                'filters' => [
+                    'product' => $product,
+                    'date_from' => $validated['date_from'],
+                    'date_to' => $validated['date_to']
+                ]
+            ]);
+        } else {
+            $validated['page'] = $movements->lastPage();
+            return redirect()->route('purchases.kardex', $validated);
+        }
     }
 
     public function show(PurchaseInvoice $invoice)

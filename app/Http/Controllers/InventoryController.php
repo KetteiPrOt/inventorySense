@@ -66,7 +66,11 @@ class InventoryController extends Controller
                     ) LIKE ?
                 ", ["%$search_product%"]);
             }
-            $products = $query->paginate(15)->withQueryString();
+            // $column,
+            //     descending: $order === 'asc' ? false : true
+            $products = $query
+                ->orderBy($column, $order)
+                ->paginate(15)->withQueryString();
         } else {
             $query = Product::with('latestBalance')
                 ->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
