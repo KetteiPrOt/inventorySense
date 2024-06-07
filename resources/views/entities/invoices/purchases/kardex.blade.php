@@ -225,5 +225,8 @@
 
     <div class="mt-2">
         {{$movements->links()}}
+        @if($movements->isEmpty())
+            <p>No se encontraron movimientos...</p>
+        @endif
     </div>
 </x-layouts.primary>

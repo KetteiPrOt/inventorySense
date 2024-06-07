@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreRequest;
 use App\Http\Requests\Products\UpdateRequest;
+use App\Models\Invoices\PurchaseInvoice;
+use App\Models\Invoices\SaleInvoice;
 use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
 use Illuminate\Http\Request;
@@ -135,6 +137,16 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+        foreach(SaleInvoice::all() as $saleInvoice){
+            if($saleInvoice->movements->isEmpty()){
+                $saleInvoice->delete();
+            }
+        }
+        foreach(PurchaseInvoice::all() as $purchaseInvoice){
+            if($purchaseInvoice->movements->isEmpty()){
+                $purchaseInvoice->delete();
+            }
+        }
         return redirect()->route('products.index');
     }
 }
