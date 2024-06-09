@@ -66,8 +66,6 @@ class InventoryController extends Controller
                     ) LIKE ?
                 ", ["%$search_product%"]);
             }
-            // $column,
-            //     descending: $order === 'asc' ? false : true
             $products = $query
                 ->orderBy($column, $order)
                 ->paginate(15)->withQueryString();
@@ -100,22 +98,17 @@ class InventoryController extends Controller
                 $product->unitary_price = $product->latestBalance?->unitary_price ?? '0.00';
                 $product->total_price = $product->latestBalance?->total_price ?? '0.00';
                 if($validated['report_type'] === 1){
-                    if(
-                        ! ($product->amount < $product->min_stock)
-                    ){
+                    if($product->amount >= $product->min_stock){
                         $products->forget($key);
                     }
                 } else if($validated['report_type'] === 2){
-                    if(
-                        ! ($product->amount == 0)
-                    ){
+                    if($product->amount != 0){
                         $products->forget($key);
                     }
                 }
             }
             $products = $products->sortBy(
-                $column,
-                descending: $order === 'asc' ? false : true
+                $column, descending: $order === 'asc' ? false : true
             );
             $products = $this->paginate(
                 $products, 15, $validated['page'] ?? 1, $request->url()

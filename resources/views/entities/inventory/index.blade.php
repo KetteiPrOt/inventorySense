@@ -9,12 +9,18 @@
     @endif
 
     <form action="{{request()->url()}}" class="mb-4 flex flex-col items-start sm:block">
-        <input hidden name="warehouse" value="{{$filters['warehouse']?->id}}">
+        @foreach(request()->query() as $name => $value)
+            @if($name !== 'search_product')
+                <input hidden name="{{$name}}" value="{{$value}}">
+                <x-input-error :messages="$errors->get($name)" />
+            @endif
+        @endforeach
         <x-text-input
             placeholder="Producto..."
             name="search_product" minlength="2" maxlength="255"
             value="{{request()->query('search_product')}}"
         />
+        <x-input-error :messages="$errors->get('search_product')" />
         <x-primary-button class="mt-1 sm:mt-0">
             Buscar
         </x-primary-button>
