@@ -50,7 +50,7 @@
                 />
             </div>
 
-            @can('users')
+            @can('see-all-incomes')
                 <div>
                     <livewire:entities.users.index.choose
                         :selected-by-default="auth()->user()->id"

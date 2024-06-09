@@ -104,6 +104,7 @@ class Controller extends BaseController
             ]
         ]);
     }
+
     public function selectWarehouse()
     {
         return view('entities.invoices.sales.select-warehouse');
