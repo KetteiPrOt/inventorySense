@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('amount')->unsigned();
-            $table->decimal('unitary_purchase_price', 8, 2);
+            $table->decimal('unitary_purchase_price', 12, 6);
             $table->decimal('total_purchase_price', 13, 2);
             // Foreign Keys
             $table->unsignedInteger('product_id');

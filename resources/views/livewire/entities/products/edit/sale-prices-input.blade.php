@@ -26,8 +26,8 @@
                     $
                     <x-number-input
                         class="sale-price-input w-4/5"
-                        min="0.01" max="9999.99"
-                        step="0.01"
+                        min="0.000001" max="9999.999999"
+                        step="0.000001"
                     />
                 </x-table.td>
             </x-table.tr>
@@ -50,8 +50,8 @@
                                 class="sale-price-input w-4/5"
                                 value="{{$salePrice->price}}"
                                 required
-                                min="0.01" max="9999.99"
-                                step="0.01"
+                                min="0.000001" max="9999.999999"
+                                step="0.000001"
                                 name="sale_prices[]"
                             />
                         </x-table.td>
@@ -73,8 +73,8 @@
                             <x-number-input
                                 class="sale-price-input w-4/5"
                                 value="{{$salePrice->price}}"
-                                min="0.01" max="9999.99"
-                                step="0.01"
+                                min="0.000001" max="9999.999999"
+                                step="0.000001"
                                 required
                                 name="sale_prices[]"
                             />

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->decimal('unitary_sale_price', 8, 2);
+            $table->decimal('unitary_sale_price', 12, 6);
             $table->decimal('total_sale_price', 13, 2);
             // Foreign Keys
             $table->unsignedBigInteger('movement_id');

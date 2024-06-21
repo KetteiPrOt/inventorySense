@@ -4,8 +4,6 @@ namespace App\Livewire\Entities\Invoices\Sales\Create;
 
 use App\Models\Invoices\Movements\Type;
 use App\Models\Products\Product;
-use App\Models\Products\ProductWarehouse;
-use App\Models\Warehouse;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -44,7 +42,7 @@ class MovementsInput extends Component
 
     private function querySelectedProducts(): object
     {
-        // I use multiple queries because this component needs to keep the order of the array in the resulting Collection
+        // It use multiple queries because this component needs to keep the order of the array in the resulting Collection
         $products = [];
         foreach($this->selectedProducts as $productId){
             $product = Product::with('salePrices')->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')

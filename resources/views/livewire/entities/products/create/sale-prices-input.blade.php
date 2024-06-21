@@ -26,11 +26,12 @@
                     $
                     <x-number-input
                         class="sale-price-input w-4/5"
-                        min="0.01" max="9999.99"
-                        step="0.01"
+                        min="0.000001" max="9999.999999"
+                        step="0.000001"
                     />
                 </x-table.td>
             </x-table.tr>
+            {{-- Default Sale Price Input --}}
             <x-table.tr
                 id="defaultSalePriceInput"
             >
@@ -47,8 +48,8 @@
                     <x-number-input
                         class="sale-price-input w-4/5"
                         required
-                        min="0.01" max="9999.99"
-                        step="0.01"
+                        min="0.000001" max="9999.999999"
+                        step="0.000001"
                         name="sale_prices[]"
                     />
                 </x-table.td>

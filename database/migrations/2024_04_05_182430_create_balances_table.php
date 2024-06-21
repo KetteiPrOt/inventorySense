@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('amount')->unsigned();
-            $table->decimal('unitary_price', 13, 2);
+            $table->decimal('unitary_price', 17, 6);
             $table->decimal('total_price', 17, 2);
             // Foreign Keys
             $table->unsignedBigInteger('movement_id');

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_sale_prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('price', 6, 2);
+            $table->decimal('price', 10, 6);
             $table->smallInteger('units_number')->unsigned();
             // Foreign Keys
             $table->unsignedInteger('product_id');

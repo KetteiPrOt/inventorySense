@@ -110,7 +110,7 @@
                                 name="unitary_purchase_prices[]"
                                 class="w-48 lg:w-20"
                                 id="unitaryPurchasePriceInput{{$product->id}}"
-                                min="0.01" max="999999.99" step="0.01" required
+                                min="0.000001" max="999999.999999" step="0.000001" required
                                 x-model="unitaryPrice"
                                 x-on:keyup="$dispatch('changed-movement-input-value')"
                                 x-on:change="$dispatch('changed-movement-input-value')"

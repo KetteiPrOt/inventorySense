@@ -44,7 +44,7 @@ class StoreRequest extends FormRequest
                 'required', 'array', 'min:1',
                 new ArraySameSize('amounts'), new ArrayDefaultKeys
             ],
-            'unitary_purchase_prices.*' => 'decimal:0,2|min:0.01|max:999999.99'
+            'unitary_purchase_prices.*' => 'decimal:0,6|min:0.000001|max:999999.999999'
         ];
     }
 

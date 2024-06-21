@@ -25,7 +25,7 @@ class UpdateRequest extends FormRequest
             'sale_prices' => [
                 'required', 'array', 'min:1', new ArrayDefaultKeys
             ],
-            'sale_prices.*' => 'decimal:0,2|min:0.01|max:9999.99|distinct:strict',
+            'sale_prices.*' => 'decimal:0,6|min:0.000001|max:9999.999999|distinct:strict',
             'units_numbers' => [
                 'required', 'array', 'min:1', new ArrayDefaultKeys, new ArraySameSize('sale_prices')
             ],
