@@ -52,7 +52,7 @@ class Controller extends BaseController
         $inputData['total_purchase_price'] = $total_purchase_price;
         $movement = Movement::create($inputData);
         // Balance
-        $lastBalance = Balance::orderBy('id', 'desc')->first();
+        $lastBalance = Product::find($inputData['product_id'])->latestBalance()->first();
         $amount = bcadd($inputData['amount'], "$lastBalance->amount", 0);
         $total_price = bcadd($inputData['total_purchase_price'], $lastBalance->total_price, 2);
         $balance_id = Balance::create([
