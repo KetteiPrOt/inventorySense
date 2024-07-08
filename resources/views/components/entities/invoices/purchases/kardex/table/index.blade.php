@@ -9,6 +9,7 @@
             <th class="p-1 border-b font-medium text-slate-400 text-left"></th>
             <th class="p-1 border-b font-medium text-slate-400 text-left"></th>
             <th class="p-1 border-b font-medium text-slate-400 text-left"></th>
+            <th class="p-1 border-b font-medium text-slate-400 text-left"></th>
             <th class="p-1 border border-r-0 font-medium text-slate-400 text-left"></th>
             <th class="p-1 border-b border-t font-medium text-slate-400 text-center">
                 Ingresos
@@ -26,6 +27,9 @@
             <th class="p-1 border border-l-0 font-medium text-slate-400 text-left"></th>
         </tr>
         <tr class="hidden lg:table-row">
+            <th class="p-1 border font-medium text-slate-400 text-left">
+                Fecha
+            </th>
             <th class="p-1 border font-medium text-slate-400 text-left">
                 Proveedor/Vendedor
             </th>

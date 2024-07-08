@@ -42,6 +42,16 @@
                         lg:text-slate-500 lg:text-sm lg:font-normal
                     "
                 >
+                    {{date('d/m/Y', strtotime($movement->invoice->created_at))}}
+                </td>
+                <td
+                    class="
+                        block text-lg font-bold
+                        lg:table-cell
+                        lg:p-1 lg:border lg:border-slate-100
+                        lg:text-slate-500 lg:text-sm lg:font-normal
+                    "
+                >
                     @if($movement->category === 'e')
                         {{$movement->invoice->provider?->name ?? 'Desconocido'}}
                     @else
