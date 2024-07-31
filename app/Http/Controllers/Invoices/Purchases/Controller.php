@@ -7,6 +7,7 @@ use App\Http\Requests\Invoices\Purchases\StoreRequest;
 use App\Http\Controllers\Invoices\Purchases\Expenses\Controller as ExpenseController;
 use App\Http\Requests\Invoices\Purchases\ShowKardexRequest;
 use App\Models\Invoices\Movements\Movement;
+use App\Models\Invoices\Movements\MovementWarehouse;
 use App\Models\Invoices\PurchaseInvoice;
 use App\Models\Products\Product;
 use Illuminate\Database\Eloquent\Builder;

@@ -3,9 +3,11 @@
 namespace App\Models\Invoices\Movements;
 
 use App\Models\Products\Product;
+use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -48,5 +50,12 @@ class Movement extends Model
     public function balance(): HasOne
     {
         return $this->hasOne(Balance::class);
+    }
+
+    public function warehouses(): BelongsToMany
+    {
+        return $this->belongsToMany(Warehouse::class, 'movement_warehouse')
+            ->using(MovementWarehouse::class)
+            ->withPivot(['amount','unitary_price','total_price']);
     }
 }

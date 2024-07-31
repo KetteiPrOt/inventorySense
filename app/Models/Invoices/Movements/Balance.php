@@ -2,11 +2,9 @@
 
 namespace App\Models\Invoices\Movements;
 
-use App\Models\Products\ProductWarehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Balance extends Model
 {
@@ -19,10 +17,5 @@ class Balance extends Model
     public function movement(): BelongsTo
     {
         return $this->belongsTo(Movement::class);
-    }
-
-    public function productWarehouse(): HasOne
-    {
-        return $this->hasOne(ProductWarehouse::class);
     }
 }
