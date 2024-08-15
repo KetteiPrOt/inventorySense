@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Invoices\Sales;
 
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Controllers\Invoices\Sales\Incomes\Controller as IncomeController;
+use App\Http\Requests\Invoices\Sales\IndexRequest;
 use App\Http\Requests\Invoices\Sales\ShowCashClosingRequest;
 use App\Http\Requests\Invoices\Sales\StoreRequest;
 use App\Models\Client;
@@ -23,34 +24,9 @@ class Controller extends BaseController
         return view('entities.invoices.sales.query-index');
     }
 
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
-        $authUser = auth()->user();
-        if(!is_null($request->get('user'))){
-            if(!$authUser->can('see-all-sales')){
-                abort(403);
-            }
-        }
-        $today = date('Y-m-d');
-        $validator = Validator::make($request->all(), [
-            'date_from' => "required|date_format:Y-m-d|before_or_equal:date_to",
-            'date_to' => "required|date_format:Y-m-d|before_or_equal:$today",
-            'report_type' => 'required|string|min:3|max:13',
-            'warehouse' => 'nullable|integer|exists:warehouses,id',
-            'user' => 'nullable|integer|exists:users,id',
-            'client' => 'nullable|integer|exists:clients,id'
-        ], attributes: [
-            'date_from' => 'fecha incial',
-            'date_to' => 'fecha final',
-            'report_type' => 'tipo de reporte',
-            'warehouse' => 'bodega',
-            'user' => 'usuario',
-            'client' => 'cliente'
-        ]);
-        if($validator->fails()){
-            return redirect()->route('sales.query-index')->withErrors($validator)->withInput();
-        }
-        $validated = $validator->validated();
+        $validated = $request->validated();
         $validated['report_type'] = match($validated['report_type']){
             'all' => 0,
             'only-paid' => 1,
@@ -58,14 +34,15 @@ class Controller extends BaseController
             default => 0
         };
         $query = SaleInvoice::with('client')
-            ->where('created_at',  '<', $validated['date_to'] . ' 23:59:59')
-            ->where('created_at',  '>', $validated['date_from'] . ' 00:00:00');
+            ->where('date',  '<', $validated['date_to'] . ' 23:59:59')
+            ->where('date',  '>', $validated['date_from'] . ' 00:00:00');
         if(isset($validated['warehouse'])){
             $query = $query->where('warehouse_id', $validated['warehouse']);
         }
         if(isset($validated['user'])){
             $query->where('user_id', $validated['user']);
         } else {
+            $authUser = User::find(auth()->user()->id);
             if(!$authUser->can('see-all-sales')){
                 $query->where('user_id', $authUser->id);
             }
@@ -80,12 +57,15 @@ class Controller extends BaseController
             $query->where('paid', false);
         }
         $invoices = $query
-            ->orderBy('id', 'desc')
+            ->orderBy('date', 'desc')
             ->paginate(15)->withQueryString();
         foreach($invoices as $invoice){
             $invoice->total_price = '0.00';
             foreach($invoice->movements as $movement){
-                $invoice->total_price = bcadd($invoice->total_price, $movement->income->total_sale_price, 2);
+                $invoice->total_price = bcadd(
+                    $invoice->total_price,
+                    $movement->income->total_sale_price, 2
+                );
             }
         }
         return view('entities.invoices.sales.index', [
@@ -125,16 +105,19 @@ class Controller extends BaseController
 
     public function create()
     {
-        return 
-            is_null(session('sales-selected-warehouse'))
-                ? redirect()->route('sales.select-warehouse')
-                : view('entities.invoices.sales.create', ['warehouse' => Warehouse::find(session('sales-selected-warehouse'))]);
+        return is_null(session('sales-selected-warehouse'))
+            ? redirect()->route('sales.select-warehouse')
+            : view(
+                'entities.invoices.sales.create',
+                ['warehouse' => Warehouse::find(session('sales-selected-warehouse'))]
+            );
     }
 
     public function store(StoreRequest $request, IncomeController $incomeController)
     {
         $validated = $request->validated();
         $invoice = SaleInvoice::create([
+            'date' => $validated['date'],
             'comment' => $validated['comment'] ?? null,
             'due_payment_date' => $validated['due_payment_date'] ?? null,
             'paid' => isset($validated['paid']) ? true : false,
@@ -155,10 +138,7 @@ class Controller extends BaseController
         }
         // Save the choosed warehouse in session
         $request->session()->put('sales-selected-warehouse', intval($validated['warehouse']));
-        // return redirect()->route('sales.show', [
-        //    'ínvoice' => $invoice->id
-        // );
-        return back();
+        return redirect()->route('sales.create');
     }
 
     public function queryCashClosing()
@@ -187,19 +167,18 @@ class Controller extends BaseController
         } else {
             $selectProductTag = null;
         }
-        $query =  $query->selectRaw("
-                    movements.id,
-                    movements.amount,
-                    incomes.unitary_sale_price,
-                    incomes.total_sale_price,
-                    movement_types.`name` as `type`,
-                    movement_types.`category` as `category`,
-                    products.id as `product_id`,
-                    $selectProductTag
-                    movements.invoice_id,
-                    movements.invoice_type
-                ")
-            ->where('category', 'i');
+        $query = $query->selectRaw("
+            movements.id,
+            movements.amount,
+            incomes.unitary_sale_price,
+            incomes.total_sale_price,
+            movement_types.`name` as `type`,
+            movement_types.`category` as `category`,
+            products.id as `product_id`,
+            $selectProductTag
+            movements.invoice_id,
+            movements.invoice_type
+        ")->where('category', 'i');
 
         if(isset($validated['product'])){
             $query = $query->where('product_id', $validated['product']);
@@ -212,14 +191,14 @@ class Controller extends BaseController
                 if(isset($validated['user'])){
                     $query->where('user_id', $validated['user']);
                 } else {
-                    $authUser = auth()->user();
+                    $authUser = User::find(auth()->user()->id);
                     if(!$authUser->can('see-all-incomes')){
                         $query->where('user_id', $authUser->id);
                     }
                 }
                 $query->where('paid', true)
-                      ->where('created_at',  '<', $validated['date_to'] . ' 23:59:59')
-                      ->where('created_at',  '>', $validated['date_from'] . ' 00:00:00');
+                      ->where('date',  '<', $validated['date_to'] . ' 23:59:59')
+                      ->where('date',  '>', $validated['date_from'] . ' 00:00:00');
             })
             ->orderBy('id', 'desc')
             ->get();
@@ -228,6 +207,10 @@ class Controller extends BaseController
             ? Product::find($validated['product'])
             : null;
         $product?->loadTag();
+        foreach($movements as $movement){
+            $movement->date = $movement->invoice->date;
+        }
+        $movements = $movements->sortBy('date');
         $movements = $this->paginate(
             $movements, 10, $validated['page'] ?? 1, $request->url()
         )->withQueryString();
@@ -246,8 +229,9 @@ class Controller extends BaseController
 
     public function show(SaleInvoice $invoice)
     {
+        $authUser = User::find(auth()->user()->id);
         if(auth()->user()->id !== $invoice->user_id){
-            if(!auth()->user()->can('see-all-sales')){
+            if(!$authUser->can('see-all-sales')){
                 abort(403);
             }
         }
@@ -280,7 +264,8 @@ class Controller extends BaseController
 
     public function update(Request $request, SaleInvoice $invoice)
     {
-        if(!auth()->user()->can('edit-all-sales')){
+        $authUser = User::find(auth()->user()->id);
+        if(!$authUser->can('edit-all-sales')){
             abort(403);
         }
         $today = date('Y-m-d');

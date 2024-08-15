@@ -18,14 +18,16 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $threeDaysAgo = date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 3, date("Y")));
+        $today = date('Y-m-d');
         $tomorrow = date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") + 1, date("Y")));
         $nextMonth = date('Y-m-d', mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
         return [
+            'date' => "required|date_format:Y-m-d|after_or_equal:$threeDaysAgo|before_or_equal:$today",
             'warehouse' => 'required|integer|exists:warehouses,id',
             'client' => 'nullable|integer|exists:clients,id',
             'paid' => 'sometimes|accepted',
-            'due_payment_date' => 
-                "required_without:paid|exclude_with:paid|date_format:Y-m-d|after_or_equal:$tomorrow|before_or_equal:$nextMonth",
+            'due_payment_date' => "required_without:paid|exclude_with:paid|date_format:Y-m-d|after_or_equal:$tomorrow|before_or_equal:$nextMonth",
             'comment' => 'nullable|string|min:2|max:1000',
             'products' => ['required', 'array', 'min:1', new ArrayDefaultKeys],
             'products.*' => 'integer|exists:products,id',
@@ -50,6 +52,7 @@ class StoreRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'date' => 'fecha',
             'warehouse' => 'bodega',
             'client' => 'cliente',
             'paid' => 'factura pagada',

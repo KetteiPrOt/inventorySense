@@ -76,6 +76,9 @@
                     class="hidden sm:table-row"
                 >
                     <x-table.th>
+                        Fecha
+                    </x-table.th>
+                    <x-table.th>
                         Factura
                     </x-table.th>
                     @if(!isset($filters['product']))
@@ -103,6 +106,14 @@
                             sm:border-t-0
                         "
                     >
+                        <x-table.td
+                            class="
+                                block text-lg font-bold
+                                sm:table-cell sm:text-sm sm:font-normal
+                            "
+                        >
+                            {{date('d/m/Y', strtotime($movement->date))}}
+                        </x-table.td>
                         <x-table.td
                             class="
                                 block text-lg font-bold

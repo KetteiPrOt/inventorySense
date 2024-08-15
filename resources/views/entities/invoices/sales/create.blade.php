@@ -16,6 +16,26 @@
             </header>
 
             <div>
+                @php
+                    $threeDaysAgo = date(
+                        'Y-m-d',
+                        mktime(0, 0, 0, date("m"), date("d") - 3, date("Y"))
+                    );
+                    $today = date('Y-m-d');
+                @endphp
+                <x-input-label for="dateInput" :required="true">
+                    Fecha
+                </x-input-label>
+                <x-date-input
+                    id="dateInput" name="date"
+                    value="{{$today}}"
+                    required
+                    min="{{$threeDaysAgo}}" max="{{$today}}"
+                />
+                <x-input-error :messages="$errors->get('date')"/>
+            </div>
+
+            <div>
                 <x-input-label for="warehouseInput" :required="true">
                     Bodega
                 </x-input-label>

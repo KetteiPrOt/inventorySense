@@ -18,6 +18,7 @@ class SaleInvoice extends Model
     protected $table = 'sale_invoices';
 
     protected $fillable = [
+        'date',
         'comment',
         'due_payment_date',
         'paid',

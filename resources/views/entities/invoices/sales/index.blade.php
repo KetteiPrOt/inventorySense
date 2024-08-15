@@ -110,7 +110,7 @@
                             <span class="md:hidden font-bold">
                                 Fecha:
                             </span>
-                            {{date('d/m/Y H:i', strtotime($invoice->created_at))}}
+                            {{date('d/m/Y', strtotime($invoice->date))}}
                         </x-table.td>
                         <x-table.td
                             class="
