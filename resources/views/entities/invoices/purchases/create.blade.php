@@ -50,7 +50,10 @@
             </div>
 
             <div
-                x-data="reactivePaidInput"
+                x-data="{
+                    open: false,
+                    invalidDate: false
+                }"
                 x-on:invalid-due-payment-date-input.window="
                     $el.scrollIntoView({ behavior: 'smooth' }); open = true; invalidDate = true;
                 "
@@ -64,7 +67,7 @@
                         <input
                             id="paidInput" class="rounded mr-2"
                             type="checkbox" name="paid"
-                            @checked(!is_null(old('paid')))
+                            checked
                             x-on:change="
                                 open = $event.target.checked
                                     ? open = false
@@ -225,12 +228,5 @@
             date.setMilliseconds(0);
             return date;
         };
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('reactivePaidInput', () => ({
-                open: {{is_null(old('paid')) ? 'true' : 'false'}},
-                invalidDate: false
-            }));
-        });
     </script>
 </x-layouts.primary>

@@ -20,4 +20,24 @@ abstract class Controller
         );
         return $paginated;
     }
+
+    protected function multiplication(string $a, string $b, int $scale = 2): string
+    {
+        return bcmul($a, $b, $scale);
+    }
+
+    protected function summation(string $a, string $b, int $scale = 2): string
+    {
+        return bcadd($a, $b, $scale);
+    }
+
+    protected function subtraction(string $a, string $b, int $scale = 2): string
+    {
+        return bcsub($a, $b, $scale);
+    }
+
+    protected function division(string $a, string $b, int $scale = 2): string
+    {
+        return bcdiv($a, $b, $scale);
+    }
 }

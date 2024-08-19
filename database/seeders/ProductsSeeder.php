@@ -8,7 +8,7 @@ use App\Models\Products\Product;
 use App\Models\Products\SalePrice;
 use App\Models\Products\Type;
 use Illuminate\Database\Seeder;
-use App\Http\Controllers\Invoices\Purchases\Expenses\Controller as ExpenseController;
+use App\Http\Controllers\Invoices\Purchases\Expenses\StoreController as StoreExpenseController;
 use App\Models\Invoices\Movements\Type as MovementType;
 
 class ProductsSeeder extends Seeder
@@ -59,7 +59,7 @@ class ProductsSeeder extends Seeder
                 'warehouse_id' => 1,
                 'provider_id' => null
             ]);
-            $expenseController = new ExpenseController;
+            $expenseController = new StoreExpenseController;
             $expenseController->store([
                 'amount' => 100,
                 'unitary_purchase_price' => 10.00,

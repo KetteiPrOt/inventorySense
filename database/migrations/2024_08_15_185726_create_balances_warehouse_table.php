@@ -11,25 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_warehouse', function (Blueprint $table) {
+        Schema::create('balances_warehouse', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('amount');
+            $table->decimal('unitary_price', 17, 6);
+            $table->decimal('total_price', 17, 2);
             // Foreign Keys
-            $table->unsignedInteger('product_id');
-            $table->foreign('product_id', 'products_warehouses')
+            $table->unsignedBigInteger('movement_id');
+            $table->foreign('movement_id', 'balance_warehouse_movement')
                 ->references('id')
-                ->on('products')
-                ->noActionOnDelete()->cascadeOnUpdate();
+                ->on('movements')
+                ->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedMediumInteger('warehouse_id');
-            $table->foreign('warehouse_id', 'warehouses_products')
+            $table->foreign('warehouse_id', 'balances_warehouse')
                 ->references('id')
                 ->on('warehouses')
                 ->noActionOnDelete()->cascadeOnUpdate();
-            $table->unsignedBigInteger('balance_id');
-            $table->foreign('balance_id', 'product_warehouse_balance')
-                ->references('id')
-                ->on('balances')
-                ->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
@@ -38,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_warehouse');
+        Schema::dropIfExists('balances_warehouse');
     }
 };

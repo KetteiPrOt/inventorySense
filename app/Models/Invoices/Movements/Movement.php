@@ -49,4 +49,9 @@ class Movement extends Model
     {
         return $this->hasOne(Balance::class);
     }
+
+    public function balanceWarehouse(): HasOne
+    {
+        return $this->hasOne(BalanceWarehouse::class);
+    }
 }

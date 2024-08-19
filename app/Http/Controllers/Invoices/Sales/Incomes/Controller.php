@@ -7,9 +7,7 @@ use App\Models\Invoices\Movements\Balance;
 use App\Models\Invoices\Movements\Income;
 use App\Models\Invoices\Movements\Movement;
 use App\Models\Products\Product;
-use App\Models\Products\ProductWarehouse;
 use App\Models\Products\SalePrice;
-use Illuminate\Http\Request;
 
 class Controller extends BaseController
 {
@@ -18,10 +16,16 @@ class Controller extends BaseController
         $product = Product::with('latestBalance')->find($inputData['product_id']);
         $latestBalance = $product->latestBalance;
         $inputData['unitary_purchase_price'] = $latestBalance->unitary_price;
-        $inputData['total_purchase_price'] = bcmul($inputData['amount'], $latestBalance->unitary_price, 2);
+        $inputData['total_purchase_price'] = $this->multiplication(
+            $inputData['amount'],
+            $inputData['unitary_purchase_price']
+        );
         $movement = Movement::create($inputData);
         // Create balance
         $amount = $latestBalance->amount - intval($inputData['amount']);
+        dump($latestBalance->amount);
+        dump($inputData['amount']);
+        dd($this->subtraction("23", "10"));
         $total_price = $amount > 0
             ? bcsub($latestBalance->total_price, $inputData['total_purchase_price'], 2)
             : 0;

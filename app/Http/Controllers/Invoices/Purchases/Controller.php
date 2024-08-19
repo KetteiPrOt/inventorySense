@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Invoices\Purchases;
 
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Invoices\Purchases\StoreRequest;
-use App\Http\Controllers\Invoices\Purchases\Expenses\Controller as ExpenseController;
+use App\Http\Controllers\Invoices\Purchases\Expenses\StoreController as StoreExpenseController;
 use App\Http\Requests\Invoices\Purchases\ShowKardexRequest;
 use App\Models\Invoices\Movements\Movement;
 use App\Models\Invoices\PurchaseInvoice;
 use App\Models\Products\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -79,7 +80,7 @@ class Controller extends BaseController
         return view('entities.invoices.purchases.create');
     }
 
-    public function store(StoreRequest $request, ExpenseController $expenseController)
+    public function store(StoreRequest $request, StoreExpenseController $expenseController)
     {
         $validated = $request->validated();
         $invoice = PurchaseInvoice::create([
@@ -163,14 +164,7 @@ class Controller extends BaseController
 
     public function show(PurchaseInvoice $invoice)
     {
-        if(
-            !(
-                auth()->user()->can('kardex')
-                || auth()->user()->can('purchases-report')
-            )
-        ){
-            abort(403);
-        }
+        $this->authorize();
         $movements = Movement::
             join('products', 'products.id', '=', 'movements.product_id')
             ->leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
@@ -199,14 +193,7 @@ class Controller extends BaseController
 
     public function update(Request $request, PurchaseInvoice $invoice)
     {
-        if(
-            !(
-                auth()->user()->can('kardex')
-                || auth()->user()->can('purchases-report')
-            )
-        ){
-            abort(403);
-        }
+        $this->authorize();
         $today = date('Y-m-d');
         $created_at = date('Y-m-d', strtotime($invoice->created_at));
         $validator = Validator::make($request->all(), [
@@ -224,5 +211,18 @@ class Controller extends BaseController
         }
         $invoice->save();
         return redirect()->route('purchases.show', $invoice->id);
+    }
+
+    private function authorize(): void
+    {
+        $user = User::find(auth()->user()->id);
+        if(
+            !(
+                $user->can('kardex')
+                || $user->can('purchases-report')
+            )
+        ){
+            abort(403);
+        }
     }
 }

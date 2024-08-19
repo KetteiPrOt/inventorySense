@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sale_invoices', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('date');
             $table->string('comment', 1000)->nullable();
             $table->date('due_payment_date')->nullable()->default(null);
             $table->tinyInteger('paid')->default(true);
