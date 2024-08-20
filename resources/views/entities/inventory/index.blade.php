@@ -8,13 +8,13 @@
         </p>
     @endif
 
+    <p class="mb-4">
+        <strong>Tipo de reporte</strong> <br>
+        {{$filters['report_type']}}
+    </p>
+
     <form action="{{request()->url()}}" class="mb-4 flex flex-col items-start sm:block">
-        @foreach(request()->query() as $name => $value)
-            @if($name !== 'search_product')
-                <input hidden name="{{$name}}" value="{{$value}}">
-                <x-input-error :messages="$errors->get($name)" />
-            @endif
-        @endforeach
+        {{-- Search product input --}}
         <x-text-input
             placeholder="Producto..."
             name="search_product" minlength="2" maxlength="255"
@@ -24,6 +24,13 @@
         <x-primary-button class="mt-1 sm:mt-0">
             Buscar
         </x-primary-button>
+        {{-- Other query input --}}
+        @foreach(request()->query() as $name => $value)
+            @if($name !== 'search_product')
+                <input hidden name="{{$name}}" value="{{$value}}">
+                <x-input-error :messages="$errors->get($name)" />
+            @endif
+        @endforeach
     </form>
 
     <div class="mb-2 sm:hidden">
@@ -47,15 +54,13 @@
                             ]"
                         >Producto</x-icons.order>
                     </x-table.th>
-                    @if(!isset($filters['warehouse']))
-                        <x-table.th>
-                            Min. stock
-                        </x-table.th>
-                    @endif
+                    <x-table.th>
+                        Min. stock
+                    </x-table.th>
                     <x-table.th>
                         <x-icons.order
                             :data="[
-                                'column' => 'amount',
+                                'column' => 'existences',
                                 'currentColumn' => $filters['column'],
                                 'order' => $filters['order'],
                                 'route' => 'inventory.index'
@@ -92,14 +97,8 @@
                             border-t-2 border-slate-300
                             sm:border-t-0
                         "
-                        :danger="
-                            !isset($filters['warehouse'])
-                            && ($product->amount < $product->min_stock)
-                        "
-                        :alert="
-                            !isset($filters['warehouse'])
-                            && ($product->amount == $product->min_stock)
-                        "
+                        :danger="$product->existences == 0"
+                        :alert="$product->existences < $product->min_stock"
                     >
                         <x-table.td
                             class="
@@ -109,19 +108,17 @@
                         >
                             {{$product->tag}}
                         </x-table.td>
-                        @if(!isset($filters['warehouse']))
-                            <x-table.td>
-                                <span class="sm:hidden font-bold">
-                                    Stock mínimo:
-                                </span>
-                                {{$product->min_stock}}
-                            </x-table.td>
-                        @endif
+                        <x-table.td>
+                            <span class="sm:hidden font-bold">
+                                Stock mínimo:
+                            </span>
+                            {{$product->min_stock}}
+                        </x-table.td>
                         <x-table.td>
                             <span class="hidden sm:inline">
-                                {{$product->amount}}
+                                {{$product->existences}}
                             </span>
-                            {{-- Responsive table view --}}
+                            {{-- Start Responsive table view --}}
                             <div class="block sm:hidden">
                                 <x-table>
                                     <x-slot:head>
@@ -140,7 +137,7 @@
                                     <x-slot:body>
                                         <x-table.tr>
                                             <x-table.td class="text-center">
-                                                {{$product->amount}}
+                                                {{$product->existences}}
                                             </x-table.td>
                                             <x-table.td class="text-center">
                                                 ${{number_format(
@@ -158,6 +155,7 @@
                                     </x-slot:body>
                                 </x-table>
                             </div>
+                            {{-- Finish Responsive table view --}}
                         </x-table.td>
                         <x-table.td class="hidden sm:table-cell">
                             ${{number_format(
@@ -173,6 +171,44 @@
                         </x-table.td>
                     </x-table.tr>
                 @endforeach
+                @if(
+                    $products->isNotEmpty()
+                    && $products->currentPage() == $products->lastPage()
+                )
+                    <x-table.tr
+                        class="
+                            flex flex-col sm:table-row
+                            border-t-2 border-slate-300
+                            sm:border-t-0
+                        "
+                    >
+                        <x-table.td
+                            class="
+                                text-center text-lg font-bold
+                                sm:text-left sm:text-sm sm:font-normal
+                            "
+                        >
+                            <span class="sm:hidden">
+                                Total:
+                                ${{number_format(
+                                    $products->sum('total_price'),
+                                    2, '.', ','
+                                )}}
+                            </span>
+                        </x-table.td>
+                        <x-table.td class="hidden sm:table-cell"></x-table.td>
+                        <x-table.td class="hidden sm:table-cell"></x-table.td>
+                        <x-table.td class="hidden sm:table-cell">
+                            Total:
+                        </x-table.td>
+                        <x-table.td class="hidden sm:table-cell">
+                            ${{number_format(
+                                $products->sum('total_price'),
+                                2, '.', ','
+                            )}}
+                        </x-table.td>
+                    </x-table.tr>
+                @endif
             </x-slot:body>
         </x-table>
     </div>

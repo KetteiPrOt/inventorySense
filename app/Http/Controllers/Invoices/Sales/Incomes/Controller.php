@@ -3,57 +3,6 @@
 namespace App\Http\Controllers\Invoices\Sales\Incomes;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Models\Invoices\Movements\Balance;
-use App\Models\Invoices\Movements\Income;
-use App\Models\Invoices\Movements\Movement;
-use App\Models\Products\Product;
-use App\Models\Products\SalePrice;
 
 class Controller extends BaseController
-{
-    public function store(array $inputData, int $warehouse_id): Movement
-    {
-        $product = Product::with('latestBalance')->find($inputData['product_id']);
-        $latestBalance = $product->latestBalance;
-        $inputData['unitary_purchase_price'] = $latestBalance->unitary_price;
-        $inputData['total_purchase_price'] = $this->multiplication(
-            $inputData['amount'],
-            $inputData['unitary_purchase_price']
-        );
-        $movement = Movement::create($inputData);
-        // Create balance
-        $amount = $latestBalance->amount - intval($inputData['amount']);
-        dump($latestBalance->amount);
-        dump($inputData['amount']);
-        dd($this->subtraction("23", "10"));
-        $total_price = $amount > 0
-            ? bcsub($latestBalance->total_price, $inputData['total_purchase_price'], 2)
-            : 0;
-        $unitary_price = $amount > 0
-            ? round(bcdiv($total_price, "$amount", 3), 2)
-            : 0;
-        $balanceId = Balance::create([
-            'amount' => $amount,
-            'total_price' => $total_price,
-            'unitary_price' => $unitary_price,
-            'movement_id' => $movement->id
-        ])->id;
-        // Create income
-        $unitary_sale_price = SalePrice::find($inputData['unitary_sale_price'])->price;
-        Income::create([
-            'unitary_sale_price' => $unitary_sale_price,
-            'total_sale_price' => bcmul($inputData['amount'], $unitary_sale_price, 2),
-            'movement_id' => $movement->id
-        ]);
-        // Update product warehouse existence
-        $warehouseExistence = ProductWarehouse::where(
-            'product_id', $inputData['product_id']
-        )->where(
-            'warehouse_id', $warehouse_id
-        )->first();
-        $warehouseExistence->amount = $warehouseExistence->amount - intval($inputData['amount']);
-        $warehouseExistence->balance_id = $balanceId;
-        $warehouseExistence->save();
-        return $movement;
-    }
-}
+{}

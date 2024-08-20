@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class ShowIndexRequest extends FormRequest
 {
@@ -32,5 +33,35 @@ class ShowIndexRequest extends FormRequest
             'column' => 'columna',
             'order' => 'orden'
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $report_type = match($this->get('report_type')){
+            'all' => 'all',
+            'under_min_stock' => 'under_min_stock',
+            'not_stock' => 'not_stock',
+            default => 'all'
+        };
+        $column = match($this->get('column')){
+            'tag' => 'tag',
+            'existences' => 'existences',
+            'unitary_price' => 'unitary_price',
+            'total_price' => 'total_price',
+            default => 'tag'
+        };
+        $order = match($this->get('order')){
+            'desc' => 'desc',
+            'asc' => 'asc',
+            default => 'asc'
+        };
+        $inputs = $this->all();
+        $inputs['report_type'] = $report_type;
+        $inputs['column'] = $column;
+        $inputs['order'] = $order;
+        $this->replace($inputs);
     }
 }

@@ -30,6 +30,32 @@ class Product extends Model
             : null;
     }
 
+    public static function joinTag(?string $search): object
+    {
+        $query = static::
+            leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
+            ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
+            ->selectRaw("
+                products.*,
+                CONCAT_WS(' ',
+                    `product_types`.`name`,
+                    `products`.`name`,
+                    CONCAT(`product_presentations`.`content`, 'ml')
+                ) as `tag`
+            ");
+        if(isset($search)){
+            $search = mb_strtoupper($search);
+            $query->whereRaw("
+                    CONCAT_WS(' ',
+                        `product_types`.`name`,
+                        `products`.`name`,
+                        CONCAT(`product_presentations`.`content`, 'ml')
+                    ) LIKE ?
+                ", ["%$search%"]);
+        }
+        return $query;
+    }
+
     public function loadWarehouseExistences(int $warehouse_id): void
     {
         $lastBalanceWarehouse = $this->latestBalanceWarehouse($warehouse_id)->first();

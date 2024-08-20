@@ -22,22 +22,6 @@
                             id="warehouseInput{{$warehouse->id}}"
                             class="warehouse-input rounded-full mr-2"
                             name="warehouse"
-                            x-data="{
-                                lockReportTypes() {
-                                    let reportTypeInputs = Array.from(
-                                        document.querySelectorAll('.report-type-input')
-                                    );
-                                    for(let i = 0; i < reportTypeInputs.length; i++){
-                                        if(i == 0){
-                                            reportTypeInputs[i].checked = true;
-                                        } else {
-                                            reportTypeInputs[i].checked = false;
-                                            reportTypeInputs[i].disabled = true;
-                                        }
-                                    }
-                                }
-                            }"
-                            x-on:change="lockReportTypes"
                         />
                         <label for="warehouseInput{{$warehouse->id}}">
                             {{$warehouse->name}}

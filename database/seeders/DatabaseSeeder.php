@@ -4,12 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Invoices\Movements\Type as MovementType;
 use App\Models\Products\Presentation as ProductPresentation;
-use App\Models\Products\Product;
 use App\Models\Products\Type as ProductType;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Warehouse;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -68,13 +66,20 @@ class DatabaseSeeder extends Seeder
         }
 
         // Products
-        // $this->call([ProductsSeeder::class]);
-        Product::create([
-            'name' => 'PRODUCTO A',
-            'started_inventory' => false,
-            'min_stock' => 1,
-            'presentation_id' => null,
-            'type_id' => null
-        ]);
+        $this->call([ProductsSeeder::class]);
+
+        // Test Product
+        // $product = Product::create([
+        //     'name' => 'PRODUCTO A',
+        //     'started_inventory' => false,
+        //     'min_stock' => 1,
+        //     'presentation_id' => null,
+        //     'type_id' => null
+        // ]);
+        // SalePrice::create([
+        //     'price' => '1.00',
+        //     'product_id' => $product->id,
+        //     'units_number' => 1
+        // ]);
     }
 }

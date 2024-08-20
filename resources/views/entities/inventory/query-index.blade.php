@@ -90,30 +90,4 @@
         <x-input-error :messages="$errors->get('order')" />
         <x-input-error :messages="$errors->get('column')" />
     </form>
-
-    <script>
-        const searchWarehouseInput = document.getElementById('warehouseSearch');
-        searchWarehouseInput.addEventListener('keyup', () => {
-            setTimeout(() => {
-                let warehouseInputs = Array.from(
-                    document.querySelectorAll('.warehouse-input')
-                );
-                let checked = false;
-                for(let warehouseInput of warehouseInputs){
-                    if(warehouseInput.checked){
-                        checked = true;
-                        break;
-                    }
-                }
-                if(!checked){
-                    let reportTypeInputs = Array.from(
-                        document.querySelectorAll('.report-type-input')
-                    );
-                    for(let i = 0; i < reportTypeInputs.length; i++){
-                        reportTypeInputs[i].disabled = false;
-                    }
-                }
-            }, 1000);
-        });
-    </script>
 </x-layouts.primary>

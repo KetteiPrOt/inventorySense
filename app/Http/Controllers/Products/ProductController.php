@@ -25,28 +25,7 @@ class ProductController extends Controller
             return redirect()->route('products.index')->withErrors($validator)->withInput();
         }
         $validated = $validator->validated();
-        $query = 
-            Product::leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
-                ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
-                ->selectRaw("
-                    products.id,
-                    CONCAT_WS(' ',
-                        `product_types`.`name`,
-                        `products`.`name`,
-                        CONCAT(`product_presentations`.`content`, 'ml')
-                    ) as `tag`,
-                    products.started_inventory
-                ");
-        if(isset($validated['search'])){
-            $search = mb_strtoupper($validated['search']);
-            $query->whereRaw("
-                    CONCAT_WS(' ',
-                        `product_types`.`name`,
-                        `products`.`name`,
-                        CONCAT(`product_presentations`.`content`, 'ml')
-                    ) LIKE ?
-                ", ["%$search%"]);
-        }
+        $query = Product::joinTag($validated['search'] ?? null);
         $column = match($validated['column'] ?? null){
             'tag' => 'tag', default => 'tag'
         };

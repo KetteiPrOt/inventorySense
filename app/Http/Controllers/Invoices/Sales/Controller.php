@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Invoices\Sales;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Controllers\Invoices\Sales\Incomes\Controller as IncomeController;
+use App\Http\Controllers\Invoices\Sales\Incomes\StoreController as StoreIncomeController;
 use App\Http\Requests\Invoices\Sales\IndexRequest;
 use App\Http\Requests\Invoices\Sales\ShowCashClosingRequest;
 use App\Http\Requests\Invoices\Sales\StoreRequest;
@@ -34,8 +34,8 @@ class Controller extends BaseController
             default => 0
         };
         $query = SaleInvoice::with('client')
-            ->where('date',  '<', $validated['date_to'] . ' 23:59:59')
-            ->where('date',  '>', $validated['date_from'] . ' 00:00:00');
+            ->where('date',  '<=', $validated['date_to'])
+            ->where('date',  '>=', $validated['date_from']);
         if(isset($validated['warehouse'])){
             $query = $query->where('warehouse_id', $validated['warehouse']);
         }
@@ -105,15 +105,17 @@ class Controller extends BaseController
 
     public function create()
     {
-        return is_null(session('sales-selected-warehouse'))
-            ? redirect()->route('sales.select-warehouse')
-            : view(
-                'entities.invoices.sales.create',
-                ['warehouse' => Warehouse::find(session('sales-selected-warehouse'))]
-            );
+        $sales_warehouse = session('sales-selected-warehouse');
+        if(is_null($sales_warehouse)){
+            return redirect()->route('sales.select-warehouse');
+        } else {
+            return view('entities.invoices.sales.create', [
+                'warehouse' => Warehouse::find(session('sales-selected-warehouse'))
+            ]);
+        }
     }
 
-    public function store(StoreRequest $request, IncomeController $incomeController)
+    public function store(StoreRequest $request, StoreIncomeController $incomeController)
     {
         $validated = $request->validated();
         $invoice = SaleInvoice::create([
@@ -197,8 +199,8 @@ class Controller extends BaseController
                     }
                 }
                 $query->where('paid', true)
-                      ->where('date',  '<', $validated['date_to'] . ' 23:59:59')
-                      ->where('date',  '>', $validated['date_from'] . ' 00:00:00');
+                      ->where('date',  '<=', $validated['date_to'])
+                      ->where('date',  '>=', $validated['date_from']);
             })
             ->orderBy('id', 'desc')
             ->get();

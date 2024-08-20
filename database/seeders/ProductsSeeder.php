@@ -40,6 +40,7 @@ class ProductsSeeder extends Seeder
             $product = Product::create([
                 'name' => mb_strtoupper($productData['name']),
                 'type_id' => $this->types[$productData['type']],
+                'min_stock' => 1,
                 'presentation_id' => $this->presentations[$productData['content']],
             ]);
             // Product sale price
