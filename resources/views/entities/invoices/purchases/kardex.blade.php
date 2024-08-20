@@ -6,7 +6,14 @@
             {{$filters['product']->tag}}
         </h2>
 
-        <div class="flex mt-4">
+        @if( ! is_null($filters['warehouse']) )
+            <p class="mt-4">
+                <strong>Bodega</strong> <br>
+                {{$filters['warehouse']->name}}
+            </p>
+        @endif
+
+        <div class="flex mt-2">
             <p class="mr-4">
                 <strong>Desde</strong> <br>
                 {{date('d/m/Y', strtotime($filters['date_from']))}}
@@ -149,17 +156,17 @@
                             <x-slot:body>
                                 <x-table.tr :hover="false">
                                     <x-table.td>
-                                        {{$movement->balance->amount}}
+                                        {{$movement->balance_amount}}
                                     </x-table.td>
                                     <x-table.td>
                                         ${{number_format(
-                                            $movement->balance->unitary_price,
+                                            $movement->balance_unitary_price,
                                             2, '.', ','
                                         )}}
                                     </x-table.td>
                                     <x-table.td>
                                         ${{number_format(
-                                            $movement->balance->total_price,
+                                            $movement->balance_total_price,
                                             2, '.', ','
                                         )}}
                                     </x-table.td>
@@ -214,17 +221,17 @@
                 </td>
                 {{-- Balances --}}
                 <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
-                    {{$movement->balance->amount}}
+                    {{$movement->balance_amount}}
                 </td>
                 <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-slate-100 lg:text-slate-500 lg:text-center">
                     ${{number_format(
-                        $movement->balance->unitary_price,
+                        $movement->balance_unitary_price,
                         2, '.', ','
                     )}}
                 </td>
                 <td class="hidden lg:table-cell lg:p-1 lg:border-b lg:border-r lg:border-slate-100 lg:text-slate-500 lg:text-center">
                     ${{number_format(
-                        $movement->balance->total_price,
+                        $movement->balance_total_price,
                         2, '.', ','
                     )}}
                 </td>

@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
 use App\Http\Controllers\Invoices\Sales\Controller as SaleController;
 use App\Http\Controllers\Invoices\Purchases\Controller as PurchaseController;
+use App\Http\Controllers\Invoices\Purchases\KardexController;
 use App\Http\Controllers\Products\PresentationController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\TypeController;
@@ -94,13 +95,17 @@ Route::middleware(['auth'])->controller(PurchaseController::class)->group(functi
         ->get('/compras/crear', 'create')->name('purchases.create');
     Route::middleware(['can:create-purchases'])
         ->post('/compras', 'store')->name('purchases.store');
+});
+
+Route::middleware(['auth'])->controller(KardexController::class)->group(function(){
     Route::middleware(['can:kardex'])
         ->get('/compras/consultar-kardex', 'queryKardex')->name('purchases.query-kardex');
     Route::middleware(['can:kardex'])
         ->get('/compras/kardex', 'kardex')->name('purchases.kardex');
-    Route::get('/compras/{invoice}', 'show')->name('purchases.show');
-    Route::put('/compras/{invoice}', 'update')->name('purchases.update');
 });
+
+Route::get('/compras/{invoice}', [PurchaseController::class, 'show'])->name('purchases.show');
+Route::put('/compras/{invoice}', [PurchaseController::class, 'update'])->name('purchases.update');
 
 Route::middleware(['auth'])->controller(SaleController::class)->group(function(){
     Route::middleware(['can:sales-report'])

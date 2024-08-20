@@ -9,7 +9,7 @@
                 </h2>
         
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Seleccione un producto y especifique el intervalo de consulta para ver el kardex.
+                    Seleccione un producto, bodega, y especifique el intervalo de consulta para ver el kardex.
                 </p>
             </header>
 
@@ -17,6 +17,14 @@
                 <livewire:entities.products.index.choose
                     :selected-by-default="old('product')"
                     :show-all-by-default="false"
+                />
+            </div>
+
+            <div>
+                <livewire:entities.warehouses.index.choose
+                    :selected-by-default="old('warehouse')"
+                    :show-all-by-default="false"
+                    :required="false"
                 />
             </div>
 

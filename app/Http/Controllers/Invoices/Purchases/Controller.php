@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Invoices\Purchases;
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Invoices\Purchases\StoreRequest;
 use App\Http\Controllers\Invoices\Purchases\Expenses\StoreController as StoreExpenseController;
-use App\Http\Requests\Invoices\Purchases\ShowKardexRequest;
 use App\Models\Invoices\Movements\Movement;
 use App\Models\Invoices\PurchaseInvoice;
-use App\Models\Products\Product;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -109,57 +106,6 @@ class Controller extends BaseController
         //    'ínvoice' => $invoice->id
         // );
         return back();
-    }
-
-    public function queryKardex()
-    {
-        return view('entities.invoices.purchases.query-kardex');
-    }
-
-    public function kardex(ShowKardexRequest $request)
-    {
-        $validated = $request->validated();
-        $movements = 
-            Movement::with('invoice')
-                ->join('movement_types', 'movements.type_id', '=', 'movement_types.id')
-                ->join('balances', 'balances.movement_id', '=', 'movements.id')
-                ->join('products', 'products.id', '=', 'movements.product_id')
-                ->selectRaw("
-                    movements.id,
-                    movements.amount,
-                    movements.unitary_purchase_price,
-                    movements.total_purchase_price,
-                    movement_types.`name` as `type`,
-                    movement_types.`category` as `category`,
-                    balances.amount as `balance_amount`,
-                    balances.unitary_price as `balance_unitary_price`,
-                    balances.total_price as `balance_total_price`,
-                    products.id as `product_id`,
-                    movements.invoice_id,
-                    movements.invoice_type
-                ")
-                ->where('product_id', $validated['product'])
-                ->whereHasMorph('invoice', '*', function (Builder $query) use ($validated) {
-                    $query->where('created_at',  '<', $validated['date_to'] . ' 23:59:59')
-                          ->where('created_at',  '>', $validated['date_from'] . ' 00:00:00');
-                })
-                ->orderBy('id', 'asc')
-                ->paginate(15)->withQueryString();
-        $product = Product::find($validated['product']);
-        $product->loadTag();
-        if(isset($validated['page'])){
-            return view('entities.invoices.purchases.kardex', [
-                'movements' => $movements,
-                'filters' => [
-                    'product' => $product,
-                    'date_from' => $validated['date_from'],
-                    'date_to' => $validated['date_to']
-                ]
-            ]);
-        } else {
-            $validated['page'] = $movements->lastPage();
-            return redirect()->route('purchases.kardex', $validated);
-        }
     }
 
     public function show(PurchaseInvoice $invoice)
