@@ -8,7 +8,8 @@
         xmlns:mydata="http://www.w3.org/2000/svg"
         mydata:contrastcolor="ffffff" mydata:template="Default" mydata:presentation="2.5" mydata:layouttype="undefined" mydata:specialfontid="undefined" mydata:id1="180" mydata:id2="180" mydata:companyname="inventory sense" mydata:companytagline=""
         version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 45 550 380"
+        viewBox="25 10 425 435"
+        preserveAspectRatio="meet"
     >
         <g
             style="transform: translate(-200px, -150px) scale(1.6, 1.6); mix-blend-mode: normal"

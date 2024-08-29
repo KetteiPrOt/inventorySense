@@ -25,7 +25,7 @@ new class extends Component
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo
-                            class="w-16 h-16"
+                            class="w-12 h-12"
                         />
                     </a>
                 </div>

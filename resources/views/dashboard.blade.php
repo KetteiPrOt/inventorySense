@@ -12,7 +12,7 @@
 
                     <p class="text-center sm:text-left mb-4 mx-4">¡Usted está conectado!</p>
 
-                    <div class="flex flex-wrap justify-center sm:justify-start">
+                    <div class="flex flex-wrap justify-center sm:justify-evenly">
                         @can('create-sales')
                         <a
                             href="{{route('sales.create')}}"
