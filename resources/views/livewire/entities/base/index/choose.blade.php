@@ -13,22 +13,18 @@
         <x-slot:body>
             @if(!is_null($entities))
             @foreach($entities as $entitie)
-                @php $disableOption = $onlyWithStartedInventory && !$entitie->started_inventory; @endphp
-                <x-table.tr
-                    :danger="$disableOption"
-                >
+                <x-table.tr>
                     <x-table.td>
                         <input
                             type="radio"
                             value="{{$entitie->id}}"
                             @required($required)
                             id="{{$name}}Input{{$entitie->id}}"
-                            class="rounded-full mr-2{{ $disableOption ? ' opacity-30' : null}}"
+                            class="rounded-full mr-2"
                             name="{{$name}}"
-                            @disabled($disableOption)
                         />
                         <label for="{{$name}}Input{{$entitie->id}}">
-                            {{$entitie->tag}}
+                            {{$entitie->name}}
                         </label>
                     </x-table.td>
                 </x-table.tr>
@@ -69,7 +65,7 @@
                             name="{{$name}}"
                         />
                         <label for="{{$name}}Input{{$entitieSelectedByDefault->id}}">
-                            {{$entitieSelectedByDefault->tag}}
+                            {{$entitieSelectedByDefault->name}}
                         </label>
                     </x-table.td>
                 </x-table.tr>

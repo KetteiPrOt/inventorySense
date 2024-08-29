@@ -45,25 +45,30 @@
 
             <div>
                 <livewire:entities.warehouses.index.choose
-                    :selected-by-default="old('warehouse', session('sales-selected-warehouse'))"
-                    :required="false"
+                    :selected-by-default="old('warehouse', 'all')"
+                    :required="true"
+                    :all-option="true"
+                    :show-all-by-default="false"
                 />
             </div>
 
             @can('see-all-incomes')
                 <div>
                     <livewire:entities.users.index.choose
-                        :selected-by-default="auth()->user()->id"
-                        :required="false"
+                        :selected-by-default="old('user', 'all')"
+                        :required="true"
+                        :all-option="true"
+                        :show-all-by-default="false"
                     />
                 </div>
             @endcan
 
             <div>
                 <livewire:entities.products.index.choose
-                    :required="false"
+                    :selected-by-default="old('product', 'all')"
+                    :required="true"
+                    :all-option="true"
                     :show-all-by-default="false"
-                    :selected-by-default="old('product')"
                 />
             </div>
         </section>

@@ -3,102 +3,87 @@
 namespace App\Livewire\Entities\Products\Index;
 
 use App\Models\Products\Product;
+use App\Livewire\Entities\Base\Index\Choose as BaseChoose;
 use Livewire\Attributes\Locked;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class Choose extends Component
+class Choose extends BaseChoose
 {
-    use WithPagination;
+    /**
+     * The Entitie Model class name.
+     */
+    protected ?string $Model = Product::class;
 
-    private ?int $selectedByDefault = null;
+    /**
+     * The Entitie name.
+     */
+    protected ?string $entitieName = 'product';
 
-    #[Locked]
-    public bool $required = true;
+    /**
+     * The Entitie spanish name.
+     */
+    protected ?string $entitieSpanishName = 'producto';
 
-    public $search = null;
+    /**
+     * The Entitie spanish gender. Can be 'male' or 'female'.
+     */
+    protected ?string $entitieGender = 'male';
 
-    #[Locked]
-    public bool $showAllByDefault = true;
-
+    /**
+     * Retrieves only the products with the inventory started.
+     */
     #[Locked]
     public bool $onlyWithStartedInventory = true;
 
     public function mount(
         bool $showAllByDefault = true,
-        int $selectedByDefault = null,
+        null|int|string $selectedByDefault = null,
         bool $required = true,
+        bool $allOption = false,
         bool $onlyWithStartedInventory = true
     )
     {
         $this->showAllByDefault = $showAllByDefault;
         $this->selectedByDefault = $selectedByDefault;
         $this->required = $required;
+        $this->allOption = $allOption;
         $this->onlyWithStartedInventory = $onlyWithStartedInventory;
     }
 
     public function render()
     {
-        if($this->selectedByDefault){
-            $productSelectedByDefault = Product::find($this->selectedByDefault);
-            $productSelectedByDefault?->loadTag();
+        if( ! is_null($this->selectedByDefault) ){
+            $entitieSelectedByDefault = $this->Model::find($this->selectedByDefault) ?? 'all';
+            if(is_object($entitieSelectedByDefault)) $entitieSelectedByDefault?->loadTag();
         } else {
-            $products = $this->queryProducts();
-            if($products?->count() == 0){
-                $this->resetPage('products');
+            $entities = $this->queryEntities();
+            if($entities?->count() == 0){
+                $this->resetPage("$this->entitieName-page");
             }
         }
         return view('livewire.entities.products.index.choose', [
-            'products' => $products ?? null,
-            'productSelectedByDefault' => $productSelectedByDefault ?? null,
+            'entities' => $entities ?? null,
+            'entitieSelectedByDefault' => $entitieSelectedByDefault ?? null,
             'required' => $this->required,
-            'onlyWithStartedInventory' => $this->onlyWithStartedInventory
+            'allOption' => $this->allOption,
+            'name' => $this->entitieName,
+            'spanishName' => $this->entitieSpanishName,
+            'gender' => $this->entitieGender,
+            'onlyWithStartedInventory' => $this->onlyWithStartedInventory,
         ]);
     }
 
-    private function queryProducts(): object|null
+    protected function queryEntities(): object|null
     {
         $validated = $this->validateSearch();
         if(!$this->showAllByDefault && is_null($validated)){
-            $products = null;
+            $entities = null;
         } else {
             $search = mb_strtoupper($validated);
-            $products =
-                Product::leftJoin('product_types', 'product_types.id', '=', 'products.type_id')
-                    ->leftJoin('product_presentations', 'product_presentations.id', '=', 'products.presentation_id')
-                    ->selectRaw("
-                        products.id,
-                        CONCAT_WS(' ',
-                            `product_types`.`name`,
-                            `products`.`name`,
-                            CONCAT(`product_presentations`.`content`, 'ml')
-                        ) as `tag`,
-                        products.started_inventory
-                    ")
-                    ->whereRaw("
-                        CONCAT_WS(' ',
-                            `product_types`.`name`,
-                            `products`.`name`,
-                            CONCAT(`product_presentations`.`content`, 'ml')
-                        ) LIKE ?
-                    ", ["%$search%"])
+            $entities =
+                $this->Model::joinTag($search)
                     ->orderBy('tag')
-                    ->simplePaginate(5, pageName: 'products')->withQueryString();
+                    ->simplePaginate(5, pageName: "$this->entitieName-page")->withQueryString();
         }
-        return $products;
-    }
-
-    private function validateSearch(): string|null
-    {
-        $validated = null;
-        if(is_string($this->search)){
-            if(
-                mb_strlen($this->search) >= 2
-                && mb_strlen($this->search) < 255
-            ){
-                $validated = mb_strtoupper($this->search);
-            }
-        }
-        return $validated;
+        return $entities;
     }
 }

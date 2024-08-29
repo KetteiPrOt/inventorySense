@@ -2,78 +2,29 @@
 
 namespace App\Livewire\Entities\Warehouses\Index;
 
+use App\Livewire\Entities\Base\Index\Choose as BaseChoose;
+
 use App\Models\Warehouse;
-use Livewire\Attributes\Locked;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class Choose extends Component
+class Choose extends BaseChoose
 {
-    use WithPagination;
+    /**
+     * The Entitie Model class name.
+     */
+    protected ?string $Model = Warehouse::class;
 
-    protected ?int $selectedByDefault = null;
+    /**
+     * The Entitie name.
+     */
+    protected ?string $entitieName = 'warehouse';
 
-    #[Locked]
-    public bool $required = true;
+    /**
+     * The Entitie spanish name.
+     */
+    protected ?string $entitieSpanishName = 'bodega';
 
-    public $search = null;
-
-    #[Locked]
-    public bool $showAllByDefault = true;
-
-    public function mount(
-        bool $showAllByDefault = true,
-        int $selectedByDefault = null,
-        bool $required = true
-    )
-    {
-        $this->showAllByDefault = $showAllByDefault;
-        $this->selectedByDefault = $selectedByDefault;
-        $this->required = $required;
-    }
-
-    public function render()
-    {
-        if($this->selectedByDefault){
-            $warehouseSelectedByDefault = Warehouse::find($this->selectedByDefault);
-        } else {
-            $warehouses = $this->queryWarehouses();
-            if($warehouses?->count() == 0){
-                $this->resetPage('warehouse');
-            }
-        }
-        return view('livewire..entities.warehouses.index.choose', [
-            'warehouses' => $warehouses ?? null,
-            'warehouseSelectedByDefault' => $warehouseSelectedByDefault ?? null,
-            'required' => $this->required
-        ]);
-    }
-
-    protected function queryWarehouses(): object|null
-    {
-        $validated = $this->validateSearch();
-        if(!$this->showAllByDefault && is_null($validated)){
-            $warehouses = null;
-        } else {
-            $warehouses =
-                Warehouse::whereRaw("`name` LIKE ?", ["%$validated%"])
-                    ->orderBy('name')
-                    ->simplePaginate(5, pageName: 'warehouse');
-        }
-        return $warehouses;
-    }
-
-    protected function validateSearch(): string|null
-    {
-        $validated = null;
-        if(is_string($this->search)){
-            if(
-                mb_strlen($this->search) >= 2
-                && mb_strlen($this->search) < 255
-            ){
-                $validated = mb_strtoupper($this->search);
-            }
-        }
-        return $validated;
-    }
+    /**
+     * The Entitie spanish gender. Can be 'male' or 'female'.
+     */
+    protected ?string $entitieGender = 'female';
 }

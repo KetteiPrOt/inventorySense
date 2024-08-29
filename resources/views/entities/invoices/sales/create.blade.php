@@ -57,6 +57,7 @@
             <div>
                 <livewire:entities.clients.index.choose
                     :required="false"
+                    :show-all-by-default="false"
                 />
             </div>
 

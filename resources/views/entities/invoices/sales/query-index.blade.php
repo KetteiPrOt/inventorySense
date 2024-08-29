@@ -108,7 +108,10 @@
             @can('see-all-sales')
             <div>
                 <livewire:entities.users.index.choose
-                    :required="false"
+                    :selected-by-default="old('user', 'all')"
+                    :required="true"
+                    :all-option="true"
+                    :show-all-by-default="false"
                 />
             </div>
             @endcan
@@ -121,7 +124,10 @@
 
             <div>
                 <livewire:entities.warehouses.index.choose
-                    :required="false"
+                    :selected-by-default="old('warehouse', 'all')"
+                    :required="true"
+                    :all-option="true"
+                    :show-all-by-default="false"
                 />
             </div>
         </section>

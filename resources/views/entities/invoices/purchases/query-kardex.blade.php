@@ -22,9 +22,10 @@
 
             <div>
                 <livewire:entities.warehouses.index.choose
-                    :selected-by-default="old('warehouse')"
+                    :selected-by-default="old('warehouse', 'all')"
                     :show-all-by-default="false"
-                    :required="false"
+                    :required="true"
+                    :all-option="true"
                 />
             </div>
 

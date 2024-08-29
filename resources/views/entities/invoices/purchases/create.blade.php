@@ -46,6 +46,7 @@
             <div>
                 <livewire:entities.providers.index.choose
                     :required="false"
+                    :show-all-by-default="false"
                 />
             </div>
 

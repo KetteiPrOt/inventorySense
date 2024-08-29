@@ -17,7 +17,7 @@ class ShowKardexRequest extends FormRequest
         $today = date('Y-m-d');
         return [
             'product' => ['required', 'integer', 'exists:products,id', new StartedInventory],
-            'warehouse' => 'integer|exists:warehouses,id',
+            'warehouse' => 'nullable|integer|exists:warehouses,id',
             'date_from' => "required|date_format:Y-m-d|before_or_equal:date_to",
             'date_to' => "required|date_format:Y-m-d|before_or_equal:$today",
             'page' => 'sometimes|integer|min:1'

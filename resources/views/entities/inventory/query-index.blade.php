@@ -14,8 +14,11 @@
             </header>
 
             <div>
-                <livewire:entities.inventory.query-index.choose-warehouse
-                    :required="false"
+                <livewire:entities.warehouses.index.choose
+                    :selected-by-default="old('warehouse', 'all')"
+                    :show-all-by-default="false"
+                    :required="true"
+                    :all-option="true"
                 />
                 <x-input-error :messages="$errors->get('search_product')" />
             </div>
