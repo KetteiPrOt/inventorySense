@@ -59,7 +59,7 @@ class Product extends Model
     public function loadWarehouseExistences(int $warehouse_id): void
     {
         $lastBalanceWarehouse = $this->latestBalanceWarehouse($warehouse_id)->first();
-        $this->warehouse_existences = $lastBalanceWarehouse->amount;
+        $this->warehouse_existences = $lastBalanceWarehouse?->amount ?? 0;
     }
 
     public function type(): BelongsTo

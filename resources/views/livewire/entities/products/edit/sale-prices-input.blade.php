@@ -18,7 +18,7 @@
                 <x-table.td>
                     <x-number-input
                         class="units-number-input w-4/5 sm:w-2/3"
-                        min="2" max="65000"
+                        min="1" max="65000"
                         step="1"
                     />
                 </x-table.td>
@@ -33,6 +33,7 @@
             </x-table.tr>
             @foreach($salePrices as $salePrice)
                 @if($loop->first)
+                    {{-- Default Sale Price Input --}}
                     <x-table.tr
                         id="defaultSalePriceInput"
                     >
@@ -57,12 +58,13 @@
                         </x-table.td>
                     </x-table.tr>
                 @else
+                    {{-- Others Sale Price Input --}}
                     <x-table.tr>
                         <x-table.td>
                             <x-number-input
                                 class="units-number-input w-4/5 sm:w-2/3"
                                 value="{{$salePrice->units_number}}"
-                                min="2" max="65000"
+                                min="1" max="65000"
                                 step="1"
                                 required
                                 name="units_numbers[]"
@@ -82,6 +84,7 @@
                     </x-table.tr>
                 @endif
             @endforeach
+            {{-- Sale Price Input Command --}}
             <x-table.tr
                 id="salePriceInputCommand"
             >
@@ -106,24 +109,17 @@
         </x-slot:body>
     </x-table>
 
-    <x-input-error
-        :messages="$errors->get('units_numbers')"
-    />
+    {{-- Input Errors --}}
+    <x-input-error :messages="$errors->get('units_numbers')" />
 
     @foreach($errors->get('units_numbers.*') as $error)
-        <x-input-error
-            :messages="$error"
-        />
+        <x-input-error :messages="$error" />
     @endforeach
 
-    <x-input-error
-        :messages="$errors->get('sale_prices')"
-    />
+    <x-input-error :messages="$errors->get('sale_prices')" />
 
     @foreach($errors->get('sale_prices.*') as $error)
-        <x-input-error
-            :messages="$error"
-        />
+        <x-input-error :messages="$error" />
     @endforeach
 
     <span class="text-red-500" id="salePricesInputError"></span>
@@ -133,21 +129,16 @@
         document.getElementById('submitButton').addEventListener('click', (event) => {
             const errorElement = document.getElementById('salePricesInputError');
             const unitsNumberInputs = Array.from(
-                      document.querySelectorAll('.units-number-input')
-                  ),
-                  salePriceInputs = Array.from(
-                      document.querySelectorAll('.sale-price-input')
-                  );
+                document.querySelectorAll('.units-number-input')
+            );
+            const salePriceInputs = Array.from(
+                document.querySelectorAll('.sale-price-input')
+            );
             // Remove hidden templates
             unitsNumberInputs.shift();
             salePriceInputs.shift();
             // Map arrays of input values
-            const unitsNumbers = unitsNumberInputs.map((element) => {
-                      return element.value;
-                  }),
-                  salePrices = salePriceInputs.map((element) => {
-                      return parseFloat(element.value);
-                  });
+            const salePrices = salePriceInputs.map((element) => parseFloat(element.value));
             // Validate unique values in each array
             const uniqueArrayElements = (array) => {
                 let uniqueElements = true;
@@ -162,13 +153,10 @@
                 }
                 return uniqueElements;
             }
-            const uniqueUnitsNumbers = uniqueArrayElements(unitsNumbers),
-                  uniqueSalePrices = uniqueArrayElements(salePrices);
+            const uniqueSalePrices = uniqueArrayElements(salePrices);
             // Show error messages if is need
-            if(!uniqueUnitsNumbers || !uniqueSalePrices){
-                errorElement.textContent = (!uniqueUnitsNumbers)
-                    ? 'Las unidades deben ser diferentes en cada precio.'
-                    : 'Los precios de venta deben ser diferentes.';
+            if( ! uniqueSalePrices ){
+                errorElement.textContent = 'Los precios de venta deben ser diferentes.';
                 event.preventDefault();
             }
         });

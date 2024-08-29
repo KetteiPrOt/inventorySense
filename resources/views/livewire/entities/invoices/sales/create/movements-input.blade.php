@@ -169,7 +169,7 @@
                             >
                                 @foreach($product->salePrices->sortBy('units_number') as $salePrice)
                                     <option
-                                        @if(!$loop->first)
+                                        @if($salePrice->units_number !== 1)
                                             class="hidden"
                                         @endif
                                         data-units-number="{{$salePrice->units_number}}"

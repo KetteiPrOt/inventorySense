@@ -31,7 +31,7 @@ class StoreRequest extends FormRequest
                 'required', 'array', 'min:1', new ArrayDefaultKeys, new ArraySameSize('sale_prices')
             ],
             'units_numbers.0' => 'max:1',
-            'units_numbers.*' => 'integer|min:1|max:65000|distinct:strict'
+            'units_numbers.*' => 'integer|min:1|max:65000'
         ];
     }
 
