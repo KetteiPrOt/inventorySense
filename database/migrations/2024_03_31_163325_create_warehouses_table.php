@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('warehouses', function (Blueprint $table) {
             $table->mediumIncrements('id');
             $table->string('name', 255)->unique();
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

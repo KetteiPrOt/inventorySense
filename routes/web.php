@@ -11,6 +11,7 @@ use App\Http\Controllers\Products\TypeController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'));
@@ -133,4 +134,14 @@ Route::middleware(['auth'])->controller(InventoryIndexController::class)->group(
         ->get('/inventario/consultar', 'queryIndex')->name('inventory.query-index');
     Route::middleware(['can:inventory'])
         ->get('/inventario', 'index')->name('inventory.index');
+});
+
+Route::middleware(['auth'])->controller(WarehouseController::class)->group(function(){
+    Route::get('/bodegas', 'index')->name('warehouses.index');
+    Route::get('/bodegas/crear', 'create')->name('warehouses.create');
+    Route::post('/bodegas', 'store')->name('warehouses.store');
+    Route::get('/bodegas/{warehouse}', 'show')->name('warehouses.show');
+    Route::get('/bodegas/{warehouse}/editar', 'edit')->name('warehouses.edit');
+    Route::put('/bodegas/{warehouse}', 'update')->name('warehouses.update');
+    // Route::delete('/bodegas/{warehouse}', 'destroy')->name('warehouses.destroy');
 });

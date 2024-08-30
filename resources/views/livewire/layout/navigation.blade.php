@@ -171,12 +171,26 @@ new class extends Component
                         </x-nav-link>
                     @endcan
                     @can('inventory')
-                        <x-nav-link
-                            href="{{route('inventory.query-index')}}"
-                            :active="request()->routeIs('inventory.*')"
+                        <x-nav-dropdown
+                            tag="Inventario" width="32"
+                            :active="request()->routeIs([
+                                'inventory.*',
+                                'warehouses.*'
+                            ])"
                         >
-                            Inventario
-                        </x-nav-link>
+                            <x-dropdown-link
+                                :href="route('warehouses.index')"
+                                :active="request()->routeIs('warehouses.index')"
+                            >
+                                Bodegas
+                            </x-dropdown-link>
+                            <x-dropdown-link
+                                :href="route('inventory.query-index')"
+                                :active="request()->routeIs('inventory.query-index')"
+                            >
+                                Reporte
+                            </x-dropdown-link>
+                        </x-nav-dropdown>
                     @endcan
                 </div>
             </div>
@@ -366,12 +380,26 @@ new class extends Component
                 </x-responsive-nav-link>
             @endcan
             @can('inventory')
-                <x-responsive-nav-link
-                    href="{{route('inventory.query-index')}}"
-                    :active="request()->routeIs('inventory.*')"
+                <x-responsive-nav-dropdown
+                    tag="Inventario&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="32"
+                    :active="request()->routeIs([
+                        'inventory.*',
+                        'warehouses.*'
+                    ])"
                 >
-                    Inventario
-                </x-responsive-nav-link>
+                    <x-dropdown-link
+                        :href="route('warehouses.index')"
+                        :active="request()->routeIs('warehouses.index')"
+                    >
+                        Bodegas
+                    </x-dropdown-link>
+                    <x-dropdown-link
+                        :href="route('inventory.query-index')"
+                        :active="request()->routeIs('inventory.query-index')"
+                    >
+                        Reporte
+                    </x-dropdown-link>
+                </x-responsive-nav-dropdown>
             @endcan
         </div>
 
