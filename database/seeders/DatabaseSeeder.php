@@ -54,15 +54,31 @@ class DatabaseSeeder extends Seeder
         // Movement types
         $expenseTypes = [
             MovementType::$initialInventoryName,
-            MovementType::$purchaseName
+            MovementType::$purchaseName,
+            MovementType::$warehouseChangeExpenseName,
         ];
         foreach($expenseTypes as $name){
-            MovementType::create(['name' => $name, 'category' => 'e']);
+            $attributes = [
+                'name' => $name,
+                'category' => 'e'
+            ];
+            $attributes['public'] = $name != MovementType::$warehouseChangeExpenseName;
+            MovementType::create($attributes);
         }
 
-        $incomeTypes = [MovementType::$saleName, 'Donación', 'Publicidad'];
+        $incomeTypes = [
+            MovementType::$saleName,
+            MovementType::$warehouseChangeIncomeName,
+            'Donación',
+            'Publicidad',
+        ];
         foreach($incomeTypes as $name){
-            MovementType::create(['name' => $name, 'category' => 'i']);
+            $attributes = [
+                'name' => $name,
+                'category' => 'i'
+            ];
+            $attributes['public'] = $name != MovementType::$warehouseChangeIncomeName;
+            MovementType::create($attributes);
         }
 
         // Products

@@ -39,6 +39,8 @@ class Choose extends BaseChoose
         null|int|string $selectedByDefault = null,
         bool $required = true,
         bool $allOption = false,
+        null|string $inputLabel = null,
+        null|string $inputName = null,
         bool $onlyWithStartedInventory = true
     )
     {

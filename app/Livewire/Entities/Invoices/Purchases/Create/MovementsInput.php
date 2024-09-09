@@ -29,7 +29,9 @@ class MovementsInput extends Component
             'selectedProductsCollection' => $selectedProducts,
             'searchedProducts' => $searchedProducts,
             'movementTypes' => Type::where('category', 'e')
-                ->where('name', '!=', Type::$initialInventoryName)->get(),
+                                   ->where('name', '!=', Type::$initialInventoryName)
+                                   ->where('name', '!=', Type::$warehouseChangeExpenseName)
+                                   ->get(),
             'initialInventory' => Type::initialInventory()
         ]);
     }

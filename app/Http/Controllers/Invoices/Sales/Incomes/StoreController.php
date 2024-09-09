@@ -72,7 +72,7 @@ class StoreController extends Controller
 
     private function calculateIncome(array $inputData, int $movement_id): array
     {
-        $unitary_sale_price = SalePrice::find($inputData['unitary_sale_price'])->price;
+        $unitary_sale_price = SalePrice::find($inputData['unitary_sale_price'])?->price ?? 0;
         return [
             'unitary_sale_price' => $unitary_sale_price,
             'total_sale_price' => $this->multiplication(

@@ -54,6 +54,18 @@ abstract class Choose extends Component
     protected ?string $entitieSpanishName = null;
 
     /**
+     * The customized label for the HTML input.
+     */
+    #[Locked]
+    public ?string $inputLabel = null;
+
+    /**
+     * The customized name for the HTML input.
+     */
+    #[Locked]
+    public ?string $inputName = null;
+
+    /**
      * The Entitie spanish gender. Can be 'male' or 'female'.
      */
     protected ?string $entitieGender = null;
@@ -62,13 +74,17 @@ abstract class Choose extends Component
         bool $showAllByDefault = true,
         null|int|string $selectedByDefault = null,
         bool $required = true,
-        bool $allOption = false
+        bool $allOption = false,
+        null|string $inputLabel = null,
+        null|string $inputName = null
     )
     {
         $this->showAllByDefault = $showAllByDefault;
         $this->selectedByDefault = $selectedByDefault;
         $this->required = $required;
         $this->allOption = $allOption;
+        $this->inputLabel = $inputLabel;
+        $this->inputName = $inputName;
     }
 
     public function render()

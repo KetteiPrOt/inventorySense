@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
+use App\Http\Controllers\Inventory\WarehouseChangeController;
 use App\Http\Controllers\Invoices\Sales\Controller as SaleController;
 use App\Http\Controllers\Invoices\Purchases\Controller as PurchaseController;
 use App\Http\Controllers\Invoices\Purchases\KardexController;
@@ -136,7 +137,7 @@ Route::middleware(['auth'])->controller(InventoryIndexController::class)->group(
         ->get('/inventario', 'index')->name('inventory.index');
 });
 
-Route::middleware(['auth'])->controller(WarehouseController::class)->group(function(){
+Route::middleware(['auth', 'can:inventory'])->controller(WarehouseController::class)->group(function(){
     Route::get('/bodegas', 'index')->name('warehouses.index');
     Route::get('/bodegas/crear', 'create')->name('warehouses.create');
     Route::post('/bodegas', 'store')->name('warehouses.store');
@@ -144,4 +145,10 @@ Route::middleware(['auth'])->controller(WarehouseController::class)->group(funct
     Route::get('/bodegas/{warehouse}/editar', 'edit')->name('warehouses.edit');
     Route::put('/bodegas/{warehouse}', 'update')->name('warehouses.update');
     // Route::delete('/bodegas/{warehouse}', 'destroy')->name('warehouses.destroy');
+});
+
+Route::middleware(['auth', 'can:inventory'])->controller(WarehouseChangeController::class)->group(function(){
+    Route::get('/cambio-de-bodega/bodegas', 'selectWarehouses')->name('warehouse-change.select-warehouses');
+    Route::get('/cambio-de-bodega/productos', 'selectProducts')->name('warehouse-change.select-products');
+    Route::post('/cambio-de-bodega', 'change')->name('warehouse-change.change');
 });

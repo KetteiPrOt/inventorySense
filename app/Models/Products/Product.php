@@ -30,7 +30,7 @@ class Product extends Model
             : null;
     }
 
-    public static function joinTag(?string $search): object
+    public static function joinTag(?string $search = null): object
     {
         $query = static::
             leftJoin('product_types', 'product_types.id', '=', 'products.type_id')

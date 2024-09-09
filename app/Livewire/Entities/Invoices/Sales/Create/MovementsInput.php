@@ -36,7 +36,9 @@ class MovementsInput extends Component
         return view('livewire.entities.invoices.sales.create.movements-input', [
             'selectedProductsCollection' => $selectedProducts,
             'searchedProducts' => $searchedProducts,
-            'movementTypes' => Type::where('category', 'i')->get()
+            'movementTypes' => Type::where('category', 'i')
+                                   ->where('name', '!=', Type::$warehouseChangeIncomeName)
+                                   ->get()
         ]);
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->smallIncrements('id');
             $table->string('name', 255)->unique();
             $table->char('category', 1);
+            $table->boolean('public')->default(true);
         });
     }
 

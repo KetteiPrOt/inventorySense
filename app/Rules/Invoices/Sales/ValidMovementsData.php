@@ -45,12 +45,23 @@ class ValidMovementsData implements ValidationRule, DataAwareRule, ValidatorAwar
                     $fail('La cantidad #' . ($i + 1) . ' es mayor a la disponible.');
                     break;
                 }
-                if($movementType->category !== 'i'){
+                if($this->validateMovementType($movementType)){
                     $fail('El tipo de movimiento #' . ($i + 1) . ' es inválido.');
                     break;
                 }
             }
         }
+    }
+
+    private function validateMovementType(Type $type): bool
+    {
+        if($type->category !== 'i'){
+            return true;
+        }
+        if($type->name === Type::$warehouseChangeIncomeName){
+            return true;
+        }
+        return false;
     }
 
     private function validSalePrice(mixed $salePriceId, Product $product, int $amount): bool

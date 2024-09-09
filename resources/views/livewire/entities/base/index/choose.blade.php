@@ -1,9 +1,9 @@
 <div>
-    <x-input-label for="{{$name}}Search" :required="$required">
-        {{ucfirst($spanishName)}}
+    <x-input-label for="{{$inputName ?? $name}}Search" :required="$required">
+        {{ $inputLabel ?? ucfirst($spanishName)}}
     </x-input-label>
     <x-text-input
-        id="{{$name}}Search"
+        id="{{$inputName ?? $name}}Search"
         class="mt-1 block w-full max-w-sm"
         placeholder="Buscar..."
         maxlength="255"
@@ -19,11 +19,11 @@
                             type="radio"
                             value="{{$entitie->id}}"
                             @required($required)
-                            id="{{$name}}Input{{$entitie->id}}"
+                            id="{{$inputName ?? $name}}Input{{$entitie->id}}"
                             class="rounded-full mr-2"
-                            name="{{$name}}"
+                            name="{{$inputName ?? $name}}"
                         />
-                        <label for="{{$name}}Input{{$entitie->id}}">
+                        <label for="{{$inputName ?? $name}}Input{{$entitie->id}}">
                             {{$entitie->name}}
                         </label>
                     </x-table.td>
@@ -38,11 +38,11 @@
                             value=""
                             @checked($entitieSelectedByDefault === 'all')
                             @required($required)
-                            id="all{{ucfirst($name)}}Input"
+                            id="all{{$inputName ?? ucfirst($name)}}Input"
                             class="rounded-full mr-2"
-                            name="{{$name}}"
+                            name="{{$inputName ?? $name}}"
                         />
-                        <label for="all{{ucfirst($name)}}Input">
+                        <label for="all{{$inputName ?? ucfirst($name)}}Input">
                             {{
                                 $gender == 'male'
                                 ? 'Todos'
@@ -60,11 +60,11 @@
                             type="radio"
                             value="{{$entitieSelectedByDefault->id}}"
                             @required($required)
-                            id="{{$name}}Input{{$entitieSelectedByDefault->id}}"
+                            id="{{$inputName ?? $name}}Input{{$entitieSelectedByDefault->id}}"
                             class="rounded-full mr-2"
-                            name="{{$name}}"
+                            name="{{$inputName ?? $name}}"
                         />
-                        <label for="{{$name}}Input{{$entitieSelectedByDefault->id}}">
+                        <label for="{{$inputName ?? $name}}Input{{$entitieSelectedByDefault->id}}">
                             {{$entitieSelectedByDefault->name}}
                         </label>
                     </x-table.td>
@@ -84,5 +84,5 @@
             </span>
         @endif
     </div>
-    <x-input-error class="mt-2" :messages="$errors->get($name)" />
+    <x-input-error class="mt-2" :messages="$errors->get($inputName ?? $name)" />
 </div>

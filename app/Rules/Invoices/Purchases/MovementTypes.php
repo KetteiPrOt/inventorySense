@@ -43,7 +43,9 @@ class MovementTypes implements ValidationRule, DataAwareRule, ValidatorAwareRule
 
     private function validExpenseType(?MovementType $type): bool
     {
-        return !is_null($type) && ($type?->category === 'e');
+        return !is_null($type) 
+            && ($type?->category === 'e')
+            && ($type?->name !== MovementType::$warehouseChangeExpenseName);
     }
 
     private function validProductInventory(Product $product, MovementType $movementType): bool

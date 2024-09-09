@@ -172,10 +172,11 @@ new class extends Component
                     @endcan
                     @can('inventory')
                         <x-nav-dropdown
-                            tag="Inventario" width="32"
+                            tag="Inventario" width="48"
                             :active="request()->routeIs([
                                 'inventory.*',
-                                'warehouses.*'
+                                'warehouses.*',
+                                'warehouse-change.*'
                             ])"
                         >
                             <x-dropdown-link
@@ -189,6 +190,12 @@ new class extends Component
                                 :active="request()->routeIs('inventory.query-index')"
                             >
                                 Reporte
+                            </x-dropdown-link>
+                            <x-dropdown-link
+                                :href="route('warehouse-change.select-warehouses')"
+                                :active="request()->routeIs('warehouse-change.select-warehouses')"
+                            >
+                                Cambio de Bodega
                             </x-dropdown-link>
                         </x-nav-dropdown>
                     @endcan
@@ -381,10 +388,11 @@ new class extends Component
             @endcan
             @can('inventory')
                 <x-responsive-nav-dropdown
-                    tag="Inventario&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" width="32"
+                    tag="Inventario&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" align="left"
                     :active="request()->routeIs([
                         'inventory.*',
-                        'warehouses.*'
+                        'warehouses.*',
+                        'warehouse-change.*'
                     ])"
                 >
                     <x-dropdown-link
@@ -398,6 +406,12 @@ new class extends Component
                         :active="request()->routeIs('inventory.query-index')"
                     >
                         Reporte
+                    </x-dropdown-link>
+                    <x-dropdown-link
+                        :href="route('warehouse-change.select-warehouses')"
+                        :active="request()->routeIs('warehouse-change.select-warehouses')"
+                    >
+                        Cambio de Bodega
                     </x-dropdown-link>
                 </x-responsive-nav-dropdown>
             @endcan

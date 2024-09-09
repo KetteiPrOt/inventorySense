@@ -27,6 +27,10 @@ class Type extends Model
 
     public static $saleName = 'Venta';
 
+    public static $warehouseChangeExpenseName = 'Entrada a Bodega';
+
+    public static $warehouseChangeIncomeName = 'Salida a Bodega';
+
     public static function initialInventory(): Type
     {
         return Type::where('name', Type::$initialInventoryName)->first();
@@ -40,5 +44,15 @@ class Type extends Model
     public static function sale(): Type
     {
         return Type::where('name', Type::$saleName)->first();
+    }
+
+    public static function warehouseChangeExpense(): Type
+    {
+        return Type::where('name', Type::$warehouseChangeExpenseName)->first();
+    }
+
+    public static function warehouseChangeIncome(): Type
+    {
+        return Type::where('name', Type::$warehouseChangeIncomeName)->first();
     }
 }
