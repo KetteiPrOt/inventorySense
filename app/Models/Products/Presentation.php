@@ -16,7 +16,20 @@ class Presentation extends Model
 
     protected $fillable = ['content'];
 
-    public static $initialPresentations = [200, 375, 750, 1000, 1500, 600, 700];
+    public static $initialPresentations = [
+        200,
+        375,
+        750,
+        1000,
+        1500,
+        600,
+        700,
+        800,
+        980,
+        1400,
+        2000,
+        745
+    ];
 
     public function products(): HasMany
     {
